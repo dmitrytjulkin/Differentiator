@@ -10,6 +10,26 @@ void PrintFunc (node_t* node, FILE* output_ptr);
 void PrintOp (node_t* node, FILE* output_ptr);
 void PrintVar (node_t* node, FILE* output_ptr);
 
+void RunGraphDump (node_t* root, const char* name_of_file,
+                   const char* cmd_to_launch_graph_dump)
+{
+    assert (root != NULL);
+    assert (name_of_file != NULL);
+    assert (cmd_to_launch_graph_dump != NULL);
+
+    ClearGraphDump (name_of_file);
+
+    FILE* output_ptr = fopen (name_of_file, "a");
+
+    assert (output_ptr != NULL);
+
+    PrintTreeInGraphDump (root, output_ptr);
+
+    fclose (output_ptr);
+
+    system (cmd_to_launch_graph_dump);
+}
+
 void PrintTreeInGraphDump (node_t* root, FILE* output_ptr)
 {
     assert (root != NULL);

@@ -78,7 +78,7 @@ data_t DeleteNodeAndRetData (node_t* parent, child_node_t dir_of_child)
 {
     assert (parent != NULL);
 
-    data_t ret_data = {.func = ""}; // ~
+    data_t ret_data = {.func = ""};
 
     if (dir_of_child == LEFT) {
         ret_data = parent->left->data;

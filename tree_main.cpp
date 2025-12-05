@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <sys/stat.h>
 #include <string.h>
 #include <math.h>
+#include <sys/stat.h>
 
 #include "tree.h"
 
@@ -13,11 +13,11 @@ int main ()
 {
     node_t* root = CreateTreeFromFile ();
 
-    Optimize (root);  // doesn't optimize first operation
+    Optimize (root);  // FIXME doesn't optimize first operation
 
     node_t* derivative_root = d (root);
 
-    Optimize (derivative_root);
+    // Optimize (derivative_root);
 
     RunGraphDump (root, "tree_graph_dump.dot",
                   "dot -Tsvg tree_graph_dump.dot -o tree_graph_dump.svg");
@@ -37,6 +37,24 @@ int main ()
     FreeTree (root);
 }
 
+node_t* CreateTreeFromFile ()
+{
+    FILE* input_ptr = fopen ("input.txt", "r");
+
+    assert (input_ptr != NULL);
+
+    char* input_array = ReadInput (input_ptr);
+
+    assert (input_array != NULL);
+
+    node_t* root = GetG (&input_array);
+
+    fclose (input_ptr);
+    // free (input_array);
+
+    return root;
+}
+
 char* ReadInput (FILE* input)
 {
     assert (input != NULL);
@@ -46,7 +64,7 @@ char* ReadInput (FILE* input)
     fstat (fileno(input), &input_data);
     size_t size = (size_t) input_data.st_size;
 
-    char* input_array = (char *) calloc (size + 10, sizeof(char));
+    char* input_array = (char *) calloc (size + EXTRA_SIZE, sizeof(char));
 
     assert (input_array != NULL);
 
@@ -62,5 +80,3 @@ bool IsZero (double a)
 
     return 0;
 }
-
-

@@ -27,7 +27,7 @@ enum type_of_func {
 
 union data_t {
     double num;
-    char var[2];
+    char var[10];
     char op[2];
     char func[10];
 };
@@ -72,13 +72,13 @@ const int COUNT_OF_FUNC = 10;
 const int COUNT_OF_OP = 6;
 const int COUNT_OF_VAR = 3;
 
+const int EXTRA_SIZE = 10;
 
-bool IsZero (double a);
 char* ReadInput (FILE* input);
-
+node_t* CreateTreeFromFile ();
+bool IsZero (double a);
 
 node_t* Optimize (node_t* node);
-
 
 node_t* InitNode ();
 node_t* NewNode (type_of_expr expression, data_t value,
@@ -86,21 +86,25 @@ node_t* NewNode (type_of_expr expression, data_t value,
 void FreeTree (node_t* node);
 data_t DeleteNodeAndRetData (node_t* node, child_node_t dir_of_child);
 
-
 void RunGraphDump (node_t* root, const char* name_of_file,
                    const char* cmd_to_launch_graph_dump);
-node_t* CreateTreeFromFile ();
-node_t* AddNodeFromFile (char* input_array, int* inp_arr_index, int* diff_brackets);
-
-
 void PrintTreeInGraphDump (node_t* root, FILE* output_ptr);
 void PrintNodeInGraphDump (FILE* output_ptr, node_t* node, node_t* child,
-                    const char* link_for_arrow);
+                           const char* link_for_arrow);
 void ClearGraphDump (const char* name_of_file);
-
 
 node_t* d (node_t* node);
 node_t* c (node_t* node);
+
+void SyntaxError (const char* funcname, int line);
+node_t* GetG (char** s);
+node_t* GetE (char** s);
+node_t* GetT (char** s);
+node_t* GetP (char** s);
+node_t* GetN (char** s);
+node_t* GetV (char** s);
+node_t* GetF (char** s, node_t* var);
+node_t* GetPow (char** s);
 
 
 #define OPTIMIZE_NUM_OP_NUM(operation)                                              \

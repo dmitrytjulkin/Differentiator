@@ -74,7 +74,7 @@ node_t* OptimizeOpBetweenNum (node_t* node)
     if (node->data.op[0] == '^') {
         node->expr = NUM;
         node->data.num = pow (DeleteNodeAndRetData (node, LEFT).num,
-                            DeleteNodeAndRetData (node, RIGHT).num);
+                              DeleteNodeAndRetData (node, RIGHT).num);
 
         return node;
     }
@@ -90,7 +90,6 @@ node_t* OptimizeIfNodeIsZero (node_t* node, int* is_tree_changed)
 
     if (node->data.op[0] == '+') {
         *is_tree_changed = true;
-
         if (node->right->expr == NUM && IsZero (node->right->data.num))
             return NewNode (node->left->expr, node->left->data,
                                 c (node->left->left), c (node->left->right));
@@ -100,7 +99,8 @@ node_t* OptimizeIfNodeIsZero (node_t* node, int* is_tree_changed)
                                 c (node->right->left), c (node->right->right));
     }
 
-    if (node->data.op[0] == '-' && IsZero (node->right->data.num)) {
+    if (node->data.op[0] == '-' && node->right->expr == NUM &&
+        IsZero (node->right->data.num)) {
         *is_tree_changed = true;
 
         return NewNode (node->left->expr, node->left->data,
