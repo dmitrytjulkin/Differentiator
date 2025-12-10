@@ -10,10 +10,10 @@ void PrintFunc (node_t* node, FILE* output_ptr);
 void PrintOp (node_t* node, FILE* output_ptr);
 void PrintVar (node_t* node, FILE* output_ptr);
 
-void RunGraphDump (node_t* root, const char* name_of_file,
+void RunGraphDump (tree_t* tree, const char* name_of_file,
                    const char* cmd_to_launch_graph_dump)
 {
-    assert (root != NULL);
+    assert (tree != NULL);
     assert (name_of_file != NULL);
     assert (cmd_to_launch_graph_dump != NULL);
 
@@ -23,7 +23,7 @@ void RunGraphDump (node_t* root, const char* name_of_file,
 
     assert (output_ptr != NULL);
 
-    PrintTreeInGraphDump (root, output_ptr);
+    PrintTreeInGraphDump (tree->root, output_ptr);
 
     fclose (output_ptr);
 
@@ -94,7 +94,7 @@ void PrintNum (node_t* node, FILE* output_ptr)
             "\t<TABLE BORDER = \"0\" CELLBORDER = \"1\" CELLSPACING = \"0\">\n"
             "\t<TR> <TD COLSPAN = \"2\" BGCOLOR = \"lightblue\"> %s </TD> </TR>\n"
             "\t<TR> <TD COLSPAN = \"2\"> %lg </TD> </TR>                     \n"
-            "\t<TR> <TD PORT = \"f0\">%p</TD>                               \n"
+            "\t<TR> <TD PORT = \"f0\"> %p </TD>                               \n"
             "\t<TD PORT = \"f1\"> %p </TD> </TR>                            \n"
             "\t</TABLE>                                                     \n"
             "\t>];                                                          \n",
@@ -106,9 +106,9 @@ void PrintFunc (node_t* node, FILE* output_ptr)
     fprintf (output_ptr,
             "\nnode%p [label = <                                            \n"
             "\t<TABLE BORDER = \"0\" CELLBORDER = \"1\" CELLSPACING = \"0\">\n"
-            "\t<TR> <TD COLSPAN = \"2\" BGCOLOR = \"plum\"> %s </TD> </TR>\n"
+            "\t<TR> <TD COLSPAN = \"2\" BGCOLOR = \"plum\"> %s </TD> </TR>  \n"
             "\t<TR> <TD COLSPAN = \"2\"> %s </TD> </TR>                     \n"
-            "\t<TR> <TD PORT = \"f0\">%p</TD>                               \n"
+            "\t<TR> <TD PORT = \"f0\"> %p </TD>                             \n"
             "\t<TD PORT = \"f1\"> %p </TD> </TR>                            \n"
             "\t</TABLE>                                                     \n"
             "\t>];                                                          \n",
@@ -118,28 +118,28 @@ void PrintFunc (node_t* node, FILE* output_ptr)
 void PrintOp (node_t* node, FILE* output_ptr)
 {
     fprintf (output_ptr,
-            "\nnode%p [label = <                                            \n"
-            "\t<TABLE BORDER = \"0\" CELLBORDER = \"1\" CELLSPACING = \"0\">\n"
+            "\nnode%p [label = <                                               \n"
+            "\t<TABLE BORDER = \"0\" CELLBORDER = \"1\" CELLSPACING = \"0\">   \n"
             "\t<TR> <TD COLSPAN = \"2\" BGCOLOR = \"palegreen\"> %s </TD> </TR>\n"
-            "\t<TR> <TD COLSPAN = \"2\"> %s </TD> </TR>                     \n"
-            "\t<TR> <TD PORT = \"f0\">%p</TD>                               \n"
-            "\t<TD PORT = \"f1\"> %p </TD> </TR>                            \n"
-            "\t</TABLE>                                                     \n"
-            "\t>];                                                          \n",
+            "\t<TR> <TD COLSPAN = \"2\"> %s </TD> </TR>                        \n"
+            "\t<TR> <TD PORT = \"f0\"> %p </TD>                                \n"
+            "\t<TD PORT = \"f1\"> %p </TD> </TR>                               \n"
+            "\t</TABLE>                                                        \n"
+            "\t>];                                                             \n",
             node, "OP_type", node->data.op, node->left, node->right);
 }
 
 void PrintVar (node_t* node, FILE* output_ptr)
 {
     fprintf (output_ptr,
-            "\nnode%p [label = <                                            \n"
-            "\t<TABLE BORDER = \"0\" CELLBORDER = \"1\" CELLSPACING = \"0\">\n"
+            "\nnode%p [label = <                                               \n"
+            "\t<TABLE BORDER = \"0\" CELLBORDER = \"1\" CELLSPACING = \"0\">   \n"
             "\t<TR> <TD COLSPAN = \"2\" BGCOLOR = \"lightpink\"> %s </TD> </TR>\n"
-            "\t<TR> <TD COLSPAN = \"2\"> %s </TD> </TR>                     \n"
-            "\t<TR> <TD PORT = \"f0\">%p</TD>                               \n"
-            "\t<TD PORT = \"f1\"> %p </TD> </TR>                            \n"
-            "\t</TABLE>                                                     \n"
-            "\t>];                                                          \n",
+            "\t<TR> <TD COLSPAN = \"2\"> %s </TD> </TR>                        \n"
+            "\t<TR> <TD PORT = \"f0\"> %p </TD>                                \n"
+            "\t<TD PORT = \"f1\"> %p </TD> </TR>                               \n"
+            "\t</TABLE>                                                        \n"
+            "\t>];                                                             \n",
             node, "VAR_type", node->data.var, node->left, node->right);
 }
 

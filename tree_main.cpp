@@ -7,23 +7,27 @@
 
 #include "tree.h"
 
-// TODO CreateFileFromTree ();
-
 int main ()
 {
-    node_t* root = CreateTreeFromFile ();
+    tree_t* tree = InitTree ();
 
-    Optimize (root);  // FIXME doesn't optimize first operation
+    tree = CreateTreeFromFile ();
 
-    node_t* derivative_root = d (root);
+    Optimize (tree);  // FIXME doesn't optimize first operation
 
-    // Optimize (derivative_root);
+    tree_t* der_tree = InitTree ();
 
-    RunGraphDump (root, "tree_graph_dump.dot",
+    der_tree->root = d (tree->root);
+
+    Optimize (der_tree);
+
+    RunGraphDump (tree, "tree_graph_dump.dot",
                   "dot -Tsvg tree_graph_dump.dot -o tree_graph_dump.svg");
 
-    RunGraphDump (derivative_root, "der_tree_graph_dump.dot",
+    RunGraphDump (der_tree, "der_tree_graph_dump.dot",
                   "dot -Tsvg der_tree_graph_dump.dot -o der_tree_graph_dump.svg");
+
+    RunTexDump (tree, der_tree);
 
     printf (GREEN "through the code and directories, "
             "i alone am the programmer one\n" COLOR_RESET);
@@ -34,10 +38,11 @@ int main ()
 //         "his type: %d, his data: %lg\n\n",
 //         node, node->left, node->right, node->expr, node->data.num);
 
-    FreeTree (root);
+    FreeTree (tree);
+    FreeTree (der_tree);
 }
 
-node_t* CreateTreeFromFile ()
+tree_t* CreateTreeFromFile ()
 {
     FILE* input_ptr = fopen ("input.txt", "r");
 
@@ -47,30 +52,14 @@ node_t* CreateTreeFromFile ()
 
     assert (input_array != NULL);
 
-    node_t* root = GetG (&input_array);
+    tree_t* tree = InitTree ();
+
+    tree->root = GetG (input_array);
 
     fclose (input_ptr);
-    // free (input_array);
+    free (input_array);
 
-    return root;
-}
-
-char* ReadInput (FILE* input)
-{
-    assert (input != NULL);
-
-    struct stat input_data = {};
-
-    fstat (fileno(input), &input_data);
-    size_t size = (size_t) input_data.st_size;
-
-    char* input_array = (char *) calloc (size + EXTRA_SIZE, sizeof(char));
-
-    assert (input_array != NULL);
-
-    fread (input_array, sizeof (char), size, input);
-
-    return input_array;
+    return tree;
 }
 
 bool IsZero (double a)

@@ -7,6 +7,16 @@
 
 void ChooseNodeType (node_t* node, type_of_expr expression, data_t value);
 
+tree_t* InitTree ()
+{
+    tree_t* tree = (tree_t*) calloc (1, sizeof (tree_t)); // FIXME
+
+    tree->root = InitNode ();
+    tree->size = 0;
+
+    return tree;
+}
+
 node_t* InitNode ()
 {
     node_t* node = (node_t*) calloc (1, sizeof (node_t));
@@ -94,12 +104,21 @@ data_t DeleteNodeAndRetData (node_t* parent, child_node_t dir_of_child)
     return ret_data;
 }
 
-void FreeTree (node_t* node)
+void FreeTree (tree_t* tree)
+{
+    assert (tree != NULL);
+
+    FreeNode (tree->root);
+
+    free (tree);
+}
+
+void FreeNode (node_t* node)
 {
     if (node != NULL) {
-        FreeTree (node->left);
-        FreeTree (node->right);
+        FreeNode (node->left);
+        FreeNode (node->right);
     }
-
-    free (node);
+    else
+        return;
 }

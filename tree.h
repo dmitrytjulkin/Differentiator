@@ -40,6 +40,11 @@ struct node_t {
     node_t* right;
 };
 
+struct tree_t {
+    node_t* root;
+    size_t size;
+};
+
 const char list_of_func[][10] = {
     "sqrt",
     "ln",
@@ -58,7 +63,6 @@ const char list_of_op[][2] = {
     "-",
     "*",
     "/",
-    "%",
     "^"
 };
 
@@ -74,37 +78,41 @@ const int COUNT_OF_VAR = 3;
 
 const int EXTRA_SIZE = 10;
 
-char* ReadInput (FILE* input);
-node_t* CreateTreeFromFile ();
+tree_t* CreateTreeFromFile ();
 bool IsZero (double a);
 
-node_t* Optimize (node_t* node);
+node_t* Optimize (tree_t* tree);
 
+tree_t* InitTree ();
 node_t* InitNode ();
 node_t* NewNode (type_of_expr expression, data_t value,
                   node_t* left_node, node_t* right_node);
-void FreeTree (node_t* node);
+void FreeTree (tree_t* tree);
+void FreeNode (node_t* node);
 data_t DeleteNodeAndRetData (node_t* node, child_node_t dir_of_child);
 
-void RunGraphDump (node_t* root, const char* name_of_file,
+void RunGraphDump (tree_t* tree, const char* name_of_file,
                    const char* cmd_to_launch_graph_dump);
 void PrintTreeInGraphDump (node_t* root, FILE* output_ptr);
 void PrintNodeInGraphDump (FILE* output_ptr, node_t* node, node_t* child,
                            const char* link_for_arrow);
 void ClearGraphDump (const char* name_of_file);
 
+void RunTexDump (tree_t* tree, tree_t* der_tree);
+
 node_t* d (node_t* node);
 node_t* c (node_t* node);
 
+char* ReadInput (FILE* input);
 void SyntaxError (const char* funcname, int line);
-node_t* GetG (char** s);
-node_t* GetE (char** s);
-node_t* GetT (char** s);
-node_t* GetP (char** s);
-node_t* GetN (char** s);
-node_t* GetV (char** s);
-node_t* GetF (char** s, node_t* var);
-node_t* GetPow (char** s);
+node_t* GetG   (char* s);
+node_t* GetE   (char* s, int* index);
+node_t* GetT   (char* s, int* index);
+node_t* GetP   (char* s, int* index);
+node_t* GetN   (char* s, int* index);
+node_t* GetV   (char* s, int* index);
+node_t* GetF   (char* s, int* index, node_t* var);
+node_t* GetPow (char* s, int* index);
 
 
 #define OPTIMIZE_NUM_OP_NUM(operation)                                              \
@@ -116,3 +124,7 @@ node_t* GetPow (char** s);
                                                                                     \
             return node;                                                            \
         }
+
+#define APPLY_OPTIMIZE(function)                               \
+    if ((new_node = function (node, is_tree_changed)) != NULL) \
+        return new_node;
