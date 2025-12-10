@@ -16,20 +16,46 @@ enum type_of_expr {
     FUNC
 };
 
-enum type_of_func {
-    CONST_func,
-    VAR_func,
-    SUM_func,
-    MUL_func,
-    DIV_func,
-    EXP_func
+enum code_of_func {
+    SQRT,
+    LN,
+    SIN,
+    COS,
+    TG,
+    CTG,
+    ARCSIN,
+    ARCCOS,
+    ARCTG,
+    ARCCTG,
+
+    COUNT_OF_FUNC
+};
+
+enum code_of_op {
+    ADD,
+    SUB,
+    MUL,
+    DIV,
+    POW,
+
+    COUNT_OF_OP
+};
+
+struct func_t {
+    char name[10];
+    code_of_func code;
+};
+
+struct op_t {
+    char name;
+    code_of_op code;
 };
 
 union data_t {
     double num;
     char var[10];
-    char op[2];
-    char func[10];
+    code_of_op op;
+    code_of_func func;
 };
 
 struct node_t {
@@ -45,26 +71,26 @@ struct tree_t {
     size_t size;
 };
 
-const char list_of_func[][10] = {
-    "sqrt",
-    "ln",
-    "sin",
-    "cos",
-    "tg",
-    "ctg",
-    "arcsin",
-    "arccos",
-    "arctg",
-    "arcctg"
-};
+// const char list_of_func[][10] = {
+//     "sqrt",
+//     "ln",
+//     "sin",
+//     "cos",
+//     "tg",
+//     "ctg",
+//     "arcsin",
+//     "arccos",
+//     "arctg",
+//     "arcctg"
+// };
 
-const char list_of_op[][2] = {
-    "+",
-    "-",
-    "*",
-    "/",
-    "^"
-};
+// const char list_of_op[][2] = {
+//     "+",
+//     "-",
+//     "*",
+//     "/",
+//     "^"
+// };
 
 const char list_of_var[][2] = {
     "x",
@@ -72,8 +98,11 @@ const char list_of_var[][2] = {
     "z"
 };
 
-const int COUNT_OF_FUNC = 10;
-const int COUNT_OF_OP = 6;
+extern func_t list_of_func[];
+extern op_t list_of_op[];
+
+// const int COUNT_OF_FUNC = 10;
+// const int COUNT_OF_OP = 6;
 const int COUNT_OF_VAR = 3;
 
 const int EXTRA_SIZE = 10;
@@ -106,8 +135,8 @@ node_t* c (node_t* node);
 char* ReadInput (FILE* input);
 node_t* GetG (char* s);
 
-#define OPTIMIZE_NUM_OP_NUM(operation)                                              \
-        if (node->data.op[0] == #operation[0]) {                                    \
+#define OPTIMIZE_NUM_OP_NUM(code_of_op, operation)                                  \
+        if (node->data.op == code_of_op) {                                          \
             node->expr = NUM;                                                       \
                                                                                     \
             node->data.num = DeleteNodeAndRetData (node, LEFT).num  operation       \
@@ -115,10 +144,6 @@ node_t* GetG (char* s);
                                                                                     \
             return node;                                                            \
         }
-
-#define APPLY_OPTIMIZE(function)                                                    \
-    if ((new_node = function (node, is_tree_changed)) != NULL)                      \
-        return new_node;
 
 #define SKIP_OR_DO_AND_RETURN(function)                                             \
     if ((new_node = function) != NULL)                                              \

@@ -94,10 +94,10 @@ node_t* GetE (char* s, int* index)
         node_t* node2 = GetT (s, index);
 
         if (op == '+')
-            node = NewNode (OP, {.op[0] = '+'}, node, node2);
+            node = NewNode (OP, {.op = ADD}, node, node2);
 
         if (op == '-')
-            node = NewNode (OP, {.op[0] = '-'}, node, node2);
+            node = NewNode (OP, {.op = SUB}, node, node2);
     }
 
     return node;
@@ -118,10 +118,10 @@ node_t* GetT (char* s, int* index)
         node_t* node2 = GetPow (s, index);
 
         if (op == '*')
-            node = NewNode (OP, {.op[0] = '*'}, node, node2);
+            node = NewNode (OP, {.op = MUL}, node, node2);
 
         if (op == '/')
-            node = NewNode (OP, {.op[0] = '/'}, node, node2);
+            node = NewNode (OP, {.op = DIV}, node, node2);
     }
 
     return node;
@@ -139,7 +139,7 @@ node_t* GetPow (char* s, int* index)
 
         node_t* node2 = GetP (s, index);
 
-        node = NewNode (OP, {.op[0] = '^'}, node, node2);
+        node = NewNode (OP, {.op = POW}, node, node2);
     }
 
     return node;
@@ -182,7 +182,7 @@ node_t* GetV (char* s, int* index)
     assert (s != NULL);
     assert (index != NULL);
 
-    char* val = (char*) calloc (EXTRA_SIZE, sizeof (char)); // TODO calloc + realloc
+    char* val = (char*) calloc (EXTRA_SIZE, sizeof (char));
     assert (val != NULL);
 
     size_t val_size = EXTRA_SIZE;
@@ -233,8 +233,11 @@ node_t* GetF (char* s, int* index, node_t* node)
     assert (node != NULL);
 
     for (int i = 0; i < COUNT_OF_FUNC; ++i) {
-        if (strcmp (node->data.func, list_of_func[i]) == 0) {
+        if (strcmp (node->data.var, list_of_func[i].name) == 0) {
             node->expr = FUNC;
+
+            node->data.func = list_of_func[i].code;
+
             node->left = NULL;
             node->right = GetP (s, index);
 

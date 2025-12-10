@@ -11,15 +11,15 @@ node_t* OptimizeOpBetweenNum (node_t* node, int* is_tree_changed);
 node_t* OptimizeIfNodeIsZero (node_t* node, int* is_tree_changed);
 node_t* OptimizeIfNodeIsOne  (node_t* node, int* is_tree_changed);
 
-node_t* OptimizePlusZero     (node_t* node, int* is_tree_changed);
-node_t* OptimizeMinusZero    (node_t* node, int* is_tree_changed);
-node_t* OptimizeMultiplyZero (node_t* node, int* is_tree_changed);
-node_t* OptimizeDivideZero   (node_t* node, int* is_tree_changed);
-node_t* OptimizePowerZero    (node_t* node, int* is_tree_changed);
+node_t* OptimizeAddZero (node_t* node, int* is_tree_changed);
+node_t* OptimizeSubZero (node_t* node, int* is_tree_changed);
+node_t* OptimizeMulZero (node_t* node, int* is_tree_changed);
+node_t* OptimizeDivZero (node_t* node, int* is_tree_changed);
+node_t* OptimizePowZero (node_t* node, int* is_tree_changed);
 
-node_t* OptimizeMultiplyOne (node_t* node, int* is_tree_changed);
-node_t* OptimizeDivideOne   (node_t* node, int* is_tree_changed);
-node_t* OptimizePowerOne    (node_t* node, int* is_tree_changed);
+node_t* OptimizeMulOne (node_t* node, int* is_tree_changed);
+node_t* OptimizeDivOne (node_t* node, int* is_tree_changed);
+node_t* OptimizePowOne (node_t* node, int* is_tree_changed);
 
 
 node_t* Optimize (tree_t* tree)
@@ -77,15 +77,15 @@ node_t* OptimizeOpBetweenNum (node_t* node, int* is_tree_changed)
 
     *is_tree_changed = true;
 
-    OPTIMIZE_NUM_OP_NUM (+);
+    OPTIMIZE_NUM_OP_NUM (ADD, +);
 
-    OPTIMIZE_NUM_OP_NUM (-);
+    OPTIMIZE_NUM_OP_NUM (SUB, -);
 
-    OPTIMIZE_NUM_OP_NUM (*);
+    OPTIMIZE_NUM_OP_NUM (MUL, *);
 
-    OPTIMIZE_NUM_OP_NUM (/);
+    OPTIMIZE_NUM_OP_NUM (DIV, /);
 
-    if (node->data.op[0] == '^') {
+    if (node->data.op == POW) {
         node->expr = NUM;
         node->data.num = pow (DeleteNodeAndRetData (node, LEFT).num,
                               DeleteNodeAndRetData (node, RIGHT).num);
@@ -105,15 +105,15 @@ node_t* OptimizeIfNodeIsZero (node_t* node, int* is_tree_changed)
 
     node_t* new_node = InitNode ();
 
-    APPLY_OPTIMIZE (OptimizePlusZero);
+    SKIP_OR_DO_AND_RETURN (OptimizeAddZero (node, is_tree_changed));
 
-    APPLY_OPTIMIZE (OptimizeMinusZero);
+    SKIP_OR_DO_AND_RETURN (OptimizeSubZero (node, is_tree_changed));
 
-    APPLY_OPTIMIZE (OptimizeMultiplyZero);
+    SKIP_OR_DO_AND_RETURN (OptimizeMulZero (node, is_tree_changed));
 
-    APPLY_OPTIMIZE (OptimizeDivideZero);
+    SKIP_OR_DO_AND_RETURN (OptimizeDivZero (node, is_tree_changed));
 
-    APPLY_OPTIMIZE (OptimizePowerZero);
+    SKIP_OR_DO_AND_RETURN (OptimizePowZero (node, is_tree_changed));
 
     return node;
 }
@@ -127,21 +127,21 @@ node_t* OptimizeIfNodeIsOne (node_t* node, int* is_tree_changed)
 
     node_t* new_node = InitNode ();
 
-    APPLY_OPTIMIZE (OptimizeMultiplyOne);
+    SKIP_OR_DO_AND_RETURN (OptimizeMulOne (node, is_tree_changed));
 
-    APPLY_OPTIMIZE (OptimizeDivideOne);
+    SKIP_OR_DO_AND_RETURN (OptimizeDivOne (node, is_tree_changed));
 
-    APPLY_OPTIMIZE (OptimizePowerOne);
+    SKIP_OR_DO_AND_RETURN (OptimizePowOne (node, is_tree_changed));
 
     return node;
 }
 
-node_t* OptimizePlusZero (node_t* node, int* is_tree_changed)
+node_t* OptimizeAddZero (node_t* node, int* is_tree_changed)
 {
     assert (node != NULL);
     assert (is_tree_changed != NULL);
 
-    if (node->data.op[0] == '+') {
+    if (node->data.op == ADD) {
         *is_tree_changed = true;
 
         if (node->right->expr == NUM && IsZero (node->right->data.num))
@@ -156,12 +156,12 @@ node_t* OptimizePlusZero (node_t* node, int* is_tree_changed)
         return NULL;
 }
 
-node_t* OptimizeMinusZero (node_t* node, int* is_tree_changed)
+node_t* OptimizeSubZero (node_t* node, int* is_tree_changed)
 {
     assert (node != NULL);
     assert (is_tree_changed != NULL);
 
-    if (node->data.op[0] == '-' && node->right->expr == NUM &&
+    if (node->data.op == SUB && node->right->expr == NUM &&
         IsZero (node->right->data.num)) {
         *is_tree_changed = true;
 
@@ -172,12 +172,12 @@ node_t* OptimizeMinusZero (node_t* node, int* is_tree_changed)
         return NULL;
 }
 
-node_t* OptimizeMultiplyZero (node_t* node, int* is_tree_changed)
+node_t* OptimizeMulZero (node_t* node, int* is_tree_changed)
 {
     assert (node != NULL);
     assert (is_tree_changed != NULL);
 
-    if (node->data.op[0] == '*') {
+    if (node->data.op == MUL) {
         *is_tree_changed = true;
 
         return NewNode (NUM, {.num = 0}, NULL, NULL);
@@ -186,12 +186,12 @@ node_t* OptimizeMultiplyZero (node_t* node, int* is_tree_changed)
         return NULL;
 }
 
-node_t* OptimizeDivideZero (node_t* node, int* is_tree_changed)
+node_t* OptimizeDivZero (node_t* node, int* is_tree_changed)
 {
     assert (node != NULL);
     assert (is_tree_changed != NULL);
 
-    if (node->data.op[0] == '/' && node->left->expr == NUM
+    if (node->data.op == DIV && node->left->expr == NUM
         && IsZero (node->left->data.num)) {
         *is_tree_changed = true;
 
@@ -201,12 +201,12 @@ node_t* OptimizeDivideZero (node_t* node, int* is_tree_changed)
         return NULL;
 }
 
-node_t* OptimizePowerZero (node_t* node, int* is_tree_changed)
+node_t* OptimizePowZero (node_t* node, int* is_tree_changed)
 {
     assert (node != NULL);
     assert (is_tree_changed != NULL);
 
-    if (node->data.op[0] == '^') {
+    if (node->data.op == POW) {
         *is_tree_changed = true;
 
         if (node->right->expr == NUM && IsZero (node->right->data.num))
@@ -220,12 +220,12 @@ node_t* OptimizePowerZero (node_t* node, int* is_tree_changed)
 }
 
 
-node_t* OptimizeMultiplyOne (node_t* node, int* is_tree_changed)
+node_t* OptimizeMulOne (node_t* node, int* is_tree_changed)
 {
     assert (node != NULL);
     assert (is_tree_changed != NULL);
 
-    if (node->data.op[0] == '*') {
+    if (node->data.op == MUL) {
         *is_tree_changed = true;
 
         if (node->right->expr == NUM && IsZero (node->right->data.num - 1))
@@ -240,12 +240,12 @@ node_t* OptimizeMultiplyOne (node_t* node, int* is_tree_changed)
         return NULL;
 }
 
-node_t* OptimizeDivideOne (node_t* node, int* is_tree_changed)
+node_t* OptimizeDivOne (node_t* node, int* is_tree_changed)
 {
     assert (node != NULL);
     assert (is_tree_changed != NULL);
 
-    if (node->data.op[0] == '/' && node->right->expr == NUM
+    if (node->data.op == DIV && node->right->expr == NUM
         && IsZero (node->right->data.num - 1)){
         *is_tree_changed = true;
 
@@ -256,12 +256,12 @@ node_t* OptimizeDivideOne (node_t* node, int* is_tree_changed)
         return NULL;
 }
 
-node_t* OptimizePowerOne (node_t* node, int* is_tree_changed)
+node_t* OptimizePowOne (node_t* node, int* is_tree_changed)
 {
     assert (node != NULL);
     assert (is_tree_changed != NULL);
 
-    if (node->data.op[0] == '^') {
+    if (node->data.op == POW) {
         *is_tree_changed = true;
 
         if (node->left->expr == NUM && IsZero (node->left->data.num - 1))

@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <assert.h>
+#include <string.h>
 
 #include "tree.h"
+
 
 void TexNode (FILE* output_ptr, node_t* node);
 
@@ -92,7 +94,17 @@ void TexVar (FILE* output_ptr, node_t* node)
 void TexFunc (FILE* output_ptr, node_t* node)
 {
     if (node->expr == FUNC) {
-        fprintf (output_ptr, "\\%s(", node->data.op);
+        if (node->data.func == SQRT) {
+            fprintf (output_ptr, "\\%s{", list_of_func[node->data.func].name);
+
+            TexNode (output_ptr, node->right);
+
+            fprintf (output_ptr, "}");
+
+            return;
+        }
+
+        fprintf (output_ptr, "\\%s(", list_of_func[node->data.func].name);
 
         TexNode (output_ptr, node->right);
 
@@ -113,7 +125,7 @@ void TexOp (FILE* output_ptr, node_t* node)
 
         TexNode (output_ptr, node->left);
 
-        fprintf (output_ptr, " %s ", node->data.op);
+        fprintf (output_ptr, " %c ", list_of_op[node->data.op].name);
 
         TexNode (output_ptr, node->right);
     }
@@ -121,9 +133,8 @@ void TexOp (FILE* output_ptr, node_t* node)
 
 bool TexIfDiv (FILE* output_ptr, node_t* node)
 {
-    if (node->data.op[0] != '/')
+    if (node->data.op != DIV)
         return false;
-
 
     fprintf (output_ptr, " \\frac {");
 
@@ -140,18 +151,18 @@ bool TexIfDiv (FILE* output_ptr, node_t* node)
 
 bool TexIfMul (FILE* output_ptr, node_t* node)
 {
-    if (node->data.op[0] != '*')
+    if (node->data.op != MUL)
         return false;
 
     int need_brac_left = true;
     int need_brac_right = true;
 
-    if (node->right->expr != OP &&
-        node->right->data.op[0] != '+' && node->right->data.op[0] != '-')
+    if (node->right->expr != OP ||
+        (node->right->data.op != ADD && node->right->data.op != SUB))
         need_brac_right = false;
 
-    if (node->left->expr != OP &&
-        node->right->data.op[0] != '+' && node->right->data.op[0] != '-')
+    if (node->left->expr != OP ||
+        (node->left->data.op != ADD && node->left->data.op != SUB))
         need_brac_left = false;
 
     if (need_brac_left)
@@ -181,7 +192,7 @@ bool TexIfMul (FILE* output_ptr, node_t* node)
 
 bool TexIfPow (FILE* output_ptr, node_t* node)
 {
-    if (node->data.op[0] != '^')
+    if (node->data.op != POW)
         return false;
 
     int need_brac_left = true;

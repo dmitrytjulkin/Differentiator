@@ -9,7 +9,8 @@ void ChooseNodeType (node_t* node, type_of_expr expression, data_t value);
 
 tree_t* InitTree ()
 {
-    tree_t* tree = (tree_t*) calloc (1, sizeof (tree_t)); // FIXME
+    tree_t* tree = (tree_t*) calloc (1, sizeof (tree_t));
+    assert (tree != NULL);
 
     tree->root = InitNode ();
     tree->size = 0;
@@ -20,12 +21,11 @@ tree_t* InitTree ()
 node_t* InitNode ()
 {
     node_t* node = (node_t*) calloc (1, sizeof (node_t));
-
     assert (node != NULL);
 
     node->parent = NULL;
 
-    strcpy (node->data.func, "");
+    strcpy (node->data.var, "");
 
     node->expr = NO_EXPR;
 
@@ -62,17 +62,18 @@ void ChooseNodeType (node_t* node, type_of_expr expression, data_t value)
         case VAR:
             node->expr = VAR;
             strcpy (node->data.var, value.var);
+
             break;
 
         case OP:
             node->expr = OP;
-            strcpy (node->data.op, value.op);
+            node->data.op = value.op;
 
             break;
 
         case FUNC:
             node->expr = FUNC;
-            strcpy (node->data.func, value.func);
+            node->data.func = value.func;
 
             break;
 
@@ -88,7 +89,7 @@ data_t DeleteNodeAndRetData (node_t* parent, child_node_t dir_of_child)
 {
     assert (parent != NULL);
 
-    data_t ret_data = {.func = ""};
+    data_t ret_data = {.var = ""};
 
     if (dir_of_child == LEFT) {
         ret_data = parent->left->data;
@@ -118,7 +119,7 @@ void FreeNode (node_t* node)
     if (node != NULL) {
         FreeNode (node->left);
         FreeNode (node->right);
-    }
-    else
+
+    } else
         return;
 }
