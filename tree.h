@@ -96,7 +96,7 @@ void RunGraphDump (tree_t* tree, const char* name_of_file,
 void PrintTreeInGraphDump (node_t* root, FILE* output_ptr);
 void PrintNodeInGraphDump (FILE* output_ptr, node_t* node, node_t* child,
                            const char* link_for_arrow);
-void ClearGraphDump (const char* name_of_file);
+void ClearDump (const char* name_of_file);
 
 void RunTexDump (tree_t* tree, tree_t* der_tree);
 
@@ -104,16 +104,7 @@ node_t* d (node_t* node);
 node_t* c (node_t* node);
 
 char* ReadInput (FILE* input);
-void SyntaxError (const char* funcname, int line);
-node_t* GetG   (char* s);
-node_t* GetE   (char* s, int* index);
-node_t* GetT   (char* s, int* index);
-node_t* GetP   (char* s, int* index);
-node_t* GetN   (char* s, int* index);
-node_t* GetV   (char* s, int* index);
-node_t* GetF   (char* s, int* index, node_t* var);
-node_t* GetPow (char* s, int* index);
-
+node_t* GetG (char* s);
 
 #define OPTIMIZE_NUM_OP_NUM(operation)                                              \
         if (node->data.op[0] == #operation[0]) {                                    \
@@ -125,6 +116,10 @@ node_t* GetPow (char* s, int* index);
             return node;                                                            \
         }
 
-#define APPLY_OPTIMIZE(function)                               \
-    if ((new_node = function (node, is_tree_changed)) != NULL) \
+#define APPLY_OPTIMIZE(function)                                                    \
+    if ((new_node = function (node, is_tree_changed)) != NULL)                      \
+        return new_node;
+
+#define SKIP_OR_DO_AND_RETURN(function)                                             \
+    if ((new_node = function) != NULL)                                              \
         return new_node;

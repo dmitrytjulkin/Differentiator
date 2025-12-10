@@ -5,27 +5,29 @@
 
 #include "tree.h"
 
-// int main ()
-// {
-//     char* s = "cos(sin(x))";
-//
-//     node_t* root = GetG (&s);
-//
-//     RunGraphDump (root, "graph_dump.dot",
-//                   "dot -Tsvg graph_dump.dot -o graph_dump.svg");
-// }
+
+void SyntaxError (const char* funcname, int line);
+void ResizeValIfNeed (char** val, size_t* val_size, size_t val_index);
+
+node_t* GetE   (char* s, int* index);
+node_t* GetT   (char* s, int* index);
+node_t* GetP   (char* s, int* index);
+node_t* GetN   (char* s, int* index);
+node_t* GetV   (char* s, int* index);
+node_t* GetF   (char* s, int* index, node_t* var);
+node_t* GetPow (char* s, int* index);
+
 
 char* ReadInput (FILE* input)
 {
     assert (input != NULL);
 
     struct stat input_data = {};
-
     fstat (fileno(input), &input_data);
+
     size_t size = (size_t) input_data.st_size;
 
     char* input_array = (char *) calloc (size + EXTRA_SIZE, sizeof(char));
-
     assert (input_array != NULL);
 
     fread (input_array, sizeof (char), size, input);
@@ -35,6 +37,8 @@ char* ReadInput (FILE* input)
 
 void SyntaxError (const char* funcname, int line)
 {
+    assert (funcname != NULL);
+
     printf ("SyntaxError was called from %s, line = %d\n\n", funcname, line);
 
     assert (0);
@@ -102,6 +106,7 @@ node_t* GetE (char* s, int* index)
 node_t* GetT (char* s, int* index)
 {
     assert (s != NULL);
+    assert (index != NULL);
 
     node_t* node = GetPow (s, index);
 
@@ -177,8 +182,11 @@ node_t* GetV (char* s, int* index)
     assert (s != NULL);
     assert (index != NULL);
 
-    char val[100] = ""; // TODO calloc + realloc
-    int val_index = 0;
+    char* val = (char*) calloc (EXTRA_SIZE, sizeof (char)); // TODO calloc + realloc
+    assert (val != NULL);
+
+    size_t val_size = EXTRA_SIZE;
+    size_t val_index = 0;
 
     if ('a' <= s[*index] && s[*index] <= 'z') {
         val[val_index++] = s[*index];
@@ -188,6 +196,8 @@ node_t* GetV (char* s, int* index)
 
     while (('a' <= s[*index] && s[*index] <= 'z') ||
            ('0' <= s[*index] && s[*index] <= '9') || s[*index] == '_') {
+        ResizeValIfNeed (&val, &val_size, val_index);
+
         val[val_index++] = s[*index];
 
         ++*index;
@@ -196,7 +206,24 @@ node_t* GetV (char* s, int* index)
     data_t tmp = {.var = ""};
     strcpy (tmp.var, val);
 
-    return NewNode (VAR, tmp, NULL, NULL);
+    node_t* node = NewNode (VAR, tmp, NULL, NULL);
+
+    free (val);
+
+    return node;
+}
+
+void ResizeValIfNeed (char** val, size_t* val_size, size_t val_index)
+{
+    assert (val != NULL);
+    assert (val_size != NULL);
+
+    if (val_index == *val_size - 1) {
+        val_size += EXTRA_SIZE;
+
+        *val = (char*) realloc (*val, *val_size);
+        assert (*val != NULL);
+    }
 }
 
 node_t* GetF (char* s, int* index, node_t* node)

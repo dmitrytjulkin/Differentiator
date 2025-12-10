@@ -17,7 +17,7 @@ void RunGraphDump (tree_t* tree, const char* name_of_file,
     assert (name_of_file != NULL);
     assert (cmd_to_launch_graph_dump != NULL);
 
-    ClearGraphDump (name_of_file);
+    ClearDump (name_of_file);
 
     FILE* output_ptr = fopen (name_of_file, "a");
 
@@ -89,62 +89,80 @@ void PrintNodeInGraphDump (FILE* output_ptr, node_t* node, node_t* child,
 
 void PrintNum (node_t* node, FILE* output_ptr)
 {
+    assert (node != NULL);
+    assert (output_ptr != NULL);
+
     fprintf (output_ptr,
-            "\nnode%p [label = <                                            \n"
-            "\t<TABLE BORDER = \"0\" CELLBORDER = \"1\" CELLSPACING = \"0\">\n"
+            "\nnode%p [label = <                                               \n"
+            "\t<TABLE BORDER = \"0\" CELLBORDER = \"1\" CELLSPACING = \"0\">   \n"
             "\t<TR> <TD COLSPAN = \"2\" BGCOLOR = \"lightblue\"> %s </TD> </TR>\n"
-            "\t<TR> <TD COLSPAN = \"2\"> %lg </TD> </TR>                     \n"
-            "\t<TR> <TD PORT = \"f0\"> %p </TD>                               \n"
-            "\t<TD PORT = \"f1\"> %p </TD> </TR>                            \n"
-            "\t</TABLE>                                                     \n"
-            "\t>];                                                          \n",
-            node, "NUM_type", node->data.num, node->left, node->right);
+            "\t<TR> <TD COLSPAN = \"2\"> %p </TD> </TR>                        \n"
+            "\t<TR> <TD COLSPAN = \"2\"> %lg </TD> </TR>                       \n"
+            "\t<TR> <TD PORT = \"f0\"> %p </TD>                                \n"
+            "\t<TD PORT = \"f1\"> %p </TD> </TR>                               \n"
+            "\t</TABLE>                                                        \n"
+            "\t>];                                                             \n",
+            node, "NUM_type", node, node->data.num, node->left, node->right);
 }
 
 void PrintFunc (node_t* node, FILE* output_ptr)
 {
+    assert (node != NULL);
+    assert (output_ptr != NULL);
+
     fprintf (output_ptr,
             "\nnode%p [label = <                                            \n"
             "\t<TABLE BORDER = \"0\" CELLBORDER = \"1\" CELLSPACING = \"0\">\n"
             "\t<TR> <TD COLSPAN = \"2\" BGCOLOR = \"plum\"> %s </TD> </TR>  \n"
+            "\t<TR> <TD COLSPAN = \"2\"> %p </TD> </TR>                     \n"
             "\t<TR> <TD COLSPAN = \"2\"> %s </TD> </TR>                     \n"
             "\t<TR> <TD PORT = \"f0\"> %p </TD>                             \n"
             "\t<TD PORT = \"f1\"> %p </TD> </TR>                            \n"
             "\t</TABLE>                                                     \n"
             "\t>];                                                          \n",
-            node, "FUNC_type", node->data.func, node->left, node->right);
+            node, "FUNC_type", node, node->data.func, node->left, node->right);
 }
 
 void PrintOp (node_t* node, FILE* output_ptr)
 {
+    assert (node != NULL);
+    assert (output_ptr != NULL);
+
     fprintf (output_ptr,
             "\nnode%p [label = <                                               \n"
             "\t<TABLE BORDER = \"0\" CELLBORDER = \"1\" CELLSPACING = \"0\">   \n"
             "\t<TR> <TD COLSPAN = \"2\" BGCOLOR = \"palegreen\"> %s </TD> </TR>\n"
+            "\t<TR> <TD COLSPAN = \"2\"> %p </TD> </TR>                        \n"
             "\t<TR> <TD COLSPAN = \"2\"> %s </TD> </TR>                        \n"
             "\t<TR> <TD PORT = \"f0\"> %p </TD>                                \n"
             "\t<TD PORT = \"f1\"> %p </TD> </TR>                               \n"
             "\t</TABLE>                                                        \n"
             "\t>];                                                             \n",
-            node, "OP_type", node->data.op, node->left, node->right);
+            node, "OP_type", node, node->data.op, node->left, node->right);
 }
 
 void PrintVar (node_t* node, FILE* output_ptr)
 {
+    assert (node != NULL);
+    assert (output_ptr != NULL);
+
     fprintf (output_ptr,
             "\nnode%p [label = <                                               \n"
             "\t<TABLE BORDER = \"0\" CELLBORDER = \"1\" CELLSPACING = \"0\">   \n"
             "\t<TR> <TD COLSPAN = \"2\" BGCOLOR = \"lightpink\"> %s </TD> </TR>\n"
+            "\t<TR> <TD COLSPAN = \"2\"> %p </TD> </TR>                        \n"
             "\t<TR> <TD COLSPAN = \"2\"> %s </TD> </TR>                        \n"
             "\t<TR> <TD PORT = \"f0\"> %p </TD>                                \n"
             "\t<TD PORT = \"f1\"> %p </TD> </TR>                               \n"
             "\t</TABLE>                                                        \n"
             "\t>];                                                             \n",
-            node, "VAR_type", node->data.var, node->left, node->right);
+            node, "VAR_type", node, node->data.var, node->left, node->right);
 }
 
-void ClearGraphDump (const char* name_of_file)
+void ClearDump (const char* name_of_file)
 {
+    assert (name_of_file != NULL);
+
     FILE* output_ptr = fopen (name_of_file, "w");
 
     fclose (output_ptr);

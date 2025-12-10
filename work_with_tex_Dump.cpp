@@ -23,7 +23,7 @@ void RunTexDump (tree_t* tree, tree_t* der_tree)
     FILE* output_ptr = fopen ("tree.tex", "a");
     assert (output_ptr != NULL);
 
-    ClearGraphDump ("tree.tex");
+    ClearDump ("tree.tex");
 
     fprintf (output_ptr, "\\documentclass[12pt, a4paper]{article}"
             "\\usepackage[utf8]{inputenc}\n"
@@ -44,14 +44,17 @@ void RunTexDump (tree_t* tree, tree_t* der_tree)
     fprintf (output_ptr,
             "\n\\]\n"
             "\n"
-            "\\textbf{Здесь записана производная:}\n"
+            "\\textbf{Получим производную, "
+            "приведенную элементарными преобразованиями:}\n"
             "\n"
             "\\[\n");
 
     TexNode (output_ptr, der_tree->root);
 
     fprintf (output_ptr,
-            "\n\\]\n"
+            "\n\\]"
+            "\\textbf{Дальнейшие преобразования, оставим читателю "
+            "в качестве самостоятельного упражнения}\n"
             "\n"
             "\\end{document}\n");
 
@@ -89,7 +92,7 @@ void TexVar (FILE* output_ptr, node_t* node)
 void TexFunc (FILE* output_ptr, node_t* node)
 {
     if (node->expr == FUNC) {
-        fprintf (output_ptr, "%s(", node->data.op);
+        fprintf (output_ptr, "\\%s(", node->data.op);
 
         TexNode (output_ptr, node->right);
 
@@ -143,10 +146,12 @@ bool TexIfMul (FILE* output_ptr, node_t* node)
     int need_brac_left = true;
     int need_brac_right = true;
 
-    if (node->right->expr != OP || node->right->data.op[0] == '^')
+    if (node->right->expr != OP &&
+        node->right->data.op[0] != '+' && node->right->data.op[0] != '-')
         need_brac_right = false;
 
-    if (node->left->expr != OP || node->left->data.op[0] == '^')
+    if (node->left->expr != OP &&
+        node->right->data.op[0] != '+' && node->right->data.op[0] != '-')
         need_brac_left = false;
 
     if (need_brac_left)
