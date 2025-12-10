@@ -41,6 +41,9 @@ node_t* dCos    (node_t* node);
 node_t* dTg     (node_t* node);
 node_t* dCtg    (node_t* node);
 node_t* dArcsin (node_t* node);
+node_t* dArccos (node_t* node);
+node_t* dArctg  (node_t* node);
+node_t* dArcctg (node_t* node);
 
 
 node_t* d (node_t* node)
@@ -273,7 +276,43 @@ node_t* dArcsin (node_t* node)
     if (strcmp (node->data.func, "arcsin") != 0)
         return NULL;
 
-    node_t* new_node = SQRT_ (SUB_ (NUM_ (1), POW_ (cR, NUM_ (2))));
+    node_t* external_der = DIV_ (NUM_ (1), SQRT_ (SUB_ (NUM_ (1), POW_ (cR, NUM_ (2)))));
 
-    return MUL_ (DIV_ (NUM_ (1), new_node), dR);
+    return MUL_ (external_der, dR);
+}
+
+node_t* dArccos (node_t* node)
+{
+    assert (node != NULL);
+
+    if (strcmp (node->data.func, "arccos") != 0)
+        return NULL;
+
+    node_t* external_der = DIV_ (NUM_ (1), SQRT_ (SUB_ (NUM_ (1), POW_ (cR, NUM_ (2)))));
+
+    return SUB_ (NUM_ (0), MUL_ (external_der, dR));
+}
+
+node_t* dArctg (node_t* node)
+{
+    assert (node != NULL);
+
+    if (strcmp (node->data.func, "arccos") != 0)
+        return NULL;
+
+    node_t* external_der = DIV_ (NUM_ (1), ADD_ (NUM_ (1), POW_ (cR, NUM_ (2))));
+
+    return MUL_ (external_der, dR);
+}
+
+node_t* dArcctg (node_t* node)
+{
+    assert (node != NULL);
+
+    if (strcmp (node->data.func, "arccos") != 0)
+        return NULL;
+
+    node_t* external_der = DIV_ (NUM_ (1), ADD_ (NUM_ (1), POW_ (cR, NUM_ (2))));
+
+    return SUB_ (NUM_ (0), MUL_ (external_der, dR));
 }
