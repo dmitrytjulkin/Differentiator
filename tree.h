@@ -3,13 +3,15 @@
 #define GREEN "\x1b[32m"
 #define COLOR_RESET "\x1b[0m"
 
+#define R node->right
+#define L node->left
+
 enum child_node_t {
     LEFT =  -1,
     RIGHT = 1,
 };
 
 enum type_of_expr {
-    NO_EXPR,
     NUM,
     VAR,
     OP,
@@ -71,27 +73,6 @@ struct tree_t {
     size_t size;
 };
 
-// const char list_of_func[][10] = {
-//     "sqrt",
-//     "ln",
-//     "sin",
-//     "cos",
-//     "tg",
-//     "ctg",
-//     "arcsin",
-//     "arccos",
-//     "arctg",
-//     "arcctg"
-// };
-
-// const char list_of_op[][2] = {
-//     "+",
-//     "-",
-//     "*",
-//     "/",
-//     "^"
-// };
-
 const char list_of_var[][2] = {
     "x",
     "y",
@@ -101,14 +82,12 @@ const char list_of_var[][2] = {
 extern func_t list_of_func[];
 extern op_t list_of_op[];
 
-// const int COUNT_OF_FUNC = 10;
-// const int COUNT_OF_OP = 6;
 const int COUNT_OF_VAR = 3;
 
 const int EXTRA_SIZE = 10;
 
-tree_t* CreateTreeFromFile ();
-bool IsZero (double a);
+
+void PrintNode (node_t* node);
 
 node_t* Optimize (tree_t* tree);
 
@@ -129,22 +108,21 @@ void ClearDump (const char* name_of_file);
 
 void RunTexDump (tree_t* tree, tree_t* der_tree);
 
-node_t* d (node_t* node);
-node_t* c (node_t* node);
+node_t* DiffNode (node_t* node);
+node_t* CopyNode (node_t* node);
 
+tree_t* CreateTreeFromFile ();
 char* ReadInput (FILE* input);
-node_t* GetG (char* s);
+node_t* GetExpression (char* s);
 
-#define OPTIMIZE_NUM_OP_NUM(code_of_op, operation)                                  \
-        if (node->data.op == code_of_op) {                                          \
-            node->expr = NUM;                                                       \
+#define OPTIMIZE_IF_NUM_OP_NUM(operation)                                           \
+    if (node->left->expr == NUM && node->right->expr == NUM) {                      \
+        node->expr = NUM;                                                           \
                                                                                     \
-            node->data.num = DeleteNodeAndRetData (node, LEFT).num  operation       \
-                             DeleteNodeAndRetData (node, RIGHT).num;                \
+        node->data.num = DeleteNodeAndRetData (node, LEFT).num operation            \
+                            DeleteNodeAndRetData (node, RIGHT).num;                 \
                                                                                     \
-            return node;                                                            \
-        }
-
-#define SKIP_OR_DO_AND_RETURN(function)                                             \
-    if ((new_node = function) != NULL)                                              \
-        return new_node;
+        *is_tree_changed = true;                                                    \
+                                                                                    \
+        return node;                                                                \
+    }

@@ -27,10 +27,10 @@ node_t* InitNode ()
 
     strcpy (node->data.var, "");
 
-    node->expr = NO_EXPR;
+    node->expr = VAR;
 
-    node->left = NULL;
-    node->right = NULL;
+    L = NULL;
+    R = NULL;
 
     return node;
 }
@@ -51,6 +51,8 @@ node_t* NewNode (type_of_expr expression, data_t value,
 void ChooseNodeType (node_t* node, type_of_expr expression, data_t value)
 {
     assert (node != NULL);
+
+    node->data = value;
 
     switch (expression) {
         case NUM:
@@ -75,9 +77,6 @@ void ChooseNodeType (node_t* node, type_of_expr expression, data_t value)
             node->expr = FUNC;
             node->data.func = value.func;
 
-            break;
-
-        case NO_EXPR:
             break;
 
         default:
@@ -117,8 +116,8 @@ void FreeTree (tree_t* tree)
 void FreeNode (node_t* node)
 {
     if (node != NULL) {
-        FreeNode (node->left);
-        FreeNode (node->right);
+        FreeNode (L);
+        FreeNode (R);
 
     } else
         return;

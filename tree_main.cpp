@@ -1,9 +1,5 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <assert.h>
-#include <string.h>
-#include <math.h>
-#include <sys/stat.h>
 
 #include "tree.h"
 
@@ -13,11 +9,11 @@ int main ()
 
     tree = CreateTreeFromFile ();
 
-    Optimize (tree);  // FIXME doesn't optimize first operation
+    Optimize (tree);
 
     tree_t* der_tree = InitTree ();
 
-    der_tree->root = d (tree->root);
+    der_tree->root = DiffNode (tree->root);
 
     Optimize (der_tree);
 
@@ -32,40 +28,25 @@ int main ()
     printf (GREEN "through the code and directories, "
             "i alone am the programmer one\n" COLOR_RESET);
 
-//     printf (GREEN "PASSED in line %d\n" COLOR_RESET, __LINE__);
-//     printf ("he:%p\n"
-//         "his left child: %p, right child: %p\n"
-//         "his type: %d, his data: %lg\n\n",
-//         node, node->left, node->right, node->expr, node->data.num);
-
     FreeTree (tree);
     FreeTree (der_tree);
 }
 
-tree_t* CreateTreeFromFile ()
+void PrintNode (node_t* node)
 {
-    FILE* input_ptr = fopen ("input.txt", "r");
+    printf ("\n");
+    printf ("node: %p\n", node);
+    printf ("his expression: %d\n", node->expr);
 
-    assert (input_ptr != NULL);
+    if (node->expr == NUM)
+        printf ("his data: %lg\n", node->data.num);
 
-    char* input_array = ReadInput (input_ptr);
+    else if (node->expr == VAR)
+        printf ("his data: %s\n", node->data.var);
 
-    assert (input_array != NULL);
+    else
+        printf ("his data: %d\n", node->data.op);
 
-    tree_t* tree = InitTree ();
-
-    tree->root = GetG (input_array);
-
-    fclose (input_ptr);
-    free (input_array);
-
-    return tree;
-}
-
-bool IsZero (double a)
-{
-    if (fabs(a) < 1e-4)
-        return 1;
-
-    return 0;
+    printf ("his left child: %p, right child %p\n", L, R);
+    printf ("\n");
 }

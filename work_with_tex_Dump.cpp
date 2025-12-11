@@ -97,7 +97,7 @@ void TexFunc (FILE* output_ptr, node_t* node)
         if (node->data.func == SQRT) {
             fprintf (output_ptr, "\\%s{", list_of_func[node->data.func].name);
 
-            TexNode (output_ptr, node->right);
+            TexNode (output_ptr, R);
 
             fprintf (output_ptr, "}");
 
@@ -106,7 +106,7 @@ void TexFunc (FILE* output_ptr, node_t* node)
 
         fprintf (output_ptr, "\\%s(", list_of_func[node->data.func].name);
 
-        TexNode (output_ptr, node->right);
+        TexNode (output_ptr, R);
 
         fprintf (output_ptr, ")");
 
@@ -123,11 +123,11 @@ void TexOp (FILE* output_ptr, node_t* node)
 
         if (TexIfMul (output_ptr, node)) return;
 
-        TexNode (output_ptr, node->left);
+        TexNode (output_ptr, L);
 
         fprintf (output_ptr, " %c ", list_of_op[node->data.op].name);
 
-        TexNode (output_ptr, node->right);
+        TexNode (output_ptr, R);
     }
 }
 
@@ -138,11 +138,11 @@ bool TexIfDiv (FILE* output_ptr, node_t* node)
 
     fprintf (output_ptr, " \\frac {");
 
-    TexNode (output_ptr, node->left);
+    TexNode (output_ptr, L);
 
     fprintf (output_ptr, "} {");
 
-    TexNode (output_ptr, node->right);
+    TexNode (output_ptr, R);
 
     fprintf (output_ptr, "} ");
 
@@ -157,18 +157,16 @@ bool TexIfMul (FILE* output_ptr, node_t* node)
     int need_brac_left = true;
     int need_brac_right = true;
 
-    if (node->right->expr != OP ||
-        (node->right->data.op != ADD && node->right->data.op != SUB))
+    if (R->expr != OP || (R->data.op != ADD && R->data.op != SUB))
         need_brac_right = false;
 
-    if (node->left->expr != OP ||
-        (node->left->data.op != ADD && node->left->data.op != SUB))
+    if (L->expr != OP || (L->data.op != ADD && L->data.op != SUB))
         need_brac_left = false;
 
     if (need_brac_left)
         fprintf (output_ptr, "(");
 
-    TexNode (output_ptr, node->left);
+    TexNode (output_ptr, L);
 
     if (need_brac_left && need_brac_right)
         fprintf (output_ptr, ") \\cdot (");
@@ -182,7 +180,7 @@ bool TexIfMul (FILE* output_ptr, node_t* node)
     else
         fprintf (output_ptr, " \\cdot ");
 
-    TexNode (output_ptr, node->right);
+    TexNode (output_ptr, R);
 
     if (need_brac_right)
         fprintf (output_ptr, ")");
@@ -198,16 +196,16 @@ bool TexIfPow (FILE* output_ptr, node_t* node)
     int need_brac_left = true;
     int need_brac_right = true;
 
-    if (node->right->expr != OP)
+    if (R->expr != OP)
         need_brac_right = false;
 
-    if (node->left->expr != OP)
+    if (L->expr != OP)
         need_brac_left = false;
 
     if (need_brac_left)
         fprintf (output_ptr, "(");
 
-    TexNode (output_ptr, node->left);
+    TexNode (output_ptr, L);
 
     if (need_brac_right && need_brac_left)
         fprintf (output_ptr, ") ^ {");
@@ -221,7 +219,7 @@ bool TexIfPow (FILE* output_ptr, node_t* node)
     else
         fprintf (output_ptr, " ^ ");
 
-    TexNode (output_ptr, node->right);
+    TexNode (output_ptr, R);
 
     if (need_brac_right)
         fprintf (output_ptr, "}");

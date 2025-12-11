@@ -1,7 +1,5 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <assert.h>
-#include <string.h>
 
 #include "tree.h"
 
@@ -102,7 +100,7 @@ void PrintNum (node_t* node, FILE* output_ptr)
             "\t<TD PORT = \"f1\"> %p </TD> </TR>                               \n"
             "\t</TABLE>                                                        \n"
             "\t>];                                                             \n",
-            node, "NUM_type", node, node->data.num, node->left, node->right);
+            node, "NUM_type", node, node->data.num, L, R);
 }
 
 void PrintFunc (node_t* node, FILE* output_ptr)
@@ -120,8 +118,7 @@ void PrintFunc (node_t* node, FILE* output_ptr)
             "\t<TD PORT = \"f1\"> %p </TD> </TR>                            \n"
             "\t</TABLE>                                                     \n"
             "\t>];                                                          \n",
-            node, "FUNC_type", node, list_of_func[node->data.func].name,
-            node->left, node->right);
+            node, "FUNC_type", node, list_of_func[node->data.func].name, L, R);
 }
 
 void PrintOp (node_t* node, FILE* output_ptr)
@@ -139,8 +136,7 @@ void PrintOp (node_t* node, FILE* output_ptr)
             "\t<TD PORT = \"f1\"> %p </TD> </TR>                               \n"
             "\t</TABLE>                                                        \n"
             "\t>];                                                             \n",
-            node, "OP_type", node, list_of_op[node->data.op].name,
-            node->left, node->right);
+            node, "OP_type", node, list_of_op[node->data.op].name, L, R);
 }
 
 void PrintVar (node_t* node, FILE* output_ptr)
@@ -158,7 +154,7 @@ void PrintVar (node_t* node, FILE* output_ptr)
             "\t<TD PORT = \"f1\"> %p </TD> </TR>                               \n"
             "\t</TABLE>                                                        \n"
             "\t>];                                                             \n",
-            node, "VAR_type", node, node->data.var, node->left, node->right);
+            node, "VAR_type", node, node->data.var, L, R);
 }
 
 void ClearDump (const char* name_of_file)
