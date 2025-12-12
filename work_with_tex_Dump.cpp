@@ -4,29 +4,34 @@
 
 #include "tree.h"
 
+const int SIZE_OF_LINE = 65;
+const int SIZE_OF_NUM = 5;
+const int SIZE_OF_OP = 1;
+const int SIZE_OF_FUNC = 6;
 
-void TexNode (FILE* output_ptr, node_t* node);
+void TexNode (FILE* output_ptr, node_t* node, int* line_size);
 
 void TexNum  (FILE* output_ptr, node_t* node);
-void TexFunc (FILE* output_ptr, node_t* node);
 void TexVar  (FILE* output_ptr, node_t* node);
-void TexOp   (FILE* output_ptr, node_t* node);
+void TexFunc (FILE* output_ptr, node_t* node, int* line_size);
+void TexOp   (FILE* output_ptr, node_t* node, int* line_size);
 
-bool TexIfPow (FILE* output_ptr, node_t* node);
-bool TexIfMul (FILE* output_ptr, node_t* node);
-bool TexIfDiv (FILE* output_ptr, node_t* node);
+bool TexIfPow (FILE* output_ptr, node_t* node, int* line_size);
+bool TexIfMul (FILE* output_ptr, node_t* node, int* line_size);
+bool TexIfDiv (FILE* output_ptr, node_t* node, int* line_size);
 
 
-void RunTexDump (tree_t* tree, tree_t* der_tree)
+void RunTexDump (const char* name_of_file, tree_t* tree)
 {
     assert (tree != NULL);
+    assert (name_of_file != NULL);
 
-    FILE* output_ptr = fopen ("tree.tex", "a");
-    assert (output_ptr != NULL);
+    FILE* tex_output_ptr = fopen (name_of_file, "a");
+    assert (tex_output_ptr != NULL);
 
     ClearDump ("tree.tex");
 
-    fprintf (output_ptr, "\\documentclass[12pt, a4paper]{article}"
+    fprintf (tex_output_ptr, "\\documentclass[12pt, a4paper]{article}"
             "\\usepackage[utf8]{inputenc}\n"
             "\\usepackage[T2A]{fontenc}\n"
             "\\usepackage[russian]{babel}\n"
@@ -38,75 +43,105 @@ void RunTexDump (tree_t* tree, tree_t* der_tree)
             "\n"
             "\\textbf{Здесь записана формула:}\n"
             "\n"
-            "\n\\begin{equation}\n");
+            "\\begin{equation}"
+            "\n\\begin{split}\n");
 
-    TexNode (output_ptr, tree->root);
+    int line_size = 0;
 
-    fprintf (output_ptr,
-            "\n\\end{equation}\n"
-            "\n"
-            "\\textbf{Получим производную, "
-            "приведенную элементарными преобразованиями:}\n"
-            "\n"
-            "\\begin{equation}\n");
+    TexNode (tex_output_ptr, tree->root, &line_size);
 
-    TexNode (output_ptr, der_tree->root);
+    fprintf (tex_output_ptr,
+            "\n\\end{split}\n"
+            "\\end{equation}\n"
+            "\n");
 
-    fprintf (output_ptr,
-            "\n\\end{equation}\n"
+    fclose (tex_output_ptr);
+}
+
+void AddTexLine (const char* name_of_file, node_t* node, const char* phrase)
+{
+    assert (name_of_file != NULL);
+    assert (node != NULL);
+
+    FILE* tex_output_ptr = fopen (name_of_file, "a");
+    assert (tex_output_ptr != NULL);
+
+    node_t* root = FindRoot (node);
+
+    fprintf (tex_output_ptr,
+            "\\textbf{%s}\n"
+            "\\begin{equation}\n"
+            "\\begin{split}",
+            phrase);
+
+    int line_size = 0;
+
+    TexNode (tex_output_ptr, root, &line_size);
+
+    fprintf (tex_output_ptr,
+            "\n\\end{split}\n"
+            "\\end{equation}\n\n");
+
+    fclose (tex_output_ptr);
+}
+
+void FinishTex (const char* name_of_file)
+{
+    assert (name_of_file != NULL);
+
+    FILE* tex_output_ptr = fopen (name_of_file, "a");
+    assert (tex_output_ptr != NULL);
+
+    fprintf (tex_output_ptr,
             "\\textbf{Дальнейшие преобразования, оставим читателю "
-            "в качестве самостоятельного упражнения}\n"
+            "в качестве самостоятельного упражнения}.\n"
             "\n"
+            "Approved by \"Кафедра вышмата\"\n"
             "\\end{document}\n");
 
-    fclose (output_ptr);
+    fclose (tex_output_ptr);
 }
-//
-// void AddTexLine (FILE* output_ptr, tree_t* tree)
-// {
-//     assert (output_ptr != NULL);
-//     assert (tree != NULL);
-//
-//     fprintf (output_ptr,
-//             "Let's move on:\n"
-//             "\\begin{equation}\n");
-//
-//     TexNode (output_ptr, tree->root);
-//
-//     fprintf (output_ptr,
-//             "\end{equation}\n\n");
-// }
-//
-// void FinishTex (FILE* output_ptr)
-// {
-//     assert (output_ptr != NULL);
-//
-//     fprintf (output_ptr,
-//             "\\textbf{Дальнейшие преобразования, оставим читателю "
-//             "в качестве самостоятельного упражнения}\n"
-//             "\n"
-//             "Approved by \"Кафедра вышмата\"\n"
-//             "\\end{document}\n");
-//
-//     fclose (output_ptr);
-// }
 
-void TexNode (FILE* output_ptr, node_t* node)
+void TexNode (FILE* output_ptr, node_t* node, int* line_size)
 {
     assert (output_ptr != NULL);
     assert (node != NULL);
 
-    if (node->expr == NUM)
+    if (*line_size >= SIZE_OF_LINE) {
+        fprintf (output_ptr, " \\\\ \n");
+
+        *line_size = 0;
+    }
+
+    if (node->expr == FUNC && *line_size >= SIZE_OF_LINE - SIZE_OF_FUNC) {
+        fprintf (output_ptr, " \\\\ \n");
+
+        *line_size = 0;
+    }
+
+    if (node->expr == NUM) {
+        *line_size += SIZE_OF_NUM;
+
         TexNum (output_ptr, node);
+    }
 
-    if (node->expr == OP)
-        TexOp (output_ptr, node);
+    if (node->expr == OP) {
+        *line_size += SIZE_OF_OP;
 
-    if (node->expr == FUNC)
-        TexFunc (output_ptr, node);
+        TexOp (output_ptr, node, line_size);
+    }
 
-    if (node->expr == VAR)
+    if (node->expr == FUNC) {
+        *line_size += SIZE_OF_FUNC;
+
+        TexFunc (output_ptr, node, line_size);
+    }
+
+    if (node->expr == VAR) {
+        *line_size += strlen (node->data.var);
+
         TexVar (output_ptr, node);
+    }
 }
 
 void TexNum (FILE* output_ptr, node_t* node)
@@ -119,13 +154,13 @@ void TexVar (FILE* output_ptr, node_t* node)
     fprintf (output_ptr, "%s", node->data.var);
 }
 
-void TexFunc (FILE* output_ptr, node_t* node)
+void TexFunc (FILE* output_ptr, node_t* node, int* line_size)
 {
     if (node->expr == FUNC) {
         if (node->data.func == SQRT) {
             fprintf (output_ptr, "\\%s{", list_of_func[node->data.func].name);
 
-            TexNode (output_ptr, R);
+            TexNode (output_ptr, R, line_size);
 
             fprintf (output_ptr, "}");
 
@@ -134,7 +169,7 @@ void TexFunc (FILE* output_ptr, node_t* node)
 
         fprintf (output_ptr, "\\%s(", list_of_func[node->data.func].name);
 
-        TexNode (output_ptr, R);
+        TexNode (output_ptr, R, line_size);
 
         fprintf (output_ptr, ")");
 
@@ -142,42 +177,42 @@ void TexFunc (FILE* output_ptr, node_t* node)
     }
 }
 
-void TexOp (FILE* output_ptr, node_t* node)
+void TexOp (FILE* output_ptr, node_t* node, int* line_size)
 {
     if (node->expr == OP) {
-        if (TexIfPow (output_ptr, node)) return;
+        if (TexIfPow (output_ptr, node, line_size)) return;
 
-        if (TexIfDiv (output_ptr, node)) return;
+        if (TexIfDiv (output_ptr, node, line_size)) return;
 
-        if (TexIfMul (output_ptr, node)) return;
+        if (TexIfMul (output_ptr, node, line_size)) return;
 
-        TexNode (output_ptr, L);
+        TexNode (output_ptr, L, line_size);
 
         fprintf (output_ptr, " %c ", list_of_op[node->data.op].name);
 
-        TexNode (output_ptr, R);
+        TexNode (output_ptr, R, line_size);
     }
 }
 
-bool TexIfDiv (FILE* output_ptr, node_t* node)
+bool TexIfDiv (FILE* output_ptr, node_t* node, int* line_size)
 {
     if (node->data.op != DIV)
         return false;
 
     fprintf (output_ptr, " \\frac {");
 
-    TexNode (output_ptr, L);
+    TexNode (output_ptr, L, line_size);
 
     fprintf (output_ptr, "} {");
 
-    TexNode (output_ptr, R);
+    TexNode (output_ptr, R, line_size);
 
     fprintf (output_ptr, "} ");
 
     return true;
 }
 
-bool TexIfMul (FILE* output_ptr, node_t* node)
+bool TexIfMul (FILE* output_ptr, node_t* node, int* line_size)
 {
     if (node->data.op != MUL)
         return false;
@@ -194,7 +229,7 @@ bool TexIfMul (FILE* output_ptr, node_t* node)
     if (need_brac_left)
         fprintf (output_ptr, "(");
 
-    TexNode (output_ptr, L);
+    TexNode (output_ptr, L, line_size);
 
     if (need_brac_left && need_brac_right)
         fprintf (output_ptr, ") \\cdot (");
@@ -208,7 +243,7 @@ bool TexIfMul (FILE* output_ptr, node_t* node)
     else
         fprintf (output_ptr, " \\cdot ");
 
-    TexNode (output_ptr, R);
+    TexNode (output_ptr, R, line_size);
 
     if (need_brac_right)
         fprintf (output_ptr, ")");
@@ -216,7 +251,7 @@ bool TexIfMul (FILE* output_ptr, node_t* node)
     return true;
 }
 
-bool TexIfPow (FILE* output_ptr, node_t* node)
+bool TexIfPow (FILE* output_ptr, node_t* node, int* line_size)
 {
     if (node->data.op != POW)
         return false;
@@ -233,7 +268,7 @@ bool TexIfPow (FILE* output_ptr, node_t* node)
     if (need_brac_left)
         fprintf (output_ptr, "(");
 
-    TexNode (output_ptr, L);
+    TexNode (output_ptr, L, line_size);
 
     if (need_brac_right && need_brac_left)
         fprintf (output_ptr, ") ^ {");
@@ -247,7 +282,7 @@ bool TexIfPow (FILE* output_ptr, node_t* node)
     else
         fprintf (output_ptr, " ^ ");
 
-    TexNode (output_ptr, R);
+    TexNode (output_ptr, R, line_size);
 
     if (need_brac_right)
         fprintf (output_ptr, "}");

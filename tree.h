@@ -6,6 +6,8 @@
 #define R node->right
 #define L node->left
 
+#define TEX_IT(node, phrase) AddTexLine ("tree.tex", node, phrase)
+
 enum child_node_t {
     LEFT =  -1,
     RIGHT = 1,
@@ -79,8 +81,10 @@ const char list_of_var[][2] = {
     "z"
 };
 
+
 extern func_t list_of_func[];
 extern op_t list_of_op[];
+
 
 const int COUNT_OF_VAR = 3;
 
@@ -96,6 +100,8 @@ node_t* InitNode ();
 node_t* NewNode (type_of_expr expression, data_t value,
                   node_t* left_node, node_t* right_node);
 size_t CountTreeSize (tree_t* tree);
+node_t* FindRoot (node_t* node);
+void GiveNodesTheirParents (node_t* node);
 void FreeTree (tree_t* tree);
 void FreeNode (node_t* node);
 data_t DeleteNodeAndRetData (node_t* node, child_node_t dir_of_child);
@@ -107,7 +113,9 @@ void PrintNodeInGraphDump (FILE* output_ptr, node_t* node, node_t* child,
                            const char* link_for_arrow);
 void ClearDump (const char* name_of_file);
 
-void RunTexDump (tree_t* tree, tree_t* der_tree);
+void RunTexDump (const char* name_of_file, tree_t* tree);
+void AddTexLine (const char* name_of_file, node_t* node, const char* phrase);
+void FinishTex  (const char* name_of_file);
 
 node_t* DiffNode (node_t* node);
 node_t* CopyNode (node_t* node);
@@ -115,6 +123,7 @@ node_t* CopyNode (node_t* node);
 tree_t* CreateTreeFromFile ();
 char* ReadInput (FILE* input);
 node_t* GetExpression (char* s);
+
 
 #define OPTIMIZE_IF_NUM_OP_NUM(operation)                                           \
     if (node->left->expr == NUM && node->right->expr == NUM) {                      \

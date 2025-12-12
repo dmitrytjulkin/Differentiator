@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1765497324.69823 "/Users/dmitrijtulkin/Documents/developers/Differentiator/tree.tex" "tree.pdf" "tree" 1765497325.07831 0
-  "/Users/dmitrijtulkin/Documents/developers/Differentiator/tree.tex" 1765497324.43884 828 479ca73d5cbc16fac74ae671512e0ae1 ""
+["pdflatex"] 1765547352.81805 "/Users/dmitrijtulkin/Documents/developers/Differentiator/tree.tex" "tree.pdf" "tree" 1765547353.24777 0
+  "/Users/dmitrijtulkin/Documents/developers/Differentiator/tree.tex" 1765547352.58977 1341 a8ac4c4f2b547edf6a2405faec581454 ""
   "/Users/dmitrijtulkin/Library/texlive/2025/texmf-var/fonts/tfm/lh/lh-t2a/labx1200.tfm" 1759064516.5568 3308 eee81981029f67083258db36df06e523 ""
   "/Users/dmitrijtulkin/Library/texlive/2025/texmf-var/fonts/tfm/lh/lh-t2a/larm1200.tfm" 1757355301.25064 3240 c2435f2b5cd66d4930bc29b8df87967e ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t2a.enc" 1136849721 3141 82d5616418ed8d5de703b3951bedecb4 ""
@@ -22,9 +22,7 @@
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmsy6.tfm" 1136768653 1116 933a60c408fc0a863a92debe84b2d294 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmsy8.tfm" 1136768653 1120 8b7d695260f3cff42e636090a8002094 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb" 1248133631 36741 fa121aac0049305630cf160b86157ee4 ""
-  "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb" 1248133631 35469 70d41d2b9ea31d5d813066df7c99281c ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb" 1248133631 32722 d7379af29a190c3f453aba36302ff5a9 ""
-  "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb" 1248133631 32734 69e00a6b65cedb993666e42eedb3d48f ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb" 1248133631 32726 0a1aea6fcd6468ee2cf64d891f5c43c8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1248133631 32569 5e5ddc8df908dea60932f3c484a54c0d ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb" 1248133631 32626 4f5c1b83753b1dd3a97d1b399a005b4b ""
@@ -69,8 +67,8 @@
   "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1757354770 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1757354685 3345729 70ea6b6534be632505516a7bc2e6a58e ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "tree.aux" 1765497325.02984 170 05bb43932b5d4106755b871c2dd43de2 "pdflatex"
-  "tree.tex" 1765497324.43884 828 479ca73d5cbc16fac74ae671512e0ae1 ""
+  "tree.aux" 1765547353.19812 170 05bb43932b5d4106755b871c2dd43de2 "pdflatex"
+  "tree.tex" 1765547352.58977 1341 a8ac4c4f2b547edf6a2405faec581454 ""
   (generated)
   "tree.aux"
   "tree.log"

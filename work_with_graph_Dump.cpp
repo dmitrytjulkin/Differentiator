@@ -94,13 +94,14 @@ void PrintNum (node_t* node, FILE* output_ptr)
             "\nnode%p [label = <                                               \n"
             "\t<TABLE BORDER = \"0\" CELLBORDER = \"1\" CELLSPACING = \"0\">   \n"
             "\t<TR> <TD COLSPAN = \"2\" BGCOLOR = \"lightblue\"> %s </TD> </TR>\n"
-            "\t<TR> <TD COLSPAN = \"2\"> %p </TD> </TR>                        \n"
+            "\t<TR> <TD COLSPAN = \"2\"> his parent: %p </TD> </TR>            \n"
+            "\t<TR> <TD COLSPAN = \"2\"> he: %p </TD> </TR>                    \n"
             "\t<TR> <TD COLSPAN = \"2\"> %lg </TD> </TR>                       \n"
             "\t<TR> <TD PORT = \"f0\"> %p </TD>                                \n"
             "\t<TD PORT = \"f1\"> %p </TD> </TR>                               \n"
             "\t</TABLE>                                                        \n"
             "\t>];                                                             \n",
-            node, "NUM_type", node, node->data.num, L, R);
+            node, "NUM_type", node->parent, node, node->data.num, L, R);
 }
 
 void PrintFunc (node_t* node, FILE* output_ptr)
@@ -112,13 +113,14 @@ void PrintFunc (node_t* node, FILE* output_ptr)
             "\nnode%p [label = <                                            \n"
             "\t<TABLE BORDER = \"0\" CELLBORDER = \"1\" CELLSPACING = \"0\">\n"
             "\t<TR> <TD COLSPAN = \"2\" BGCOLOR = \"plum\"> %s </TD> </TR>  \n"
+            "\t<TR> <TD COLSPAN = \"2\"> his parent: %p </TD> </TR>         \n"
             "\t<TR> <TD COLSPAN = \"2\"> %p </TD> </TR>                     \n"
             "\t<TR> <TD COLSPAN = \"2\"> %s </TD> </TR>                     \n"
             "\t<TR> <TD PORT = \"f0\"> %p </TD>                             \n"
             "\t<TD PORT = \"f1\"> %p </TD> </TR>                            \n"
             "\t</TABLE>                                                     \n"
             "\t>];                                                          \n",
-            node, "FUNC_type", node, list_of_func[node->data.func].name, L, R);
+            node, "FUNC_type", node->parent, node, list_of_func[node->data.func].name, L, R);
 }
 
 void PrintOp (node_t* node, FILE* output_ptr)
@@ -130,13 +132,14 @@ void PrintOp (node_t* node, FILE* output_ptr)
             "\nnode%p [label = <                                               \n"
             "\t<TABLE BORDER = \"0\" CELLBORDER = \"1\" CELLSPACING = \"0\">   \n"
             "\t<TR> <TD COLSPAN = \"2\" BGCOLOR = \"palegreen\"> %s </TD> </TR>\n"
+            "\t<TR> <TD COLSPAN = \"2\"> his parent: %p </TD> </TR>            \n"
             "\t<TR> <TD COLSPAN = \"2\"> %p </TD> </TR>                        \n"
             "\t<TR> <TD COLSPAN = \"2\"> %c </TD> </TR>                        \n"
             "\t<TR> <TD PORT = \"f0\"> %p </TD>                                \n"
             "\t<TD PORT = \"f1\"> %p </TD> </TR>                               \n"
             "\t</TABLE>                                                        \n"
             "\t>];                                                             \n",
-            node, "OP_type", node, list_of_op[node->data.op].name, L, R);
+            node, "OP_type", node->parent, node, list_of_op[node->data.op].name, L, R);
 }
 
 void PrintVar (node_t* node, FILE* output_ptr)
@@ -148,13 +151,14 @@ void PrintVar (node_t* node, FILE* output_ptr)
             "\nnode%p [label = <                                               \n"
             "\t<TABLE BORDER = \"0\" CELLBORDER = \"1\" CELLSPACING = \"0\">   \n"
             "\t<TR> <TD COLSPAN = \"2\" BGCOLOR = \"lightpink\"> %s </TD> </TR>\n"
+            "\t<TR> <TD COLSPAN = \"2\"> his parent: %p </TD> </TR>            \n"
             "\t<TR> <TD COLSPAN = \"2\"> %p </TD> </TR>                        \n"
             "\t<TR> <TD COLSPAN = \"2\"> %s </TD> </TR>                        \n"
             "\t<TR> <TD PORT = \"f0\"> %p </TD>                                \n"
             "\t<TD PORT = \"f1\"> %p </TD> </TR>                               \n"
             "\t</TABLE>                                                        \n"
             "\t>];                                                             \n",
-            node, "VAR_type", node, node->data.var, L, R);
+            node, "VAR_type", node->parent, node, node->data.var, L, R);
 }
 
 void ClearDump (const char* name_of_file)

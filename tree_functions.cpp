@@ -5,7 +5,9 @@
 
 #include "tree.h"
 
+
 size_t CountNode (node_t* node);
+
 
 tree_t* InitTree ()
 {
@@ -67,6 +69,31 @@ data_t DeleteNodeAndRetData (node_t* parent, child_node_t dir_of_child)
     }
 
     return ret_data;
+}
+
+void GiveNodesTheirParents (node_t* node)
+{
+    assert (node != NULL);
+
+    if (L != NULL) {
+        L->parent = node;
+
+        GiveNodesTheirParents (L);
+    }
+
+    if (R != NULL) {
+        R->parent = node;
+
+        GiveNodesTheirParents (R);
+    }
+}
+
+node_t* FindRoot (node_t* node)
+{
+    if (node->parent != NULL)
+        return FindRoot (node->parent);
+
+    return node;
 }
 
 size_t CountTreeSize (tree_t* tree)
