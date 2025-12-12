@@ -5,7 +5,7 @@
 
 #include "tree.h"
 
-void ChooseNodeType (node_t* node, type_of_expr expression, data_t value);
+size_t CountNode (node_t* node);
 
 tree_t* InitTree ()
 {
@@ -43,45 +43,10 @@ node_t* NewNode (type_of_expr expression, data_t value,
     parent_node->left = left_node;
     parent_node->right = right_node;
 
-    ChooseNodeType (parent_node, expression, value);
+    parent_node->expr = expression;
+    parent_node->data = value;
 
     return parent_node;
-}
-
-void ChooseNodeType (node_t* node, type_of_expr expression, data_t value)
-{
-    assert (node != NULL);
-
-    node->data = value;
-
-    switch (expression) {
-        case NUM:
-            node->expr = NUM;
-            node->data.num = value.num;
-
-            break;
-
-        case VAR:
-            node->expr = VAR;
-            strcpy (node->data.var, value.var);
-
-            break;
-
-        case OP:
-            node->expr = OP;
-            node->data.op = value.op;
-
-            break;
-
-        case FUNC:
-            node->expr = FUNC;
-            node->data.func = value.func;
-
-            break;
-
-        default:
-            break;
-    }
 }
 
 data_t DeleteNodeAndRetData (node_t* parent, child_node_t dir_of_child)
@@ -102,6 +67,30 @@ data_t DeleteNodeAndRetData (node_t* parent, child_node_t dir_of_child)
     }
 
     return ret_data;
+}
+
+size_t CountTreeSize (tree_t* tree)
+{
+    assert (tree != NULL);
+
+    tree->size = CountNode (tree->root);
+
+    return tree->size;
+}
+
+size_t CountNode (node_t* node)
+{
+    assert (node != NULL);
+
+    size_t current_size = 1;
+
+    if (R != NULL)
+        current_size += CountNode (R);
+
+    if (L != NULL)
+        current_size += CountNode (L);
+
+    return current_size;
 }
 
 void FreeTree (tree_t* tree)

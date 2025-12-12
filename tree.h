@@ -95,6 +95,7 @@ tree_t* InitTree ();
 node_t* InitNode ();
 node_t* NewNode (type_of_expr expression, data_t value,
                   node_t* left_node, node_t* right_node);
+size_t CountTreeSize (tree_t* tree);
 void FreeTree (tree_t* tree);
 void FreeNode (node_t* node);
 data_t DeleteNodeAndRetData (node_t* node, child_node_t dir_of_child);

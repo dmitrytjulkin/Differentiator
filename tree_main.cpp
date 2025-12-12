@@ -11,11 +11,15 @@ int main ()
 
     Optimize (tree);
 
+    printf ("Size of tree: %zu\n", CountTreeSize (tree));
+
     tree_t* der_tree = InitTree ();
 
     der_tree->root = DiffNode (tree->root);
 
     Optimize (der_tree);
+
+    printf ("Size of der_tree: %zu\n", CountTreeSize (der_tree));
 
     RunGraphDump (tree, "tree_graph_dump.dot",
                   "dot -Tsvg tree_graph_dump.dot -o tree_graph_dump.svg");

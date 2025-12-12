@@ -16,7 +16,6 @@ bool TexIfPow (FILE* output_ptr, node_t* node);
 bool TexIfMul (FILE* output_ptr, node_t* node);
 bool TexIfDiv (FILE* output_ptr, node_t* node);
 
-// TODO x^x^x - it works if x^(x^x)
 
 void RunTexDump (tree_t* tree, tree_t* der_tree)
 {
@@ -39,22 +38,22 @@ void RunTexDump (tree_t* tree, tree_t* der_tree)
             "\n"
             "\\textbf{Здесь записана формула:}\n"
             "\n"
-            "\n\\[\n");
+            "\n\\begin{equation}\n");
 
     TexNode (output_ptr, tree->root);
 
     fprintf (output_ptr,
-            "\n\\]\n"
+            "\n\\end{equation}\n"
             "\n"
             "\\textbf{Получим производную, "
             "приведенную элементарными преобразованиями:}\n"
             "\n"
-            "\\[\n");
+            "\\begin{equation}\n");
 
     TexNode (output_ptr, der_tree->root);
 
     fprintf (output_ptr,
-            "\n\\]"
+            "\n\\end{equation}\n"
             "\\textbf{Дальнейшие преобразования, оставим читателю "
             "в качестве самостоятельного упражнения}\n"
             "\n"
@@ -62,6 +61,35 @@ void RunTexDump (tree_t* tree, tree_t* der_tree)
 
     fclose (output_ptr);
 }
+//
+// void AddTexLine (FILE* output_ptr, tree_t* tree)
+// {
+//     assert (output_ptr != NULL);
+//     assert (tree != NULL);
+//
+//     fprintf (output_ptr,
+//             "Let's move on:\n"
+//             "\\begin{equation}\n");
+//
+//     TexNode (output_ptr, tree->root);
+//
+//     fprintf (output_ptr,
+//             "\end{equation}\n\n");
+// }
+//
+// void FinishTex (FILE* output_ptr)
+// {
+//     assert (output_ptr != NULL);
+//
+//     fprintf (output_ptr,
+//             "\\textbf{Дальнейшие преобразования, оставим читателю "
+//             "в качестве самостоятельного упражнения}\n"
+//             "\n"
+//             "Approved by \"Кафедра вышмата\"\n"
+//             "\\end{document}\n");
+//
+//     fclose (output_ptr);
+// }
 
 void TexNode (FILE* output_ptr, node_t* node)
 {
