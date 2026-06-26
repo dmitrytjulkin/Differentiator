@@ -6,8 +6,6 @@
 #define R node->right
 #define L node->left
 
-#define TEX_IT(node, phrase) AddTexLine ("tree.tex", node, phrase)
-
 enum child_node_t {
     LEFT =  -1,
     RIGHT = 1,

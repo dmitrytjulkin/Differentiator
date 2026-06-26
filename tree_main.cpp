@@ -8,22 +8,24 @@ int main ()
     tree_t* tree = InitTree ();
     tree = CreateTreeFromFile ();
 
-    RunTexDump ("tree.tex", tree);
+    char texfile_out[] = "tex_files/tree.tex";
+
+    RunTexDump (texfile_out, tree);
 
     Optimize (tree);
 
-    TEX_IT (tree->root, "Оптимизация формулы:");
+    AddTexLine (texfile_out, tree->root, "Оптимизация формулы:");
 
     tree_t* der_tree = InitTree ();
     der_tree->root = DiffNode (tree->root);
 
-    TEX_IT (der_tree->root, "Дифференцирование формулы:");
+    AddTexLine (texfile_out, der_tree->root, "Дифференцирование формулы:");
 
     Optimize (der_tree);
 
-    TEX_IT (der_tree->root, "И снова оптимизация формулы:");
+    AddTexLine (texfile_out, der_tree->root, "И снова оптимизация формулы:");
 
-    FinishTex ("tree.tex");
+    FinishTex (texfile_out);
 
     RunGraphDump (tree, "tree_graph_dump.dot",
                   "dot -Tsvg tree_graph_dump.dot -o tree_graph_dump.svg");
@@ -44,7 +46,7 @@ int main ()
 void PrintNode (node_t* node)
 {
     assert (node != NULL);
-    
+
     printf ("\n");
     printf ("node: %p\n", node);
     printf ("his expression: %d\n", node->expr);

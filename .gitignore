@@ -12,8 +12,10 @@
 /tree_graph_dump.svg
 /tree.pdf
 /tree_graph_dump.svg
-/free.fdb_latexmk
-/tree.fls
-/tree.log
-/tree.synctex.gz
-/tree.tex
+
+/tex_files/tree.aux
+/tex_files/free.fdb_latexmk
+/tex_files/tree.fls
+/tex_files/tree.log
+/tex_files/tree.synctex.gz
+/tex_files/%AUXDIR%

@@ -29,9 +29,9 @@ void RunTexDump (const char* name_of_file, tree_t* tree)
     FILE* tex_output_ptr = fopen (name_of_file, "a");
     assert (tex_output_ptr != NULL);
 
-    ClearDump ("tree.tex");
+    ClearDump (name_of_file);
 
-    fprintf (tex_output_ptr, "\\documentclass[12pt, a4paper]{article}"
+    fprintf (tex_output_ptr, "\\documentclass[12pt, a4paper]{article}\n"
             "\\usepackage[utf8]{inputenc}\n"
             "\\usepackage[T2A]{fontenc}\n"
             "\\usepackage[russian]{babel}\n"
