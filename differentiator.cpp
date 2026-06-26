@@ -16,12 +16,12 @@
 #define DIV_(left, right) NewNode (OP, {.op = DIV}, left, right)
 #define POW_(left, right) NewNode (OP, {.op = POW}, left, right)
 
-#define SQRT_(right) NewNode (FUNC, {.func = SQRT}, NULL, right)
-#define LN_(right)   NewNode (FUNC,   {.func = LN}, NULL, right)
+#define SQRT_(right) NewNode (FUNC,  {.func = SQRT}, NULL, right)
+#define LN_(right)   NewNode (FUNC,  {.func = LN}, NULL, right)
 #define SIN_(right)  NewNode (FUNC,  {.func = SIN}, NULL, right)
 #define COS_(right)  NewNode (FUNC,  {.func = COS}, NULL, right)
 
-
+// static
 node_t* dOp     (node_t* node);
 node_t* dFunc   (node_t* node);
 

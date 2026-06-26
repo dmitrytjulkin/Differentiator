@@ -43,6 +43,8 @@ int main ()
 
 void PrintNode (node_t* node)
 {
+    assert (node != NULL);
+    
     printf ("\n");
     printf ("node: %p\n", node);
     printf ("his expression: %d\n", node->expr);

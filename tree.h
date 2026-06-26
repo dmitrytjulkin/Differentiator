@@ -130,7 +130,7 @@ node_t* GetExpression (char* s);
         node->expr = NUM;                                                           \
                                                                                     \
         node->data.num = DeleteNodeAndRetData (node, LEFT).num operation            \
-                            DeleteNodeAndRetData (node, RIGHT).num;                 \
+                         DeleteNodeAndRetData (node, RIGHT).num;                    \
                                                                                     \
         *is_tree_changed = true;                                                    \
                                                                                     \

@@ -20,15 +20,12 @@ node_t* GetPow      (char* s, int* index);
 tree_t* CreateTreeFromFile ()
 {
     FILE* input_ptr = fopen ("input.txt", "r");
-
     assert (input_ptr != NULL);
 
     char* input_array = ReadInput (input_ptr);
-
     assert (input_array != NULL);
 
     tree_t* tree = InitTree ();
-
     tree->root = GetExpression (input_array);
 
     fclose (input_ptr);
@@ -54,6 +51,7 @@ char* ReadInput (FILE* input)
     return input_array;
 }
 
+// static
 void SyntaxError (const char* funcname, int line)
 {
     assert (funcname != NULL);
