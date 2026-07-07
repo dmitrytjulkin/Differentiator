@@ -94,7 +94,7 @@ node_t* CopyNode (node_t* node)
 
 node_t* dOp (node_t* node)
 {
-    assert (node != NULL);
+    assert (node);
 
     switch (node->data.op) {
         case ADD:
@@ -123,7 +123,7 @@ node_t* dOp (node_t* node)
 
 node_t* dFunc (node_t* node)
 {
-    assert (node != NULL);
+    assert (node);
 
     switch (node->data.func) {
         case SQRT:
@@ -166,7 +166,7 @@ node_t* dFunc (node_t* node)
 
 node_t* dDiv (node_t* node)
 {
-    assert (node != NULL);
+    assert (node);
 
     if (node->data.op != DIV)
         return NULL;
@@ -179,7 +179,7 @@ node_t* dDiv (node_t* node)
 
 node_t* dPow (node_t* node)
 {
-    assert (node != NULL);
+    assert (node);
 
     if (node->data.op != POW)
         return NULL;
@@ -193,42 +193,42 @@ node_t* dPow (node_t* node)
 
 node_t* dSqrt (node_t* node)
 {
-    assert (node != NULL);
+    assert (node);
 
     return MUL_ (DIV_ (NUM_ (0.5), c (node)), d (R));
 }
 
 node_t* dLn (node_t* node)
 {
-    assert (node != NULL);
+    assert (node);
 
     return MUL_ (DIV_ (NUM_ (1), c (R)), d (R));
 }
 
 node_t* dSin (node_t* node)
 {
-    assert (node != NULL);
+    assert (node);
 
     return MUL_ (COS_ (c (R)), d (R));
 }
 
 node_t* dCos (node_t* node)
 {
-    assert (node != NULL);
+    assert (node);
 
     return SUB_ (NUM_ (0), MUL_ (SIN_ (c (R)), d (R)));
 }
 
 node_t* dTg (node_t* node)
 {
-    assert (node != NULL);
+    assert (node);
 
     return MUL_ (DIV_ (NUM_ (1), POW_ (COS_ (c (R)), NUM_ (2))), d (R));
 }
 
 node_t* dCtg (node_t* node)
 {
-    assert (node != NULL);
+    assert (node);
 
     node_t* external_der = DIV_ (NUM_ (1), POW_ (SIN_ (c (R)), NUM_ (2)));
 
@@ -237,7 +237,7 @@ node_t* dCtg (node_t* node)
 
 node_t* dArcsin (node_t* node)
 {
-    assert (node != NULL);
+    assert (node);
 
     node_t* external_der = DIV_ (NUM_ (1), SQRT_ (SUB_ (NUM_ (1), POW_ (c (R), NUM_ (2)))));
 
@@ -246,7 +246,7 @@ node_t* dArcsin (node_t* node)
 
 node_t* dArccos (node_t* node)
 {
-    assert (node != NULL);
+    assert (node);
 
     node_t* external_der = DIV_ (NUM_ (1), SQRT_ (SUB_ (NUM_ (1), POW_ (c (R), NUM_ (2)))));
 
@@ -255,7 +255,7 @@ node_t* dArccos (node_t* node)
 
 node_t* dArctg (node_t* node)
 {
-    assert (node != NULL);
+    assert (node);
 
     node_t* external_der = DIV_ (NUM_ (1), ADD_ (NUM_ (1), POW_ (c (R), NUM_ (2))));
 
@@ -264,7 +264,7 @@ node_t* dArctg (node_t* node)
 
 node_t* dArcctg (node_t* node)
 {
-    assert (node != NULL);
+    assert (node);
 
     node_t* external_der = DIV_ (NUM_ (1), ADD_ (NUM_ (1), POW_ (c (R), NUM_ (2))));
 

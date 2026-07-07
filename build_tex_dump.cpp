@@ -23,11 +23,11 @@ bool TexIfDiv (FILE* output_ptr, node_t* node, int* line_size);
 
 void RunTexDump (const char* name_of_file, tree_t* tree)
 {
-    assert (tree != NULL);
-    assert (name_of_file != NULL);
+    assert (tree);
+    assert (name_of_file);
 
     FILE* tex_output_ptr = fopen (name_of_file, "a");
-    assert (tex_output_ptr != NULL);
+    assert (tex_output_ptr);
 
     ClearDump (name_of_file);
 
@@ -60,11 +60,11 @@ void RunTexDump (const char* name_of_file, tree_t* tree)
 
 void AddTexLine (const char* name_of_file, node_t* node, const char* phrase)
 {
-    assert (name_of_file != NULL);
-    assert (node != NULL);
+    assert (name_of_file);
+    assert (node);
 
     FILE* tex_output_ptr = fopen (name_of_file, "a");
-    assert (tex_output_ptr != NULL);
+    assert (tex_output_ptr);
 
     node_t* root = FindRoot (node);
 
@@ -87,10 +87,10 @@ void AddTexLine (const char* name_of_file, node_t* node, const char* phrase)
 
 void FinishTex (const char* name_of_file)
 {
-    assert (name_of_file != NULL);
+    assert (name_of_file);
 
     FILE* tex_output_ptr = fopen (name_of_file, "a");
-    assert (tex_output_ptr != NULL);
+    assert (tex_output_ptr);
 
     fprintf (tex_output_ptr,
             "\\textbf{Дальнейшие преобразования, оставим читателю "
@@ -104,8 +104,8 @@ void FinishTex (const char* name_of_file)
 
 void TexNode (FILE* output_ptr, node_t* node, int* line_size)
 {
-    assert (output_ptr != NULL);
-    assert (node != NULL);
+    assert (output_ptr);
+    assert (node);
 
     if (*line_size >= SIZE_OF_LINE) {
         fprintf (output_ptr, " \\\\ \n");

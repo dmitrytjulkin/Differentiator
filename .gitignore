@@ -1,24 +1,15 @@
-/.DS_Store
-/a.out
-/der_tree_graph_dump.dot
-/der_tree_graph_dump.svg
-/input.txt
-/launch.sh
-/test.cpp
-/test_lection.cpp
-/tree
-/tree.dSYM
-/tree_graph_dump.dot
-/tree_graph_dump.svg
-/tree.pdf
-/tree_graph_dump.svg
+/graph_dump
 
-/tex_files/tree.aux
-/tex_files/free.fdb_latexmk
-/tex_files/tree.fls
-/tex_files/tree.log
-/tex_files/tree.synctex.gz
-/tex_files/%AUXDIR%
+/test.cpp
+/tree
+
+
+/tex_dump/tree.aux
+/tex_dump/free.fdb_latexmk
+/tex_dump/tree.fls
+/tex_dump/tree.log
+/tex_dump/tree.synctex.gz
+/tex_dump/%AUXDIR%
 
 .gitignore
 

@@ -3,25 +3,18 @@
 
 #include "tree.h"
 
-#define TEXDUMP_FILENAME         "tex_files/tree.tex"
-#define TREE_DUMP_FILENAME       "tree_dumps/tree_graph_dump.dot"
-#define DER_TREE_DUMP_FILENAME   "tree_dumps/der_tree_graph_dump.dot"
-#define CMD_TO_RUN_TREE_DUMP     "dot -Tsvg tree_dumps/tree_graph_dump.dot -o tree_dumps/tree_graph_dump.svg"
-#define CMD_TO_RUN_DER_TREE_DUMP "dot -Tsvg tree_dumps/der_tree_graph_dump.dot -o tree_dumps/der_tree_graph_dump.svg"
+#define TEXDUMP_FILENAME         "tex_dump/tree.tex"
+#define TREE_DUMP_FILENAME       "graph_dump/tree_graph_dump.dot"
+#define DER_TREE_DUMP_FILENAME   "graph_dump/der_tree_graph_dump.dot"
+#define CMD_TO_RUN_TREE_DUMP     "dot -Tsvg " TREE_DUMP_FILENAME \
+                                 " -o graph_dump/tree_graph_dump.svg"
+#define CMD_TO_RUN_DER_TREE_DUMP "dot -Tsvg " DER_TREE_DUMP_FILENAME \
+                                 " -o graph_dump/der_tree_graph_dump.svg"
 
 int main ()
 {
     tree_t* tree = InitTree ();
     tree = CreateTreeFromFile ();
-//
-//     char TEXDUMP_FILENAME[]            = "tex_files/tree.tex";
-//     char TREE_DUMP_FILENAME[]     = "tree_dumps/tree_graph_dump.dot";
-//     char DER_TREE_DUMP_FILENAME[] = "tree_dumps/der_tree_graph_dump.dot";
-//
-//     char run_tree_dump[]     = "dot -Tsvg tree_dumps/tree_graph_dump.dot -o"
-//                                 "tree_graph_dump.svg";
-//     char run_der_tree_dump[] = "dot -Tsvg tree_dumps/der_tree_graph_dump.dot -o"
-//                                "der_tree_graph_dump.svg";
 
     RunTexDump (TEXDUMP_FILENAME, tree);
 
@@ -54,7 +47,7 @@ int main ()
 
 void PrintNode (node_t* node)
 {
-    assert (node != NULL);
+    assert (node);
 
     printf ("\n");
     printf ("node: %p\n", node);

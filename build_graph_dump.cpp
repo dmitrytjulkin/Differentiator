@@ -11,15 +11,15 @@ void PrintVar (node_t* node, FILE* output_ptr);
 void RunGraphDump (tree_t* tree, const char* name_of_file,
                    const char* cmd_to_launch_graph_dump)
 {
-    assert (tree != NULL);
-    assert (name_of_file != NULL);
-    assert (cmd_to_launch_graph_dump != NULL);
+    assert (tree);
+    assert (name_of_file);
+    assert (cmd_to_launch_graph_dump);
 
     ClearDump (name_of_file);
 
     FILE* output_ptr = fopen (name_of_file, "a");
 
-    assert (output_ptr != NULL);
+    assert (output_ptr);
 
     PrintTreeInGraphDump (tree->root, output_ptr);
 
@@ -60,8 +60,8 @@ void PrintTreeInGraphDump (node_t* root, FILE* output_ptr)
 void PrintNodeInGraphDump (FILE* output_ptr, node_t* node, node_t* child,
                     const char* link_for_arrow)
 {
-    assert (output_ptr != NULL);
-    assert (node != NULL);
+    assert (output_ptr);
+    assert (node);
 
     if (child == NULL)
         return;
@@ -87,8 +87,8 @@ void PrintNodeInGraphDump (FILE* output_ptr, node_t* node, node_t* child,
 
 void PrintNum (node_t* node, FILE* output_ptr)
 {
-    assert (node != NULL);
-    assert (output_ptr != NULL);
+    assert (node);
+    assert (output_ptr);
 
     fprintf (output_ptr,
             "\nnode%p [label = <                                               \n"
@@ -106,8 +106,8 @@ void PrintNum (node_t* node, FILE* output_ptr)
 
 void PrintFunc (node_t* node, FILE* output_ptr)
 {
-    assert (node != NULL);
-    assert (output_ptr != NULL);
+    assert (node);
+    assert (output_ptr);
 
     fprintf (output_ptr,
             "\nnode%p [label = <                                            \n"
@@ -125,8 +125,8 @@ void PrintFunc (node_t* node, FILE* output_ptr)
 
 void PrintOp (node_t* node, FILE* output_ptr)
 {
-    assert (node != NULL);
-    assert (output_ptr != NULL);
+    assert (node);
+    assert (output_ptr);
 
     fprintf (output_ptr,
             "\nnode%p [label = <                                               \n"
@@ -144,8 +144,8 @@ void PrintOp (node_t* node, FILE* output_ptr)
 
 void PrintVar (node_t* node, FILE* output_ptr)
 {
-    assert (node != NULL);
-    assert (output_ptr != NULL);
+    assert (node);
+    assert (output_ptr);
 
     fprintf (output_ptr,
             "\nnode%p [label = <                                               \n"
@@ -163,7 +163,7 @@ void PrintVar (node_t* node, FILE* output_ptr)
 
 void ClearDump (const char* name_of_file)
 {
-    assert (name_of_file != NULL);
+    assert (name_of_file);
 
     FILE* output_ptr = fopen (name_of_file, "w");
 

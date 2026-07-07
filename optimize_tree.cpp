@@ -28,7 +28,7 @@ bool IsZero (double a);
 
 node_t* Optimize (tree_t* tree)
 {
-    assert (tree != NULL);
+    assert (tree);
 
     bool is_tree_changed = false;
 
@@ -45,7 +45,7 @@ node_t* Optimize (tree_t* tree)
 
 node_t* ChooseOptimizingAlgorithm (node_t* node, bool* is_tree_changed)
 {
-    assert (is_tree_changed != NULL);
+    assert (is_tree_changed);
 
     if (node == NULL)
         return node;
@@ -83,8 +83,8 @@ node_t* ChooseOptimizingAlgorithm (node_t* node, bool* is_tree_changed)
 
 node_t* OptimizeAdd (node_t* node, bool* is_tree_changed)
 {
-    assert (node != NULL);
-    assert (is_tree_changed != NULL);
+    assert (node);
+    assert (is_tree_changed);
 
     OPTIMIZE_IF_NUM_OP_NUM (+);
 
@@ -98,8 +98,8 @@ node_t* OptimizeAdd (node_t* node, bool* is_tree_changed)
 
 node_t* OptimizeSub (node_t* node, bool* is_tree_changed)
 {
-    assert (node != NULL);
-    assert (is_tree_changed != NULL);
+    assert (node);
+    assert (is_tree_changed);
 
     OPTIMIZE_IF_NUM_OP_NUM (-);
 
@@ -113,8 +113,8 @@ node_t* OptimizeSub (node_t* node, bool* is_tree_changed)
 
 node_t* OptimizeMul (node_t* node, bool* is_tree_changed)
 {
-    assert (node != NULL);
-    assert (is_tree_changed != NULL);
+    assert (node);
+    assert (is_tree_changed);
 
     OPTIMIZE_IF_NUM_OP_NUM (*);
 
@@ -131,8 +131,8 @@ node_t* OptimizeMul (node_t* node, bool* is_tree_changed)
 
 node_t* OptimizeDiv (node_t* node, bool* is_tree_changed)
 {
-    assert (node != NULL);
-    assert (is_tree_changed != NULL);
+    assert (node);
+    assert (is_tree_changed);
 
     OPTIMIZE_IF_NUM_OP_NUM (/);
 
@@ -149,8 +149,8 @@ node_t* OptimizeDiv (node_t* node, bool* is_tree_changed)
 
 node_t* OptimizePow (node_t* node, bool* is_tree_changed)
 {
-    assert (node != NULL);
-    assert (is_tree_changed != NULL);
+    assert (node);
+    assert (is_tree_changed);
 
     if (L->expr == NUM && R->expr == NUM) {
         node->expr = NUM;
@@ -173,8 +173,8 @@ node_t* OptimizePow (node_t* node, bool* is_tree_changed)
 
 node_t* OptimizeAddZero (node_t* node, bool* is_tree_changed)
 {
-    assert (node != NULL);
-    assert (is_tree_changed != NULL);
+    assert (node);
+    assert (is_tree_changed);
 
     if ((R->expr != NUM || !IsZero (R->data.num)) &&
         (L->expr != NUM || !IsZero (L->data.num)))
@@ -193,8 +193,8 @@ node_t* OptimizeAddZero (node_t* node, bool* is_tree_changed)
 
 node_t* OptimizeSubZero (node_t* node, bool* is_tree_changed)
 {
-    assert (node != NULL);
-    assert (is_tree_changed != NULL);
+    assert (node);
+    assert (is_tree_changed);
 
     if (R->expr != NUM || !IsZero (R->data.num))
         return NULL;
@@ -208,8 +208,8 @@ node_t* OptimizeSubZero (node_t* node, bool* is_tree_changed)
 
 node_t* OptimizeMulZero (node_t* node, bool* is_tree_changed)
 {
-    assert (node != NULL);
-    assert (is_tree_changed != NULL);
+    assert (node);
+    assert (is_tree_changed);
 
     if ((R->expr != NUM || !IsZero (R->data.num)) &&
         (L->expr != NUM || !IsZero (L->data.num)))
@@ -222,8 +222,8 @@ node_t* OptimizeMulZero (node_t* node, bool* is_tree_changed)
 
 node_t* OptimizeDivZero (node_t* node, bool* is_tree_changed)
 {
-    assert (node != NULL);
-    assert (is_tree_changed != NULL);
+    assert (node);
+    assert (is_tree_changed);
 
     if (L->expr != NUM || !IsZero (L->data.num))
         return NULL;
@@ -235,8 +235,8 @@ node_t* OptimizeDivZero (node_t* node, bool* is_tree_changed)
 
 node_t* OptimizePowZero (node_t* node, bool* is_tree_changed)
 {
-    assert (node != NULL);
-    assert (is_tree_changed != NULL);
+    assert (node);
+    assert (is_tree_changed);
 
     if ((R->expr != NUM || !IsZero (R->data.num)) &&
         (L->expr != NUM || !IsZero (L->data.num)))
@@ -254,8 +254,8 @@ node_t* OptimizePowZero (node_t* node, bool* is_tree_changed)
 
 node_t* OptimizeMulOne (node_t* node, bool* is_tree_changed)
 {
-    assert (node != NULL);
-    assert (is_tree_changed != NULL);
+    assert (node);
+    assert (is_tree_changed);
 
     if ((R->expr != NUM || !IsZero (R->data.num - 1)) &&
         (L->expr != NUM || !IsZero (L->data.num - 1)))
@@ -274,8 +274,8 @@ node_t* OptimizeMulOne (node_t* node, bool* is_tree_changed)
 
 node_t* OptimizeDivOne (node_t* node, bool* is_tree_changed)
 {
-    assert (node != NULL);
-    assert (is_tree_changed != NULL);
+    assert (node);
+    assert (is_tree_changed);
 
     if (R->expr != NUM || !IsZero (R->data.num - 1))
         return NULL;
@@ -288,8 +288,8 @@ node_t* OptimizeDivOne (node_t* node, bool* is_tree_changed)
 
 node_t* OptimizePowOne (node_t* node, bool* is_tree_changed)
 {
-    assert (node != NULL);
-    assert (is_tree_changed != NULL);
+    assert (node);
+    assert (is_tree_changed);
 
     if ((R->expr != NUM || !IsZero (R->data.num - 1)) &&
         (L->expr != NUM || !IsZero (L->data.num - 1)))

@@ -20,10 +20,10 @@ node_t* GetPow      (char* s, int* index);
 tree_t* CreateTreeFromFile ()
 {
     FILE* input_ptr = fopen ("input.txt", "r");
-    assert (input_ptr != NULL);
+    assert (input_ptr);
 
     char* input_array = ReadInput (input_ptr);
-    assert (input_array != NULL);
+    assert (input_array);
 
     tree_t* tree = InitTree ();
     tree->root = GetExpression (input_array);
@@ -36,7 +36,7 @@ tree_t* CreateTreeFromFile ()
 
 char* ReadInput (FILE* input)
 {
-    assert (input != NULL);
+    assert (input);
 
     struct stat input_data = {};
     fstat (fileno(input), &input_data);
@@ -44,7 +44,7 @@ char* ReadInput (FILE* input)
     size_t size = (size_t) input_data.st_size;
 
     char* input_array = (char *) calloc (size + EXTRA_SIZE, sizeof(char));
-    assert (input_array != NULL);
+    assert (input_array);
 
     fread (input_array, sizeof (char), size, input);
 
@@ -54,7 +54,7 @@ char* ReadInput (FILE* input)
 // static
 void SyntaxError (const char* funcname, int line)
 {
-    assert (funcname != NULL);
+    assert (funcname);
 
     printf ("SyntaxError was called from %s, line = %d\n\n", funcname, line);
 
@@ -63,7 +63,7 @@ void SyntaxError (const char* funcname, int line)
 
 node_t* GetExpression (char* s)
 {
-    assert (s != NULL);
+    assert (s);
 
     int index = 0;
 
@@ -79,8 +79,8 @@ node_t* GetExpression (char* s)
 
 node_t* GetNum (char* s, int* index)
 {
-    assert (s != NULL);
-    assert (index != NULL);
+    assert (s);
+    assert (index);
 
     int val = 0;
 
@@ -98,8 +98,8 @@ node_t* GetNum (char* s, int* index)
 
 node_t* GetAddOrSub (char* s, int* index)
 {
-    assert (s != NULL);
-    assert (index != NULL);
+    assert (s);
+    assert (index);
 
     node_t* node = GetMulOrDiv (s, index);
 
@@ -122,8 +122,8 @@ node_t* GetAddOrSub (char* s, int* index)
 
 node_t* GetMulOrDiv (char* s, int* index)
 {
-    assert (s != NULL);
-    assert (index != NULL);
+    assert (s);
+    assert (index);
 
     node_t* node = GetPow (s, index);
 
@@ -146,8 +146,8 @@ node_t* GetMulOrDiv (char* s, int* index)
 
 node_t* GetPow (char* s, int* index)
 {
-    assert (s != NULL);
-    assert (index != NULL);
+    assert (s);
+    assert (index);
 
     node_t* node = GetBrac (s, index);
 
@@ -164,8 +164,8 @@ node_t* GetPow (char* s, int* index)
 
 node_t* GetBrac (char* s, int* index)
 {
-    assert (s != NULL);
-    assert (index != NULL);
+    assert (s);
+    assert (index);
 
     node_t* node = InitNode ();
 
@@ -196,8 +196,8 @@ node_t* GetBrac (char* s, int* index)
 
 node_t* GetVar (char* s, int* index)
 {
-    assert (s != NULL);
-    assert (index != NULL);
+    assert (s);
+    assert (index);
 
     char* val = (char*) calloc (EXTRA_SIZE, sizeof (char));
     assert (val != NULL);
@@ -232,22 +232,22 @@ node_t* GetVar (char* s, int* index)
 
 void ResizeValIfNeed (char** val, size_t* val_size, size_t val_index)
 {
-    assert (val != NULL);
-    assert (val_size != NULL);
+    assert (val);
+    assert (val_size);
 
     if (val_index == *val_size - 1) {
         val_size += EXTRA_SIZE;
 
         *val = (char*) realloc (*val, *val_size);
-        assert (*val != NULL);
+        assert (*val);
     }
 }
 
 node_t* GetFunc (char* s, int* index, node_t* node)
 {
-    assert (s != NULL);
-    assert (index != NULL);
-    assert (node != NULL);
+    assert (s);
+    assert (index);
+    assert (node);
 
     for (int i = 0; i < COUNT_OF_FUNC; ++i) {
         if (strcmp (node->data.var, list_of_func[i].name) == 0) {
