@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <string.h>
 
-#include "tree.h"
+#include "../tree.h"
 
 const int SIZE_OF_LINE = 65;
 const int SIZE_OF_NUM = 5;
@@ -58,15 +58,13 @@ void RunTexDump (const char* name_of_file, tree_t* tree)
     fclose (tex_output_ptr);
 }
 
-void AddTexLine (const char* name_of_file, node_t* node, const char* phrase)
+void AddTexLine (const char* name_of_file, node_t* root, const char* phrase)
 {
     assert (name_of_file);
-    assert (node);
+    assert (phrase);
 
     FILE* tex_output_ptr = fopen (name_of_file, "a");
     assert (tex_output_ptr);
-
-    node_t* root = FindRoot (node);
 
     fprintf (tex_output_ptr,
             "\\textbf{%s}\n"

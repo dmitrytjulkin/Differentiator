@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "tree.h"
+#include "../tree.h"
 
-void PrintNum (node_t* node, FILE* output_ptr);
+void PrintNum  (node_t* node, FILE* output_ptr);
 void PrintFunc (node_t* node, FILE* output_ptr);
-void PrintOp (node_t* node, FILE* output_ptr);
-void PrintVar (node_t* node, FILE* output_ptr);
+void PrintOp   (node_t* node, FILE* output_ptr);
+void PrintVar  (node_t* node, FILE* output_ptr);
 
 void RunGraphDump (tree_t* tree, const char* name_of_file,
                    const char* cmd_to_launch_graph_dump)
@@ -18,7 +18,6 @@ void RunGraphDump (tree_t* tree, const char* name_of_file,
     ClearDump (name_of_file);
 
     FILE* output_ptr = fopen (name_of_file, "a");
-
     assert (output_ptr);
 
     PrintTreeInGraphDump (tree->root, output_ptr);
@@ -30,8 +29,8 @@ void RunGraphDump (tree_t* tree, const char* name_of_file,
 
 void PrintTreeInGraphDump (node_t* root, FILE* output_ptr)
 {
-    assert (root != NULL);
-    assert (output_ptr != NULL);
+    assert (root);
+    assert (output_ptr);
 
     fprintf (output_ptr, "digraph demo { \n"
             "\t rankdir = TB; \n"
@@ -159,13 +158,4 @@ void PrintVar (node_t* node, FILE* output_ptr)
             "\t</TABLE>                                                        \n"
             "\t>];                                                             \n",
             node, "VAR_type", node->parent, node, node->data.var, L, R);
-}
-
-void ClearDump (const char* name_of_file)
-{
-    assert (name_of_file);
-
-    FILE* output_ptr = fopen (name_of_file, "w");
-
-    fclose (output_ptr);
 }

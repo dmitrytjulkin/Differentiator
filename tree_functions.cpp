@@ -5,14 +5,10 @@
 
 #include "tree.h"
 
-
-size_t CountNode (node_t* node);
-
-
 tree_t* InitTree ()
 {
     tree_t* tree = (tree_t*) calloc (1, sizeof (tree_t));
-    assert (tree != NULL);
+    assert (tree);
 
     tree->root = InitNode ();
     tree->size = 0;
@@ -23,14 +19,11 @@ tree_t* InitTree ()
 node_t* InitNode ()
 {
     node_t* node = (node_t*) calloc (1, sizeof (node_t));
-    assert (node != NULL);
+    assert (node);
 
     node->parent = NULL;
-
     strcpy (node->data.var, "");
-
     node->expr = VAR;
-
     L = NULL;
     R = NULL;
 
@@ -40,89 +33,90 @@ node_t* InitNode ()
 node_t* NewNode (type_of_expr expression, data_t value,
                  node_t* left_node, node_t* right_node)
 {
-    node_t* parent_node = InitNode ();
+    node_t* node = InitNode ();
 
-    parent_node->left = left_node;
-    parent_node->right = right_node;
+    L          = left_node;
+    R          = right_node;
+    node->expr = expression;
+    node->data = value;
 
-    parent_node->expr = expression;
-    parent_node->data = value;
-
-    return parent_node;
+    return node;
 }
 
 data_t DeleteNodeAndRetData (node_t* parent, child_node_t dir_of_child)
 {
-    assert (parent != NULL);
+    assert (parent);
 
     data_t ret_data = {.var = ""};
 
     if (dir_of_child == LEFT) {
         ret_data = parent->left->data;
         parent->left = NULL;
+
         free (parent->left);
 
     } else {
         ret_data = parent->right->data;
         parent->right = NULL;
+
         free (parent->right);
     }
 
     return ret_data;
 }
 
-void GiveNodesTheirParents (node_t* node)
-{
-    assert (node != NULL);
-
-    if (L != NULL) {
-        L->parent = node;
-
-        GiveNodesTheirParents (L);
-    }
-
-    if (R != NULL) {
-        R->parent = node;
-
-        GiveNodesTheirParents (R);
-    }
-}
-
-node_t* FindRoot (node_t* node)
-{
-    if (node->parent != NULL)
-        return FindRoot (node->parent);
-
-    return node;
-}
+// void GiveChildNodesParents (node_t* node)
+// {
+//     assert (node);
+//
+//     if (L != NULL) {
+//         L->parent = node;
+//
+//         GiveChildNodesParents (L);
+//     }
+//
+//     if (R != NULL) {
+//         R->parent = node;
+//
+//         GiveChildNodesParents (R);
+//     }
+// }
+//
+// node_t* FindRoot (node_t* node)
+// {
+//     if (node->parent != NULL)
+//         return FindRoot (node->parent);
+//
+//     return node;
+// }
 
 size_t CountTreeSize (tree_t* tree)
 {
-    assert (tree != NULL);
+    assert (tree);
 
-    tree->size = CountNode (tree->root);
+    tree->size = CountNodeSize (tree->root);
 
     return tree->size;
 }
 
-size_t CountNode (node_t* node)
+size_t CountNodeSize (node_t* node)
 {
-    assert (node != NULL);
+    assert (node);
 
     size_t current_size = 1;
 
     if (R != NULL)
-        current_size += CountNode (R);
+        current_size += CountNodeSize (R);
 
     if (L != NULL)
-        current_size += CountNode (L);
+        current_size += CountNodeSize (L);
 
     return current_size;
 }
 
 void FreeTree (tree_t* tree)
 {
-    assert (tree != NULL);
+    assert (tree);
 
     FreeNode (tree->root);
 
@@ -131,10 +125,32 @@ void FreeTree (tree_t* tree)
 
 void FreeNode (node_t* node)
 {
-    if (node != NULL) {
+    if (node) {
         FreeNode (L);
         FreeNode (R);
+        free (node);
 
     } else
         return;
+}
+
+void PrintNode (node_t* node)
+{
+    assert (node);
+
+    printf ("\n");
+    printf ("node: %p\n", node);
+    printf ("his expression: %d\n", node->expr);
+
+    if (node->expr == NUM)
+        printf ("his data: %lg\n", node->data.num);
+
+    else if (node->expr == VAR)
+        printf ("his data: %s\n", node->data.var);
+
+    else
+        printf ("his data: %d\n", node->data.op);
+
+    printf ("his left child: %p, right child %p\n", L, R);
+    printf ("\n");
 }

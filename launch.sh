@@ -14,8 +14,9 @@ attribute,null,return,returns-nonnull-attribute,shift,signed-integer-overflow,\
 undefined,unreachable,vla-bound,vptr"
 
 
-g++ tree_main.cpp tree_functions.cpp build_graph_dump.cpp \
-    differentiator.cpp build_tex_dump.cpp\
-    optimize_tree.cpp read_tree_from_file.cpp\
-    list_of_func_and_op.cpp -o ./tree $FLAGS && ./tree
+g++ tree_main.cpp tree_functions.cpp differentiator.cpp \
+    optimize_tree.cpp read_tree_from_file.cpp \
+    list_of_func_and_op.cpp work_with_dumps/clear_dump.cpp \
+    work_with_dumps/build_graph_dump.cpp work_with_dumps/build_tex_dump.cpp \
+    -o ./tree $FLAGS && ./tree
 
