@@ -19,3 +19,6 @@
 /tex_files/tree.log
 /tex_files/tree.synctex.gz
 /tex_files/%AUXDIR%
+
+.gitignore
+

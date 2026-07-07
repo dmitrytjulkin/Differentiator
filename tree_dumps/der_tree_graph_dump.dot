@@ -1,0 +1,329 @@
+digraph demo { 
+	 rankdir = TB; 
+	 splines = ortho;
+	 node [shape = plaintext];
+
+
+node0x604000002090 [label = <                                               
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">   
+	<TR> <TD COLSPAN = "2" BGCOLOR = "palegreen"> OP_type </TD> </TR>
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>            
+	<TR> <TD COLSPAN = "2"> 0x604000002090 </TD> </TR>                        
+	<TR> <TD COLSPAN = "2"> + </TD> </TR>                        
+	<TR> <TD PORT = "f0"> 0x604000001950 </TD>                                
+	<TD PORT = "f1"> 0x604000002050 </TD> </TR>                               
+	</TABLE>                                                        
+	>];                                                             
+
+node0x604000001950 [label = <                                               
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">   
+	<TR> <TD COLSPAN = "2" BGCOLOR = "palegreen"> OP_type </TD> </TR>
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>            
+	<TR> <TD COLSPAN = "2"> 0x604000001950 </TD> </TR>                        
+	<TR> <TD COLSPAN = "2"> + </TD> </TR>                        
+	<TR> <TD PORT = "f0"> 0x604000002650 </TD>                                
+	<TD PORT = "f1"> 0x604000001910 </TD> </TR>                               
+	</TABLE>                                                        
+	>];                                                             
+	 node0x604000002090:f0 -> node0x604000001950;
+
+node0x604000002650 [label = <                                               
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">   
+	<TR> <TD COLSPAN = "2" BGCOLOR = "palegreen"> OP_type </TD> </TR>
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>            
+	<TR> <TD COLSPAN = "2"> 0x604000002650 </TD> </TR>                        
+	<TR> <TD COLSPAN = "2"> * </TD> </TR>                        
+	<TR> <TD PORT = "f0"> 0x6040000025d0 </TD>                                
+	<TD PORT = "f1"> 0x604000002610 </TD> </TR>                               
+	</TABLE>                                                        
+	>];                                                             
+	 node0x604000001950:<f0> -> node0x604000002650;
+
+node0x6040000025d0 [label = <                                               
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">   
+	<TR> <TD COLSPAN = "2" BGCOLOR = "lightblue"> NUM_type </TD> </TR>
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>            
+	<TR> <TD COLSPAN = "2"> he: 0x6040000025d0 </TD> </TR>                    
+	<TR> <TD COLSPAN = "2"> 2 </TD> </TR>                       
+	<TR> <TD PORT = "f0"> 0x0 </TD>                                
+	<TD PORT = "f1"> 0x0 </TD> </TR>                               
+	</TABLE>                                                        
+	>];                                                             
+	 node0x604000002650:<f0> -> node0x6040000025d0;
+
+node0x604000002610 [label = <                                               
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">   
+	<TR> <TD COLSPAN = "2" BGCOLOR = "lightpink"> VAR_type </TD> </TR>
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>            
+	<TR> <TD COLSPAN = "2"> 0x604000002610 </TD> </TR>                        
+	<TR> <TD COLSPAN = "2"> x </TD> </TR>                        
+	<TR> <TD PORT = "f0"> 0x0 </TD>                                
+	<TD PORT = "f1"> 0x0 </TD> </TR>                               
+	</TABLE>                                                        
+	>];                                                             
+	 node0x604000002650:<f1> -> node0x604000002610;
+
+node0x604000001910 [label = <                                               
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">   
+	<TR> <TD COLSPAN = "2" BGCOLOR = "palegreen"> OP_type </TD> </TR>
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>            
+	<TR> <TD COLSPAN = "2"> 0x604000001910 </TD> </TR>                        
+	<TR> <TD COLSPAN = "2"> + </TD> </TR>                        
+	<TR> <TD PORT = "f0"> 0x6040000016d0 </TD>                                
+	<TD PORT = "f1"> 0x6040000018d0 </TD> </TR>                               
+	</TABLE>                                                        
+	>];                                                             
+	 node0x604000001950:<f1> -> node0x604000001910;
+
+node0x6040000016d0 [label = <                                               
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">   
+	<TR> <TD COLSPAN = "2" BGCOLOR = "palegreen"> OP_type </TD> </TR>
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>            
+	<TR> <TD COLSPAN = "2"> 0x6040000016d0 </TD> </TR>                        
+	<TR> <TD COLSPAN = "2"> * </TD> </TR>                        
+	<TR> <TD PORT = "f0"> 0x604000001610 </TD>                                
+	<TD PORT = "f1"> 0x604000001650 </TD> </TR>                               
+	</TABLE>                                                        
+	>];                                                             
+	 node0x604000001910:<f0> -> node0x6040000016d0;
+
+node0x604000001610 [label = <                                               
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">   
+	<TR> <TD COLSPAN = "2" BGCOLOR = "lightblue"> NUM_type </TD> </TR>
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>            
+	<TR> <TD COLSPAN = "2"> he: 0x604000001610 </TD> </TR>                    
+	<TR> <TD COLSPAN = "2"> 2 </TD> </TR>                       
+	<TR> <TD PORT = "f0"> 0x0 </TD>                                
+	<TD PORT = "f1"> 0x0 </TD> </TR>                               
+	</TABLE>                                                        
+	>];                                                             
+	 node0x6040000016d0:<f0> -> node0x604000001610;
+
+node0x604000001650 [label = <                                            
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">
+	<TR> <TD COLSPAN = "2" BGCOLOR = "plum"> FUNC_type </TD> </TR>  
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>         
+	<TR> <TD COLSPAN = "2"> 0x604000001650 </TD> </TR>                     
+	<TR> <TD COLSPAN = "2"> sin </TD> </TR>                     
+	<TR> <TD PORT = "f0"> 0x0 </TD>                             
+	<TD PORT = "f1"> 0x604000001690 </TD> </TR>                            
+	</TABLE>                                                     
+	>];                                                          
+	 node0x6040000016d0:<f1> -> node0x604000001650;
+
+node0x604000001690 [label = <                                               
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">   
+	<TR> <TD COLSPAN = "2" BGCOLOR = "lightpink"> VAR_type </TD> </TR>
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>            
+	<TR> <TD COLSPAN = "2"> 0x604000001690 </TD> </TR>                        
+	<TR> <TD COLSPAN = "2"> x </TD> </TR>                        
+	<TR> <TD PORT = "f0"> 0x0 </TD>                                
+	<TD PORT = "f1"> 0x0 </TD> </TR>                               
+	</TABLE>                                                        
+	>];                                                             
+	 node0x604000001650:<f1> -> node0x604000001690;
+
+node0x6040000018d0 [label = <                                               
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">   
+	<TR> <TD COLSPAN = "2" BGCOLOR = "palegreen"> OP_type </TD> </TR>
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>            
+	<TR> <TD COLSPAN = "2"> 0x6040000018d0 </TD> </TR>                        
+	<TR> <TD COLSPAN = "2"> * </TD> </TR>                        
+	<TR> <TD PORT = "f0"> 0x604000001710 </TD>                                
+	<TD PORT = "f1"> 0x604000002990 </TD> </TR>                               
+	</TABLE>                                                        
+	>];                                                             
+	 node0x604000001910:<f1> -> node0x6040000018d0;
+
+node0x604000001710 [label = <                                               
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">   
+	<TR> <TD COLSPAN = "2" BGCOLOR = "palegreen"> OP_type </TD> </TR>
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>            
+	<TR> <TD COLSPAN = "2"> 0x604000001710 </TD> </TR>                        
+	<TR> <TD COLSPAN = "2"> * </TD> </TR>                        
+	<TR> <TD PORT = "f0"> 0x604000001750 </TD>                                
+	<TD PORT = "f1"> 0x604000001790 </TD> </TR>                               
+	</TABLE>                                                        
+	>];                                                             
+	 node0x6040000018d0:<f0> -> node0x604000001710;
+
+node0x604000001750 [label = <                                               
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">   
+	<TR> <TD COLSPAN = "2" BGCOLOR = "lightblue"> NUM_type </TD> </TR>
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>            
+	<TR> <TD COLSPAN = "2"> he: 0x604000001750 </TD> </TR>                    
+	<TR> <TD COLSPAN = "2"> 2 </TD> </TR>                       
+	<TR> <TD PORT = "f0"> 0x0 </TD>                                
+	<TD PORT = "f1"> 0x0 </TD> </TR>                               
+	</TABLE>                                                        
+	>];                                                             
+	 node0x604000001710:<f0> -> node0x604000001750;
+
+node0x604000001790 [label = <                                               
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">   
+	<TR> <TD COLSPAN = "2" BGCOLOR = "lightpink"> VAR_type </TD> </TR>
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>            
+	<TR> <TD COLSPAN = "2"> 0x604000001790 </TD> </TR>                        
+	<TR> <TD COLSPAN = "2"> x </TD> </TR>                        
+	<TR> <TD PORT = "f0"> 0x0 </TD>                                
+	<TD PORT = "f1"> 0x0 </TD> </TR>                               
+	</TABLE>                                                        
+	>];                                                             
+	 node0x604000001710:<f1> -> node0x604000001790;
+
+node0x604000002990 [label = <                                            
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">
+	<TR> <TD COLSPAN = "2" BGCOLOR = "plum"> FUNC_type </TD> </TR>  
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>         
+	<TR> <TD COLSPAN = "2"> 0x604000002990 </TD> </TR>                     
+	<TR> <TD COLSPAN = "2"> cos </TD> </TR>                     
+	<TR> <TD PORT = "f0"> 0x0 </TD>                             
+	<TD PORT = "f1"> 0x604000002950 </TD> </TR>                            
+	</TABLE>                                                     
+	>];                                                          
+	 node0x6040000018d0:<f1> -> node0x604000002990;
+
+node0x604000002950 [label = <                                               
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">   
+	<TR> <TD COLSPAN = "2" BGCOLOR = "lightpink"> VAR_type </TD> </TR>
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>            
+	<TR> <TD COLSPAN = "2"> 0x604000002950 </TD> </TR>                        
+	<TR> <TD COLSPAN = "2"> x </TD> </TR>                        
+	<TR> <TD PORT = "f0"> 0x0 </TD>                                
+	<TD PORT = "f1"> 0x0 </TD> </TR>                               
+	</TABLE>                                                        
+	>];                                                             
+	 node0x604000002990:<f1> -> node0x604000002950;
+
+node0x604000002050 [label = <                                               
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">   
+	<TR> <TD COLSPAN = "2" BGCOLOR = "palegreen"> OP_type </TD> </TR>
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>            
+	<TR> <TD COLSPAN = "2"> 0x604000002050 </TD> </TR>                        
+	<TR> <TD COLSPAN = "2"> - </TD> </TR>                        
+	<TR> <TD PORT = "f0"> 0x604000001990 </TD>                                
+	<TD PORT = "f1"> 0x604000003350 </TD> </TR>                               
+	</TABLE>                                                        
+	>];                                                             
+	 node0x604000002090:f1 -> node0x604000002050;
+
+node0x604000001990 [label = <                                               
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">   
+	<TR> <TD COLSPAN = "2" BGCOLOR = "lightblue"> NUM_type </TD> </TR>
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>            
+	<TR> <TD COLSPAN = "2"> he: 0x604000001990 </TD> </TR>                    
+	<TR> <TD COLSPAN = "2"> 0 </TD> </TR>                       
+	<TR> <TD PORT = "f0"> 0x0 </TD>                                
+	<TD PORT = "f1"> 0x0 </TD> </TR>                               
+	</TABLE>                                                        
+	>];                                                             
+	 node0x604000002050:<f0> -> node0x604000001990;
+
+node0x604000003350 [label = <                                               
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">   
+	<TR> <TD COLSPAN = "2" BGCOLOR = "palegreen"> OP_type </TD> </TR>
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>            
+	<TR> <TD COLSPAN = "2"> 0x604000003350 </TD> </TR>                        
+	<TR> <TD COLSPAN = "2"> * </TD> </TR>                        
+	<TR> <TD PORT = "f0"> 0x604000003150 </TD>                                
+	<TD PORT = "f1"> 0x604000003250 </TD> </TR>                               
+	</TABLE>                                                        
+	>];                                                             
+	 node0x604000002050:<f1> -> node0x604000003350;
+
+node0x604000003150 [label = <                                               
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">   
+	<TR> <TD COLSPAN = "2" BGCOLOR = "palegreen"> OP_type </TD> </TR>
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>            
+	<TR> <TD COLSPAN = "2"> 0x604000003150 </TD> </TR>                        
+	<TR> <TD COLSPAN = "2"> * </TD> </TR>                        
+	<TR> <TD PORT = "f0"> 0x604000003190 </TD>                                
+	<TD PORT = "f1"> 0x6040000031d0 </TD> </TR>                               
+	</TABLE>                                                        
+	>];                                                             
+	 node0x604000003350:<f0> -> node0x604000003150;
+
+node0x604000003190 [label = <                                               
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">   
+	<TR> <TD COLSPAN = "2" BGCOLOR = "lightblue"> NUM_type </TD> </TR>
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>            
+	<TR> <TD COLSPAN = "2"> he: 0x604000003190 </TD> </TR>                    
+	<TR> <TD COLSPAN = "2"> 2 </TD> </TR>                       
+	<TR> <TD PORT = "f0"> 0x0 </TD>                                
+	<TD PORT = "f1"> 0x0 </TD> </TR>                               
+	</TABLE>                                                        
+	>];                                                             
+	 node0x604000003150:<f0> -> node0x604000003190;
+
+node0x6040000031d0 [label = <                                            
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">
+	<TR> <TD COLSPAN = "2" BGCOLOR = "plum"> FUNC_type </TD> </TR>  
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>         
+	<TR> <TD COLSPAN = "2"> 0x6040000031d0 </TD> </TR>                     
+	<TR> <TD COLSPAN = "2"> cos </TD> </TR>                     
+	<TR> <TD PORT = "f0"> 0x0 </TD>                             
+	<TD PORT = "f1"> 0x604000003210 </TD> </TR>                            
+	</TABLE>                                                     
+	>];                                                          
+	 node0x604000003150:<f1> -> node0x6040000031d0;
+
+node0x604000003210 [label = <                                               
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">   
+	<TR> <TD COLSPAN = "2" BGCOLOR = "lightpink"> VAR_type </TD> </TR>
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>            
+	<TR> <TD COLSPAN = "2"> 0x604000003210 </TD> </TR>                        
+	<TR> <TD COLSPAN = "2"> x </TD> </TR>                        
+	<TR> <TD PORT = "f0"> 0x0 </TD>                                
+	<TD PORT = "f1"> 0x0 </TD> </TR>                               
+	</TABLE>                                                        
+	>];                                                             
+	 node0x6040000031d0:<f1> -> node0x604000003210;
+
+node0x604000003250 [label = <                                               
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">   
+	<TR> <TD COLSPAN = "2" BGCOLOR = "palegreen"> OP_type </TD> </TR>
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>            
+	<TR> <TD COLSPAN = "2"> 0x604000003250 </TD> </TR>                        
+	<TR> <TD COLSPAN = "2"> - </TD> </TR>                        
+	<TR> <TD PORT = "f0"> 0x604000003290 </TD>                                
+	<TD PORT = "f1"> 0x6040000032d0 </TD> </TR>                               
+	</TABLE>                                                        
+	>];                                                             
+	 node0x604000003350:<f1> -> node0x604000003250;
+
+node0x604000003290 [label = <                                               
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">   
+	<TR> <TD COLSPAN = "2" BGCOLOR = "lightblue"> NUM_type </TD> </TR>
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>            
+	<TR> <TD COLSPAN = "2"> he: 0x604000003290 </TD> </TR>                    
+	<TR> <TD COLSPAN = "2"> 0 </TD> </TR>                       
+	<TR> <TD PORT = "f0"> 0x0 </TD>                                
+	<TD PORT = "f1"> 0x0 </TD> </TR>                               
+	</TABLE>                                                        
+	>];                                                             
+	 node0x604000003250:<f0> -> node0x604000003290;
+
+node0x6040000032d0 [label = <                                            
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">
+	<TR> <TD COLSPAN = "2" BGCOLOR = "plum"> FUNC_type </TD> </TR>  
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>         
+	<TR> <TD COLSPAN = "2"> 0x6040000032d0 </TD> </TR>                     
+	<TR> <TD COLSPAN = "2"> sin </TD> </TR>                     
+	<TR> <TD PORT = "f0"> 0x0 </TD>                             
+	<TD PORT = "f1"> 0x604000003310 </TD> </TR>                            
+	</TABLE>                                                     
+	>];                                                          
+	 node0x604000003250:<f1> -> node0x6040000032d0;
+
+node0x604000003310 [label = <                                               
+	<TABLE BORDER = "0" CELLBORDER = "1" CELLSPACING = "0">   
+	<TR> <TD COLSPAN = "2" BGCOLOR = "lightpink"> VAR_type </TD> </TR>
+	<TR> <TD COLSPAN = "2"> his parent: 0x0 </TD> </TR>            
+	<TR> <TD COLSPAN = "2"> 0x604000003310 </TD> </TR>                        
+	<TR> <TD COLSPAN = "2"> x </TD> </TR>                        
+	<TR> <TD PORT = "f0"> 0x0 </TD>                                
+	<TD PORT = "f1"> 0x0 </TD> </TR>                               
+	</TABLE>                                                        
+	>];                                                             
+	 node0x6040000032d0:<f1> -> node0x604000003310;
+}
