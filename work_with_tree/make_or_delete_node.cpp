@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "../tree.h"
+#include "../headers/tree.h"
 
 node_t* NewNode (type_of_expr expression, data_t value,
                  node_t* left_node, node_t* right_node)

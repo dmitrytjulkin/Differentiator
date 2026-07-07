@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "../tree.h"
+#include "../headers/dump.h"
 
 void PrintNum  (node_t* node, FILE* output_ptr);
 void PrintFunc (node_t* node, FILE* output_ptr);

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "../tree.h"
+#include "../headers/dump.h"
 
 void ClearDump (const char* name_of_file)
 {

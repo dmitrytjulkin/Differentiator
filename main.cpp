@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "tree.h"
+#include "headers/tree.h"
+#include "headers/differentiator.h"
+#include "headers/dump.h"
 
 #define TEXDUMP_FILENAME         "tex_dump/tree.tex"
 #define TREE_DUMP_FILENAME       "graph_dump/tree_graph_dump.dot"

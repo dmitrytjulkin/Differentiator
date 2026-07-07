@@ -3,7 +3,9 @@
 #include <string.h>
 #include <sys/stat.h>
 
-#include "tree.h"
+#include "headers/differentiator.h"
+
+const int EXTRA_SIZE = 10;
 
 void SyntaxError (const char* funcname, int line);
 void ResizeValIfNeed (char** val, size_t* val_size, size_t val_index);

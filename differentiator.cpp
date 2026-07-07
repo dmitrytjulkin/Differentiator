@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <string.h>
 
-#include "tree.h"
+#include "headers/differentiator.h"
 
 
 #define d DiffNode

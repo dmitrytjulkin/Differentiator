@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "../tree.h"
+#include "../headers/tree.h"
 
 void PrintNode (node_t* node)
 {

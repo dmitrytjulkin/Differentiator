@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "../tree.h"
+#include "../headers/tree.h"
 
 size_t CountTreeSize (tree_t* tree)
 {

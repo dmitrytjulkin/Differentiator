@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <string.h>
 
-#include "../tree.h"
+#include "../headers/dump.h"
 
 const int SIZE_OF_LINE = 65;
 const int SIZE_OF_NUM = 5;
