@@ -14,9 +14,11 @@ attribute,null,return,returns-nonnull-attribute,shift,signed-integer-overflow,\
 undefined,unreachable,vla-bound,vptr"
 
 
-g++ tree_main.cpp tree_functions.cpp differentiator.cpp \
-    optimize_tree.cpp read_tree_from_file.cpp \
+g++ tree_main.cpp differentiator.cpp optimize_tree.cpp read_tree_from_file.cpp \
     list_of_func_and_op.cpp work_with_dumps/clear_dump.cpp \
     work_with_dumps/build_graph_dump.cpp work_with_dumps/build_tex_dump.cpp \
-    -o ./tree $FLAGS && ./tree
+    operations_with_tree/free_tree.cpp operations_with_tree/get_tree_size.cpp \
+    operations_with_tree/init_tree.cpp operations_with_tree/make_or_delete_node.cpp \
+    operations_with_tree/print_tree.cpp -o ./tree $FLAGS && ./tree
 
+# TODO: think about grouping files from same directory
