@@ -15,10 +15,8 @@ enum child_node_t {
 
 struct node_t {
     node_t*      parent;
-
     type_of_expr expr;
     data_t       data;
-
     node_t* left;
     node_t* right;
 };
@@ -32,7 +30,7 @@ tree_t* InitTree ();
 node_t* InitNode ();
 
 node_t* NewNode (type_of_expr expression, data_t value,
-                  node_t* left_node, node_t* right_node);
+                node_t* left_node, node_t* right_node);
 data_t  DeleteNodeAndRetData (node_t* node, child_node_t dir_of_child);
 
 size_t  CountTreeSize (tree_t* tree);

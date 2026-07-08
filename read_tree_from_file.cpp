@@ -23,7 +23,8 @@ tree_t* CreateTreeFromFile ()
     FILE* input_ptr = fopen ("input.txt", "r");
     assert (input_ptr);
 
-    char* input_array = ReadInput (input_ptr);
+    char* input_string = ReadInput (input_ptr);
+    int* input_array = TokenizeInput(input_string);
     assert (input_array);
 
     tree_t* tree = InitTree ();
@@ -33,23 +34,6 @@ tree_t* CreateTreeFromFile ()
     free (input_array);
 
     return tree;
-}
-
-char* ReadInput (FILE* input)
-{
-    assert (input);
-
-    struct stat input_data = {};
-    fstat (fileno(input), &input_data);
-
-    size_t size = (size_t) input_data.st_size;
-
-    char* input_array = (char *) calloc (size + EXTRA_SIZE, sizeof(char));
-    assert (input_array);
-
-    fread (input_array, sizeof (char), size, input);
-
-    return input_array;
 }
 
 // static

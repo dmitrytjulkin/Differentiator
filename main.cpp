@@ -6,11 +6,11 @@
 #include "headers/dump.h"
 
 #define TEXDUMP_FILENAME         "tex_dump/tree.tex"
-#define TREE_DUMP_FILENAME       "graph_dump/tree_graph_dump.dot"
-#define DER_TREE_DUMP_FILENAME   "graph_dump/der_tree_graph_dump.dot"
-#define CMD_TO_RUN_TREE_DUMP     "dot -Tsvg " TREE_DUMP_FILENAME \
+#define GRAPH_DUMP_FILENAME       "graph_dump/tree_graph_dump.dot"
+#define DER_GRAPH_DUMP_FILENAME   "graph_dump/der_tree_graph_dump.dot"
+#define CMD_TO_RUN_TREE_DUMP     "dot -Tsvg " GRAPH_DUMP_FILENAME \
                                  " -o graph_dump/tree_graph_dump.svg"
-#define CMD_TO_RUN_DER_TREE_DUMP "dot -Tsvg " DER_TREE_DUMP_FILENAME \
+#define CMD_TO_RUN_DER_TREE_DUMP "dot -Tsvg " DER_GRAPH_DUMP_FILENAME \
                                  " -o graph_dump/der_tree_graph_dump.svg"
 
 int main ()
@@ -35,8 +35,8 @@ int main ()
 
     FinishTex (TEXDUMP_FILENAME);
 
-    RunGraphDump (tree, TREE_DUMP_FILENAME, CMD_TO_RUN_TREE_DUMP);
-    RunGraphDump (der_tree, DER_TREE_DUMP_FILENAME, CMD_TO_RUN_DER_TREE_DUMP);
+    RunGraphDump (tree, GRAPH_DUMP_FILENAME, CMD_TO_RUN_TREE_DUMP);
+    RunGraphDump (der_tree, DER_GRAPH_DUMP_FILENAME, CMD_TO_RUN_DER_TREE_DUMP);
 
     printf ("Size of tree: %zu\n", CountTreeSize (tree));
     printf ("Size of der_tree: %zu\n", CountTreeSize (der_tree));
