@@ -3,6 +3,7 @@
 
 #include "headers/differentiator.h"
 #include "headers/tokens.h"
+#include "headers/nametable.h"
 
 void TokenizeInput (char* input_string, int* token_arr)
 {
@@ -13,7 +14,12 @@ void TokenizeInput (char* input_string, int* token_arr)
     int input_index = 0;
 
     while (input_string[input_index] != '\0') {
-        if (input_string[input_index++] == ' ') continue;
+        if (input_string[input_index] == ' ' ||
+            input_string[input_index] == '\t' ||
+            input_string[input_index] == '\n') {
+            input_index++;
+            continue;
+        }
 
         TOKENIZE_OP ("(", LEFT_BRACKET, 1);
         TOKENIZE_OP (")", RIGHT_BRACKET, 1);
@@ -34,6 +40,6 @@ void TokenizeInput (char* input_string, int* token_arr)
         TOKENIZE_IT ("arctg",  ARCTG_TOKEN,  5);
         TOKENIZE_IT ("arcctg", ARCCTG_TOKEN, 6);
 
-        
+
     }
 }
