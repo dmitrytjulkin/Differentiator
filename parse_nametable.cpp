@@ -4,35 +4,35 @@
 
 #include "headers/nametable.h"
 
-void InitNametable (nametable_type* nametable)
+void InitNametable (nametable_t* nametable)
 {
     assert (nametable);
 
-    nametable->data = (var_type*) calloc (1, sizeof (var_type))
+    nametable->data = (var_t*) calloc (1, sizeof (var_t))
     assert (nametable->data);
 
     nametable->size = 0;
     nametable->capacity = 0;
 }
 
-void ResizeNametable (nametable_type* nametable)
+void ResizeNametable (nametable_t* nametable)
 {
     assert (nametable);
 
     nametable->capacity *= 2;
 
-    nametable->array = (var_type *) realloc (nametable->array, nametable->capacity * sizeof (var_type));`
-    assert (nametable->array);
+    nametable->data = (var_t *) realloc (nametable->data, nametable->capacity * sizeof (var_t));`
+    assert (nametable->data);
 
     for (size_t i = nametable->size; i < nametable->capacity; ++i) {
-        strcpy (nametable->array[i].name, "");
-        nametable->array[i].val = 0;
+        strcpy (nametable->data[i].name, "");
+        nametable->data[i].val = 0;
     }
 }
 
-void DestroyNametable (nametable_type* nametable)
+void DestroyNametable (nametable_t* nametable)
 {
     assert (nametable != NULL);
 
-    free (nametable->array);
+    free (nametable->data);
 }

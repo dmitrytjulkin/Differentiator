@@ -5,7 +5,7 @@
 #include "headers/tokens.h"
 #include "headers/nametable.h"
 
-void TokenizeInput (char* input_string, int* token_arr)
+void TokenizeInput (char* input_string, int* token_arr,  nametable_t* nametable)
 {
     assert (input_string);
     assert (token_arr);
@@ -40,6 +40,36 @@ void TokenizeInput (char* input_string, int* token_arr)
         TOKENIZE_IT ("arctg",  ARCTG_TOKEN,  5);
         TOKENIZE_IT ("arcctg", ARCCTG_TOKEN, 6);
 
-
+        TokenizeVar ();
     }
+}
+
+bool TokenizeVar (const char** input_string, token_t* token_arr,
+                  size_t* step, nametable_t* nametable)
+{
+    assert (input_string != NULL);
+    assert (token_arr != NULL);
+    assert (step != NULL);
+
+    if ((**input_string < 'a' || **input_string > 'z')
+        && **input_string != '_')
+        return false;
+
+    token_arr[*step].code = VAR_TOKEN;
+
+    char var[INIT_VAR_SIZE] = { 0 };
+    int index = 0;
+
+    do {
+        var[index++] = **input_string;
+        ++*input_string;
+    } while (('a' <= **input_string && **input_string <= 'z')
+            || **input_string == '_'
+            || ('0' <= **input_string && **input_string <= '9'));
+
+    strcpy (token_arr[(*step)++], var);
+
+    PasteToNametable (nametable, var);
+
+    return true;
 }

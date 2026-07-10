@@ -1,3 +1,7 @@
+#pragma once
+
+const int INIT_VAR_SIZE = 10;
+
 enum token_codes {
     ADD_TOKEN,
     SUB_TOKEN,
@@ -17,6 +21,8 @@ enum token_codes {
     ARCCOS_TOKEN,
     ARCTG_TOKEN,
     ARCCTG_TOKEN,
+
+    VAR_TOKEN,
 
     COUNT_OF_TOKENS
 };
