@@ -2,19 +2,11 @@
 #include <assert.h>
 
 #include "headers/differentiator.h"
+#include "headers/tokens.h"
 
-#define TOKENIZE_OP(operation, op_code)               \
-    if (input_string[input_index] == operation) {    \
-        token_arr[step++] = op_code;                  \
-        input_index++                                \
-        continue;                                     \
-    }
-
-
-int* TokenizeInput (char* input_string, int* token_arr)
+void TokenizeInput (char* input_string, int* token_arr)
 {
     assert (input_string);
-    // assert (input_index);
     assert (token_arr);
 
     int step = 0;
@@ -31,7 +23,17 @@ int* TokenizeInput (char* input_string, int* token_arr)
         TOKENIZE_OP ("/", DIV, 1);
         TOKENIZE_OP ("^", POW, 1);
 
-        TOKENIZE_IT ("")
+        TOKENIZE_IT ("sqrt",   SQRT_TOKEN,   4);
+        TOKENIZE_IT ("ln",     LN_TOKEN,     2);
+        TOKENIZE_IT ("sin",    SIN_TOKEN,    3);
+        TOKENIZE_IT ("cos",    COS_TOKEN,    3);
+        TOKENIZE_IT ("tg",     TG_TOKEN,     2);
+        TOKENIZE_IT ("ctg",    CTG_TOKEN,    3);
+        TOKENIZE_IT ("arcsin", ARCSIN_TOKEN, 6);
+        TOKENIZE_IT ("arccos", ARCCOS_TOKEN, 6);
+        TOKENIZE_IT ("arctg",  ARCTG_TOKEN,  5);
+        TOKENIZE_IT ("arcctg", ARCCTG_TOKEN, 6);
 
+        
     }
 }

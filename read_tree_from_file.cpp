@@ -6,6 +6,7 @@
 #include "headers/differentiator.h"
 
 const int EXTRA_SIZE = 10;
+const int INIT_SIZE = 1000;
 
 void SyntaxError (const char* funcname, int line);
 void ResizeValIfNeed (char** val, size_t* val_size, size_t val_index);
@@ -24,8 +25,8 @@ tree_t* CreateTreeFromFile ()
     assert (input_ptr);
 
     char* input_string = ReadInput (input_ptr);
-    int* input_array = TokenizeInput(input_string);
-    assert (input_array);
+    int* input_array[INIT_SIZE] = {};
+    TokenizeInput(input_string, input_array);
 
     tree_t* tree = InitTree ();
     tree->root = GetExpression (input_array);
