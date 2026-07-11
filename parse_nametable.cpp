@@ -19,7 +19,7 @@ void ResizeNametable (nametable_t* nametable)
 {
     assert (nametable);
 
-    nametable->capacity *= 2;
+    nametable->capacity = nametable->capacity + CAPACITY_ADDITION;
 
     nametable->data = (var_t *) realloc (nametable->data, nametable->capacity * sizeof (var_t));`
     assert (nametable->data);

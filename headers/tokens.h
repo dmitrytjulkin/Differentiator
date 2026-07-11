@@ -1,6 +1,6 @@
 #pragma once
 
-const int INIT_VAR_SIZE = 10;
+#include "nametable.h"
 
 enum token_codes {
     ADD_TOKEN,
@@ -27,11 +27,16 @@ enum token_codes {
     COUNT_OF_TOKENS
 };
 
-void TokenizeInput (char* input_string, int* token_arr);
+struct token_t {
+    token_codes code;
+    var_t data;
+};
+
+void TokenizeInput (char* input_string, token_t* token_arr);
 
 #define TOKENIZE_OP(operation, op_code, op_size)                        \
     if (strcmp(input_string[input_index], operation, op_size) == 0){    \
-        token_arr[step++] = op_code;                                    \
+        token_arr[step++].code = op_code;                                    \
         input_index += op_size;                                         \
         continue;                                                       \
     }

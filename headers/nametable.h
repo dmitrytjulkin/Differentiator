@@ -1,12 +1,15 @@
 #pragma once
 
+const int INIT_VAR_SIZE = 10;
+const int CAPACITY_ADDITION = 10;
+
 struct var_t {
-    char name[10];
+    char name[INIT_VAR_SIZE];
     int val;
 };
 
 struct nametable_t {
-    var_type* data;
+    var_t* data;
     size_t size;
     size_t capacity;
 };
