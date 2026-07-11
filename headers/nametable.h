@@ -1,7 +1,6 @@
 #pragma once
 
 const int INIT_VAR_SIZE = 10;
-const int CAPACITY_ADDITION = 10;
 
 struct var_t {
     char name[INIT_VAR_SIZE];

@@ -4,9 +4,9 @@
 #include <sys/stat.h>
 
 #include "headers/differentiator.h"
+#include "headers/tokens.h"
 
 const int EXTRA_SIZE = 10;
-const int INIT_SIZE = 1000;
 
 void SyntaxError (const char* funcname, int line);
 void ResizeValIfNeed (char** val, size_t* val_size, size_t val_index);
@@ -19,25 +19,26 @@ node_t* GetVar      (char* s, int* index);
 node_t* GetFunc     (char* s, int* index, node_t* var);
 node_t* GetPow      (char* s, int* index);
 
-tree_t* CreateTreeFromFile ()
+tree_t* CreateTreeFromFile (FILE* input_ptr)
 {
-    FILE* input_ptr = fopen ("input.txt", "r");
     assert (input_ptr);
 
     char* input_string = ReadInput (input_ptr);
-    int* input_array[INIT_SIZE] = {};
-    TokenizeInput(input_string, input_array);
+
+    token_array_t* input_array = {};
+    InitTokenArray (input_array);
+
+    TokenizeInput (input_string, input_array);
 
     tree_t* tree = InitTree ();
     tree->root = GetExpression (input_array);
 
     fclose (input_ptr);
-    free (input_array);
+    DestroyTokenArray (input_array);
 
     return tree;
 }
 
-// static
 void SyntaxError (const char* funcname, int line)
 {
     assert (funcname);
@@ -47,7 +48,7 @@ void SyntaxError (const char* funcname, int line)
     assert (0);
 }
 
-node_t* GetExpression (char* s)
+node_t* GetExpression (token_array_t* s)
 {
     assert (s);
 

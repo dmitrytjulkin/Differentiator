@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <sys/stat.h>
 
-#include "differentiator.h"
+#include "headers/differentiator.h"
 
 char* ReadInput (FILE* input)
 {

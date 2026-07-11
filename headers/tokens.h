@@ -32,7 +32,17 @@ struct token_t {
     var_t data;
 };
 
-void TokenizeInput (char* input_string, token_t* token_arr);
+struct token_array_t {
+    token_t data;
+    size_t size;
+    size_t capacity;
+};
+
+void InitTokenArray   (token_array_t* token_array);
+void ResizeTokenArray  (token_array_t* token_array);
+void DestroyTokenArray (token_array_t* token_array);
+
+void TokenizeInput (char* input_string, token_t* token_arr,  nametable_t* nametable);
 
 #define TOKENIZE_OP(operation, op_code, op_size)                        \
     if (strcmp(input_string[input_index], operation, op_size) == 0){    \

@@ -9,15 +9,17 @@ bool TokenizeVar      (const char** input_string, token_t* token_arr,
                        size_t* step, nametable_t* nametable);
 void PasteToNametable (nametable_type* nametable, char* var);
 
-void TokenizeInput (char* input_string, token_t* token_arr,  nametable_t* nametable)
+void TokenizeInput (char* input_string, token_array_t* token_array,  nametable_t* nametable)
 {
     assert (input_string);
-    assert (token_arr);
+    assert (token_array);
 
     int step = 0;
     int input_index = 0;
 
     while (input_string[input_index] != '\0') {
+        if (token_array->capacity - token_array->size == 1)
+            ResizeTokenArray (token_array);
         if (input_string[input_index] == ' ' ||
             input_string[input_index] == '\t' ||
             input_string[input_index] == '\n') {
@@ -44,22 +46,22 @@ void TokenizeInput (char* input_string, token_t* token_arr,  nametable_t* nameta
         TOKENIZE_OP ("arctg",  ARCTG_TOKEN,  5);
         TOKENIZE_OP ("arcctg", ARCCTG_TOKEN, 6);
 
-        TokenizeVar (&input_string, token_arr, &step, nametable);
+        TokenizeVar (&input_string, token_array, &step, nametable);
     }
 }
 
-bool TokenizeVar (const char** input_string, token_t* token_arr,
+bool TokenizeVar (const char** input_string, token_array_t* token_array,
                   size_t* step, nametable_t* nametable)
 {
-    assert (input_string != NULL);
-    assert (token_arr != NULL);
-    assert (step != NULL);
+    assert (input_string);
+    assert (token_array);
+    assert (step);
+    assert (nametable);
 
-    if ((**input_string < 'a' || **input_string > 'z')
-        && **input_string != '_')
+    if ((**input_string < 'a' || **input_string > 'z') && **input_string != '_')
         return false;
 
-    token_arr[*step].code = VAR_TOKEN;
+    token_array.data[*step].code = VAR_TOKEN;
 
     char var[INIT_VAR_SIZE] = { 0 };
     int index = 0;
@@ -71,7 +73,7 @@ bool TokenizeVar (const char** input_string, token_t* token_arr,
             || **input_string == '_'
             || ('0' <= **input_string && **input_string <= '9'));
 
-    strcpy (token_arr[(*step)++].data.name, var);
+    strcpy (token_array.data[(*step)++].name, var);
 
     PasteToNametable (nametable, var);
 
