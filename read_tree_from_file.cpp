@@ -48,15 +48,15 @@ void SyntaxError (const char* funcname, int line)
     assert (0);
 }
 
-node_t* GetExpression (token_array_t* s)
+node_t* GetExpression (token_array_t* token_array)
 {
-    assert (s);
+    assert (token_array);
 
     int index = 0;
 
-    node_t* node = GetAddOrSub (s, &index);
+    node_t* node = GetAddOrSub (token_array, &index);
 
-    if (s[index] != '\0' && s[index] != '\n')
+    if (index > token_array->size)
         SyntaxError (__func__, __LINE__);
 
     ++index;
@@ -64,14 +64,14 @@ node_t* GetExpression (token_array_t* s)
     return node;
 }
 
-node_t* GetNum (char* s, int* index)
+node_t* GetNum (token_array_t* token_array, int* index)
 {
-    assert (s);
+    assert (token_array);
     assert (index);
 
     int val = 0;
 
-    while ('0' <= s[*index] && s[*index] <= '9') {
+    while ('0' <= token_array[*index] && token_array[*index] <= '9') {
         val = 10 * val + (s[*index] - '0');
 
         ++*index;
@@ -83,19 +83,19 @@ node_t* GetNum (char* s, int* index)
     return NewNode (NUM, tmp, NULL, NULL);
 }
 
-node_t* GetAddOrSub (char* s, int* index)
+node_t* GetAddOrSub (token_array_t* token_array, int* index)
 {
-    assert (s);
+    assert (token_array);
     assert (index);
 
-    node_t* node = GetMulOrDiv (s, index);
+    node_t* node = GetMulOrDiv (token_array, index);
 
-    while (s[*index] == '+' || s[*index] == '-') {
-        int op = s[*index];
+    while (token_array[*index] == '+' || token_array[*index] == '-') {
+        int op = token_array[*index];
 
         ++*index;
 
-        node_t* node2 = GetMulOrDiv (s, index);
+        node_t* node2 = GetMulOrDiv (token_array, index);
 
         if (op == '+')
             node = NewNode (OP, {.op = ADD}, node, node2);

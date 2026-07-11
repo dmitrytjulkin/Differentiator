@@ -14,12 +14,13 @@ void TokenizeInput (char* input_string, token_array_t* token_array,  nametable_t
     assert (input_string);
     assert (token_array);
 
-    int step = 0;
-    int input_index = 0;
+    size_t step = 0;
+    size_t input_index = 0;
 
     while (input_string[input_index] != '\0') {
         if (token_array->capacity - token_array->size == 1)
             ResizeTokenArray (token_array);
+
         if (input_string[input_index] == ' ' ||
             input_string[input_index] == '\t' ||
             input_string[input_index] == '\n') {
@@ -27,13 +28,13 @@ void TokenizeInput (char* input_string, token_array_t* token_array,  nametable_t
             continue;
         }
 
-        TOKENIZE_OP ("(", LEFT_BRACKET, 1);
-        TOKENIZE_OP (")", RIGHT_BRACKET, 1);
-        TOKENIZE_OP ("+", ADD, 1);
-        TOKENIZE_OP ("-", SUB, 1);
-        TOKENIZE_OP ("*", MUL, 1);
-        TOKENIZE_OP ("/", DIV, 1);
-        TOKENIZE_OP ("^", POW, 1);
+        TOKENIZE_OP ("(", LEFT_BRACKET_TOKEN, 1);
+        TOKENIZE_OP (")", RIGHT_BRACKET_TOKEN, 1);
+        TOKENIZE_OP ("+", ADD_TOKEN, 1);
+        TOKENIZE_OP ("-", SUB_TOKEN, 1);
+        TOKENIZE_OP ("*", MUL_TOKEN, 1);
+        TOKENIZE_OP ("/", DIV_TOKEN, 1);
+        TOKENIZE_OP ("^", POW_TOKEN, 1);
 
         TOKENIZE_OP ("sqrt",   SQRT_TOKEN,   4);
         TOKENIZE_OP ("ln",     LN_TOKEN,     2);
@@ -46,9 +47,19 @@ void TokenizeInput (char* input_string, token_array_t* token_array,  nametable_t
         TOKENIZE_OP ("arctg",  ARCTG_TOKEN,  5);
         TOKENIZE_OP ("arcctg", ARCCTG_TOKEN, 6);
 
+        TokenizeNum (&input_string, token_array, &step);
         TokenizeVar (&input_string, token_array, &step, nametable);
     }
 }
+
+void TokenizeNum (const char** input_string, token_array_t* token_array, size_t* step)
+{
+    assert (input_string);
+    assert (token_array);
+    assert (step);
+
+}
+
 
 bool TokenizeVar (const char** input_string, token_array_t* token_array,
                   size_t* step, nametable_t* nametable)
