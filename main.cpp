@@ -5,6 +5,7 @@
 #include "headers/differentiator.h"
 #include "headers/dump.h"
 
+
 #define TEXDUMP_FILENAME         "tex_dump/tree.tex"
 #define GRAPH_DUMP_FILENAME       "graph_dump/tree_graph_dump.dot"
 #define DER_GRAPH_DUMP_FILENAME   "graph_dump/der_tree_graph_dump.dot"

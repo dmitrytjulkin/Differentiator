@@ -23,19 +23,19 @@ tree_t* CreateTreeFromFile (FILE* input_ptr)
 
     char* input_string = ReadInput (input_ptr);
 
-    token_array_t* input_array = {};
-    InitTokenArray (input_array);
+    token_array_t input_array = {};
+    InitTokenArray (&input_array);
 
-    nametable_t* nametable = {};
-    InitNametable (nametable);
+    nametable_t nametable = {};
+    InitNametable (&nametable);
 
-    TokenizeInput (input_string, input_array, nametable);
+    TokenizeInput (input_string, &input_array, &nametable);
 
     tree_t* tree = InitTree ();
-    tree->root = GetExpression (input_array);
+    tree->root = GetExpression (&input_array);
 
     fclose (input_ptr);
-    DestroyTokenArray (input_array);
+    DestroyTokenArray (&input_array);
 
     return tree;
 }
