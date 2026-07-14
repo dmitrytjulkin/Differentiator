@@ -22,6 +22,7 @@ enum token_codes {
     ARCTG_TOKEN,
     ARCCTG_TOKEN,
 
+    NUM_TOKEN,
     VAR_TOKEN,
 
     COUNT_OF_TOKENS
@@ -33,7 +34,7 @@ struct token_t {
 };
 
 struct token_array_t {
-    token_t data;
+    token_t* data;
     size_t size;
     size_t capacity;
 };

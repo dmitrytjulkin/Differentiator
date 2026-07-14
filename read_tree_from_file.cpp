@@ -59,8 +59,6 @@ node_t* GetExpression (token_array_t* token_array)
     if (index > token_array->size)
         SyntaxError (__func__, __LINE__);
 
-    ++index;
-
     return node;
 }
 
@@ -71,11 +69,11 @@ node_t* GetNum (token_array_t* token_array, int* index)
 
     int val = 0;
 
-    while ('0' <= token_array[*index] && token_array[*index] <= '9') {
-        val = 10 * val + (s[*index] - '0');
+    if (token_array->data[*index].code != NUM_TOKEN)
+        SyntaxError (__func__, __LINE__);
 
-        ++*index;
-    }
+    val = token_array->data[*index++].data.val;
+    ++*index;
 
     data_t tmp = {.num = 0};
     tmp.num = val;
@@ -90,58 +88,60 @@ node_t* GetAddOrSub (token_array_t* token_array, int* index)
 
     node_t* node = GetMulOrDiv (token_array, index);
 
-    while (token_array[*index] == '+' || token_array[*index] == '-') {
-        int op = token_array[*index];
+    while (token_array->data[*index].code == ADD_TOKEN ||
+           token_array->data[*index].code == SUB_TOKEN) {
+        token_codes op = token_array[*index];
 
         ++*index;
 
         node_t* node2 = GetMulOrDiv (token_array, index);
 
-        if (op == '+')
+        if (op == ADD_TOKEN)
             node = NewNode (OP, {.op = ADD}, node, node2);
 
-        if (op == '-')
+        if (op == SUB_TOKEN)
             node = NewNode (OP, {.op = SUB}, node, node2);
     }
 
     return node;
 }
 
-node_t* GetMulOrDiv (char* s, int* index)
+node_t* GetMulOrDiv (token_array_t* token_array, int* index)
 {
-    assert (s);
+    assert (token_array);
     assert (index);
 
-    node_t* node = GetPow (s, index);
+    node_t* node = GetPow (token_array, index);
 
-    while (s[*index] == '*' || s[*index] == '/') {
-        int op = s[*index];
+    while (token_array->data[*index].code == MUL_TOKEN ||
+           token_array->data[*index].code == SUB_TOKEN) {
+        token_codes op = token_array->data[*index].code;
 
         ++*index;
 
-        node_t* node2 = GetPow (s, index);
+        node_t* node2 = GetPow (token_array, index);
 
-        if (op == '*')
+        if (op == MUL_TOKEN)
             node = NewNode (OP, {.op = MUL}, node, node2);
 
-        if (op == '/')
+        if (op == SUB_TOKEN)
             node = NewNode (OP, {.op = DIV}, node, node2);
     }
 
     return node;
 }
 
-node_t* GetPow (char* s, int* index)
+node_t* GetPow (token_array_t* token_array, int* index)
 {
-    assert (s);
+    assert (token_array);
     assert (index);
 
-    node_t* node = GetBrac (s, index);
+    node_t* node = GetBrac (token_array, index);
 
-    while (s[*index] == '^') {
+    while (token_array->data[*index].code == POW_TOKEN) {
         ++*index;
 
-        node_t* node2 = GetBrac (s, index);
+        node_t* node2 = GetBrac (token_array, index);
 
         node = NewNode (OP, {.op = POW}, node, node2);
     }
@@ -149,19 +149,19 @@ node_t* GetPow (char* s, int* index)
     return node;
 }
 
-node_t* GetBrac (char* s, int* index)
+node_t* GetBrac (token_array_t* token_array, int* index)
 {
-    assert (s);
+    assert (token_array);
     assert (index);
 
     node_t* node = InitNode ();
 
-    if (s[*index] == '(') {
+    if (token_array->data[*index].code == LEFT_BRACKET_TOKEN) {
         ++*index;
 
-        node = GetAddOrSub (s, index);
+        node = GetAddOrSub (token_array, index);
 
-        if (s[*index] != ')')
+        if (token_array->data[*index].code != RIGHT_BRACKET_TOKEN)
             SyntaxError (__func__, __LINE__);
 
         ++*index;
@@ -169,21 +169,18 @@ node_t* GetBrac (char* s, int* index)
         return node;
     }
 
-    if ('0' <= s[*index] && s[*index] <= '9')
-        return GetNum (s, index);
+    if (token_array->data[*index].code == NUM_TOKEN)
+        return GetNum (token_array, index);
 
-    if ('a' <= s[*index] && s[*index] <= 'z') {
-        node = GetVar (s, index);
+    if (token_array->data[*index].code == VAR_TOKEN)
+        return GetVar (token_array, index);
 
-        node = GetFunc (s, index, node);
-    }
-
-    return node;
+    return GetFunc (token_array, index, node);
 }
 
-node_t* GetVar (char* s, int* index)
+node_t* GetVar (token_array_t* token_array, int* index)
 {
-    assert (s);
+    assert (token_array);
     assert (index);
 
     char* val = (char*) calloc (EXTRA_SIZE, sizeof (char));
@@ -192,17 +189,17 @@ node_t* GetVar (char* s, int* index)
     size_t val_size = EXTRA_SIZE;
     size_t val_index = 0;
 
-    if ('a' <= s[*index] && s[*index] <= 'z') {
-        val[val_index++] = s[*index];
+    if ('a' <= token_array[*index] && token_array[*index] <= 'z') {
+        val[val_index++] = token_array[*index];
 
         ++*index;
     }
 
-    while (('a' <= s[*index] && s[*index] <= 'z') ||
-           ('0' <= s[*index] && s[*index] <= '9') || s[*index] == '_') {
+    while (('a' <= token_array[*index] && token_array[*index] <= 'z') ||
+           ('0' <= token_array[*index] && token_array[*index] <= '9') || token_array[*index] == '_') {
         ResizeValIfNeed (&val, &val_size, val_index);
 
-        val[val_index++] = s[*index];
+        val[val_index++] = token_array[*index];
 
         ++*index;
     }

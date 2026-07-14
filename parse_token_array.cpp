@@ -24,7 +24,7 @@ void ResizeTokenArray (token_array_t* token_array)
 
     token_array->capacity = token_array->capacity + CAPACITY_ADDITION;
 
-    token_array->data = (token_t *) realloc (token_array->data, token_array->capacity * sizeof (token_t));`
+    token_array->data = (token_t *) realloc (token_array->data, token_array->capacity * sizeof (token_t));
     assert (token_array->data);
 
     for (size_t i = token_array->size; i < token_array->capacity; ++i) {

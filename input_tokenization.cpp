@@ -5,9 +5,10 @@
 #include "headers/tokens.h"
 #include "headers/nametable.h"
 
-bool TokenizeVar      (const char** input_string, token_t* token_arr,
-                       size_t* step, nametable_t* nametable);
-void PasteToNametable (nametable_type* nametable, char* var);
+void TokenizeNum (const char** input_string, token_array_t* token_array, size_t* step);
+bool TokenizeVar (const char** input_string, token_array_t* token_array,
+                  size_t* step, nametable_t* nametable);
+void PasteToNametable (nametable_t* nametable, char* var);
 
 void TokenizeInput (char* input_string, token_array_t* token_array,  nametable_t* nametable)
 {
@@ -58,6 +59,10 @@ void TokenizeNum (const char** input_string, token_array_t* token_array, size_t*
     assert (token_array);
     assert (step);
 
+    if (**input_string < '0' || **input_string > '9')
+        return;
+
+    token_array->data[*step].code = NUM_TOKEN;
 }
 
 
@@ -73,6 +78,7 @@ bool TokenizeVar (const char** input_string, token_array_t* token_array,
         return false;
 
     token_array.data[*step].code = VAR_TOKEN;
+    step++;
 
     char var[INIT_VAR_SIZE] = { 0 };
     int index = 0;
@@ -91,7 +97,7 @@ bool TokenizeVar (const char** input_string, token_array_t* token_array,
     return true;
 }
 
-void PasteToNametable (nametable_type* nametable, char* var)
+void PasteToNametable (nametable_t* nametable, char* var)
 {
     assert (nametable);
     assert (var);
