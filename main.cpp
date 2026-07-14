@@ -13,10 +13,16 @@
 #define CMD_TO_RUN_DER_TREE_DUMP "dot -Tsvg " DER_GRAPH_DUMP_FILENAME \
                                  " -o graph_dump/der_tree_graph_dump.svg"
 
+// TODO correct and improve optimisation
+// TODO think about containing constants
+
 int main ()
 {
+    FILE* input_ptr = fopen ("input.txt", "r");
+    assert (input_ptr);
+
     tree_t* tree = InitTree ();
-    tree = CreateTreeFromFile ();
+    tree = CreateTreeFromFile (input_ptr);
 
     RunTexDump (TEXDUMP_FILENAME, tree);
 

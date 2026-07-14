@@ -7,9 +7,9 @@ node_t* Optimize (tree_t* tree);
 node_t* DiffNode (node_t* node);
 node_t* CopyNode (node_t* node);
 
-tree_t* CreateTreeFromFile ();
+tree_t* CreateTreeFromFile (FILE* input_ptr);
+
 char* ReadInput (FILE* input);
-node_t* GetExpression (char* s);
 
 #define OPTIMIZE_IF_NUM_OP_NUM(operation)                                \
     if (node->left->expr == NUM && node->right->expr == NUM) {           \

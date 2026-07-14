@@ -6,17 +6,16 @@
 #include "headers/differentiator.h"
 #include "headers/tokens.h"
 
-const int EXTRA_SIZE = 10;
-
 void SyntaxError (const char* funcname, int line);
 
-node_t* GetAddOrSub (token_array_t* token_array, int* index);
-node_t* GetMulOrDiv (token_array_t* token_array, int* index);
-node_t* GetBrac     (token_array_t* token_array, int* index);
-node_t* GetNum      (token_array_t* token_array, int* index);
-node_t* GetVar      (token_array_t* token_array, int* index);
-node_t* GetFunc     (token_array_t* token_array, int* index);
-node_t* GetPow      (token_array_t* token_array, int* index);
+node_t* GetExpression (token_array_t* token_array);
+node_t* GetAddOrSub (token_array_t* token_array, size_t* index);
+node_t* GetMulOrDiv (token_array_t* token_array, size_t* index);
+node_t* GetBrac     (token_array_t* token_array, size_t* index);
+node_t* GetNum      (token_array_t* token_array, size_t* index);
+node_t* GetVar      (token_array_t* token_array, size_t* index);
+node_t* GetFunc     (token_array_t* token_array, size_t* index);
+node_t* GetPow      (token_array_t* token_array, size_t* index);
 
 tree_t* CreateTreeFromFile (FILE* input_ptr)
 {
@@ -27,7 +26,10 @@ tree_t* CreateTreeFromFile (FILE* input_ptr)
     token_array_t* input_array = {};
     InitTokenArray (input_array);
 
-    TokenizeInput (input_string, input_array);
+    nametable_t* nametable = {};
+    InitNametable (nametable);
+
+    TokenizeInput (input_string, input_array, nametable);
 
     tree_t* tree = InitTree ();
     tree->root = GetExpression (input_array);
@@ -51,7 +53,7 @@ node_t* GetExpression (token_array_t* token_array)
 {
     assert (token_array);
 
-    int index = 0;
+    size_t index = 0;
 
     node_t* node = GetAddOrSub (token_array, &index);
 
@@ -61,7 +63,7 @@ node_t* GetExpression (token_array_t* token_array)
     return node;
 }
 
-node_t* GetAddOrSub (token_array_t* token_array, int* index)
+node_t* GetAddOrSub (token_array_t* token_array, size_t* index)
 {
     assert (token_array);
     assert (index);
@@ -70,7 +72,7 @@ node_t* GetAddOrSub (token_array_t* token_array, int* index)
 
     while (token_array->data[*index].code == ADD_TOKEN ||
            token_array->data[*index].code == SUB_TOKEN) {
-        token_codes op = token_array[*index];
+        token_codes op = token_array->data[*index].code;
 
         ++*index;
 
@@ -86,7 +88,7 @@ node_t* GetAddOrSub (token_array_t* token_array, int* index)
     return node;
 }
 
-node_t* GetMulOrDiv (token_array_t* token_array, int* index)
+node_t* GetMulOrDiv (token_array_t* token_array, size_t* index)
 {
     assert (token_array);
     assert (index);
@@ -111,7 +113,7 @@ node_t* GetMulOrDiv (token_array_t* token_array, int* index)
     return node;
 }
 
-node_t* GetPow (token_array_t* token_array, int* index)
+node_t* GetPow (token_array_t* token_array, size_t* index)
 {
     assert (token_array);
     assert (index);
@@ -129,7 +131,7 @@ node_t* GetPow (token_array_t* token_array, int* index)
     return node;
 }
 
-node_t* GetBrac (token_array_t* token_array, int* index)
+node_t* GetBrac (token_array_t* token_array, size_t* index)
 {
     assert (token_array);
     assert (index);
@@ -158,7 +160,7 @@ node_t* GetBrac (token_array_t* token_array, int* index)
     return GetFunc (token_array, index);
 }
 
-node_t* GetNum (token_array_t* token_array, int* index)
+node_t* GetNum (token_array_t* token_array, size_t* index)
 {
     assert (token_array);
     assert (index);
@@ -168,7 +170,7 @@ node_t* GetNum (token_array_t* token_array, int* index)
     if (token_array->data[*index].code != NUM_TOKEN)
         SyntaxError (__func__, __LINE__);
 
-    val = token_array->data[*index++].data.val;
+    val = token_array->data[*index++].type.num;
     ++*index;
 
     data_t tmp = {.num = 0};
@@ -177,12 +179,12 @@ node_t* GetNum (token_array_t* token_array, int* index)
     return NewNode (NUM, tmp, NULL, NULL);
 }
 
-node_t* GetVar (token_array_t* token_array, int* index)
+node_t* GetVar (token_array_t* token_array, size_t* index)
 {
     assert (token_array);
     assert (index);
 
-    char* val = token_array->data[*index].data.name;
+    char* val = token_array->data[*index].type.var.name;
 
     data_t tmp = {.var = ""};
     strcpy (tmp.var, val);
@@ -192,11 +194,11 @@ node_t* GetVar (token_array_t* token_array, int* index)
     return node;
 }
 
-node_t* GetFunc (token_array_t* token_array, int* index)
+node_t* GetFunc (token_array_t* token_array, size_t* index)
 {
     assert (token_array);
     assert (index);
 
-    return NewNode (FUNC, token_array->data[*index].type.func, NULL, NULL);
+    return NewNode (FUNC, {.func = token_array->data[*index].type.func}, NULL, NULL);
 }
 

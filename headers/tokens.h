@@ -53,8 +53,8 @@ void DestroyTokenArray (token_array_t* token_array);
 void TokenizeInput (const char* input_string, token_array_t* token_arr,  nametable_t* nametable);
 
 #define TOKENIZE_OP(operation, op_code)                                 \
-    if (input_string[input_index] == *operation){                        \
-        token_array->data[token_array_index++].code = op_code;                       \
+    if (input_string[input_index] == *operation){                       \
+        token_array->data[token_array_index++].code = op_code;          \
         ++input_index;                                                  \
         continue;                                                       \
     }

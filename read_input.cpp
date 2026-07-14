@@ -4,6 +4,8 @@
 
 #include "headers/differentiator.h"
 
+const int EXTRA_SIZE = 10;
+
 char* ReadInput (FILE* input)
 {
     assert (input);

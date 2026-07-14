@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "headers/nametable.h"
 
@@ -11,7 +12,7 @@ void InitNametable (nametable_t* nametable)
 {
     assert (nametable);
 
-    nametable->data = (var_t*) calloc (INIT_SIZE, sizeof (var_t))
+    nametable->data = (var_t*) calloc (INIT_SIZE, sizeof (var_t));
     assert (nametable->data);
 
     nametable->size = 0;
@@ -24,7 +25,7 @@ void ResizeNametable (nametable_t* nametable)
 
     nametable->capacity = nametable->capacity + CAPACITY_ADDITION;
 
-    nametable->data = (var_t *) realloc (nametable->data, nametable->capacity * sizeof (var_t));`
+    nametable->data = (var_t *) realloc (nametable->data, nametable->capacity * sizeof (var_t));
     assert (nametable->data);
 
     for (size_t i = nametable->size; i < nametable->capacity; ++i) {

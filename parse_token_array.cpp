@@ -27,10 +27,8 @@ void ResizeTokenArray (token_array_t* token_array)
     token_array->data = (token_t *) realloc (token_array->data, token_array->capacity * sizeof (token_t));
     assert (token_array->data);
 
-    for (size_t i = token_array->size; i < token_array->capacity; ++i) {
-        strcpy (token_array->data[i].name, "");
-        token_array->data[i].val = 0;
-    }
+    for (size_t i = token_array->size; i < token_array->capacity; ++i)
+        token_array->data[i].type.num = 0;
 }
 
 void DestroyTokenArray (token_array_t* token_array)
