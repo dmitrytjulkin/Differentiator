@@ -15,7 +15,9 @@ undefined,unreachable,vla-bound,vptr"
 
 
 g++ main.cpp differentiator.cpp optimize_tree.cpp read_tree_from_file.cpp \
-    list_of_func_and_op.cpp work_with_dumps/clear_dump.cpp \
+    list_of_func_and_op.cpp read_input.cpp parse_token_array.cpp\
+    parse_nametable.cpp input_tokenization.cpp \
+    work_with_dumps/clear_dump.cpp \
     work_with_dumps/build_graph_dump.cpp work_with_dumps/build_tex_dump.cpp \
     work_with_tree/free_tree.cpp work_with_tree/get_tree_size.cpp \
     work_with_tree/init_tree.cpp work_with_tree/make_or_delete_node.cpp \

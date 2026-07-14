@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <assert.h>
+#include <string.h>
 
 #include "headers/differentiator.h"
 #include "headers/tokens.h"
@@ -11,7 +12,7 @@ bool TokenizeVar (const char** input_string, token_array_t* token_array,
                   size_t* token_array_index, size_t* input_index, nametable_t* nametable);
 void PasteToNametable (nametable_t* nametable, char* var);
 
-void TokenizeInput (char* input_string, token_array_t* token_array,  nametable_t* nametable)
+void TokenizeInput (const char* input_string, token_array_t* token_array,  nametable_t* nametable)
 {
     assert (input_string);
     assert (token_array);
@@ -38,16 +39,23 @@ void TokenizeInput (char* input_string, token_array_t* token_array,  nametable_t
         TOKENIZE_OP ("/", DIV_TOKEN);
         TOKENIZE_OP ("^", POW_TOKEN);
 
-        TOKENIZE_FUNC ("sqrt",   SQRT_TOKEN,   4);
-        TOKENIZE_FUNC ("ln",     LN_TOKEN,     2);
-        TOKENIZE_FUNC ("sin",    SIN_TOKEN,    3);
-        TOKENIZE_FUNC ("cos",    COS_TOKEN,    3);
-        TOKENIZE_FUNC ("tg",     TG_TOKEN,     2);
-        TOKENIZE_FUNC ("ctg",    CTG_TOKEN,    3);
-        TOKENIZE_FUNC ("arcsin", ARCSIN_TOKEN, 6);
-        TOKENIZE_FUNC ("arccos", ARCCOS_TOKEN, 6);
-        TOKENIZE_FUNC ("arctg",  ARCTG_TOKEN,  5);
-        TOKENIZE_FUNC ("arcctg", ARCCTG_TOKEN, 6);
+        if (strncmp (input_string + input_index, "sqrt", 4) == 0) {
+            token_array->data[token_array_index].code = SQRT_TOKEN;
+            token_array->data[token_array_index++].type.func = SQRT;
+            input_index += 4;
+            continue;
+        }
+
+        TOKENIZE_FUNC ("sqrt",   4, SQRT,   SQRT_TOKEN);
+        TOKENIZE_FUNC ("ln",     2, LN,     LN_TOKEN);
+        TOKENIZE_FUNC ("sin",    3, SIN,    SIN_TOKEN);
+        TOKENIZE_FUNC ("cos",    3, COS,    COS_TOKEN);
+        TOKENIZE_FUNC ("tg",     2, TG,     TG_TOKEN);
+        TOKENIZE_FUNC ("ctg",    3, CTG,    CTG_TOKEN);
+        TOKENIZE_FUNC ("arcsin", 6, ARCSIN, ARCSIN_TOKEN);
+        TOKENIZE_FUNC ("arccos", 6, ARCCOS, ARCCOS_TOKEN);
+        TOKENIZE_FUNC ("arctg",  5, ARCTG,  ARCTG_TOKEN);
+        TOKENIZE_FUNC ("arcctg", 6, ARCCTG, ARCCTG_TOKEN);
 
         if (TokenizeNum (&input_string, token_array, &token_array_index, &input_index))
             continue;
@@ -96,7 +104,7 @@ bool TokenizeVar (const char** input_string, token_array_t* token_array,
     if ((**input_string < 'a' || **input_string > 'z') && **input_string != '_')
         return false;
 
-    token_array.data[*token_array_index].code = VAR_TOKEN;
+    token_array->data[*token_array_index].code = VAR_TOKEN;
 
     char var[INIT_VAR_SIZE] = {};
     int index = 0;

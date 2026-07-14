@@ -50,19 +50,19 @@ void InitTokenArray   (token_array_t* token_array);
 void ResizeTokenArray  (token_array_t* token_array);
 void DestroyTokenArray (token_array_t* token_array);
 
-void TokenizeInput (char* input_string, token_t* token_arr,  nametable_t* nametable);
+void TokenizeInput (const char* input_string, token_array_t* token_arr,  nametable_t* nametable);
 
 #define TOKENIZE_OP(operation, op_code)                                 \
-    if (input_string[input_index] == operation){                        \
-        token_array->data[step++].code = op_code;                       \
+    if (input_string[input_index] == *operation){                        \
+        token_array->data[token_array_index++].code = op_code;                       \
         ++input_index;                                                  \
         continue;                                                       \
     }
 
-#define TOKENIZE_FUNC(func, func_size, general_code, token_code)        \
-    if (strncmp (input_string + input_index, func, func_size) == 0) {   \
-        token_array->data[step].code = token_code;                      \
-        token_array->data[step++].type.func = general_code;             \
-        input_index += func_size;                                       \
-        continue;                                                       \
+#define TOKENIZE_FUNC(func_name, func_size, general_code, token_code)       \
+    if (strncmp (input_string + input_index, func_name, func_size) == 0) {  \
+        token_array->data[token_array_index].code = token_code;             \
+        token_array->data[token_array_index++].type.func = general_code;    \
+        input_index += func_size;                                           \
+        continue;                                                           \
     }

@@ -9,15 +9,14 @@
 const int EXTRA_SIZE = 10;
 
 void SyntaxError (const char* funcname, int line);
-void ResizeValIfNeed (char** val, size_t* val_size, size_t val_index);
 
-node_t* GetAddOrSub (char* s, int* index);
-node_t* GetMulOrDiv (char* s, int* index);
-node_t* GetBrac     (char* s, int* index);
-node_t* GetNum      (char* s, int* index);
-node_t* GetVar      (char* s, int* index);
-node_t* GetFunc     (char* s, int* index, node_t* var);
-node_t* GetPow      (char* s, int* index);
+node_t* GetAddOrSub (token_array_t* token_array, int* index);
+node_t* GetMulOrDiv (token_array_t* token_array, int* index);
+node_t* GetBrac     (token_array_t* token_array, int* index);
+node_t* GetNum      (token_array_t* token_array, int* index);
+node_t* GetVar      (token_array_t* token_array, int* index);
+node_t* GetFunc     (token_array_t* token_array, int* index);
+node_t* GetPow      (token_array_t* token_array, int* index);
 
 tree_t* CreateTreeFromFile (FILE* input_ptr)
 {
@@ -60,25 +59,6 @@ node_t* GetExpression (token_array_t* token_array)
         SyntaxError (__func__, __LINE__);
 
     return node;
-}
-
-node_t* GetNum (token_array_t* token_array, int* index)
-{
-    assert (token_array);
-    assert (index);
-
-    int val = 0;
-
-    if (token_array->data[*index].code != NUM_TOKEN)
-        SyntaxError (__func__, __LINE__);
-
-    val = token_array->data[*index++].data.val;
-    ++*index;
-
-    data_t tmp = {.num = 0};
-    tmp.num = val;
-
-    return NewNode (NUM, tmp, NULL, NULL);
 }
 
 node_t* GetAddOrSub (token_array_t* token_array, int* index)
@@ -176,6 +156,25 @@ node_t* GetBrac (token_array_t* token_array, int* index)
         return GetVar (token_array, index);
 
     return GetFunc (token_array, index);
+}
+
+node_t* GetNum (token_array_t* token_array, int* index)
+{
+    assert (token_array);
+    assert (index);
+
+    int val = 0;
+
+    if (token_array->data[*index].code != NUM_TOKEN)
+        SyntaxError (__func__, __LINE__);
+
+    val = token_array->data[*index++].data.val;
+    ++*index;
+
+    data_t tmp = {.num = 0};
+    tmp.num = val;
+
+    return NewNode (NUM, tmp, NULL, NULL);
 }
 
 node_t* GetVar (token_array_t* token_array, int* index)
