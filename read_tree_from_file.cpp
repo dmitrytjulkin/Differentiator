@@ -193,27 +193,11 @@ node_t* GetVar (token_array_t* token_array, int* index)
     return node;
 }
 
-node_t* GetFunc (char* s, int* index)
+node_t* GetFunc (token_array_t* token_array, int* index)
 {
-    assert (s);
+    assert (token_array);
     assert (index);
 
-
-    return NewNode (FUNC, , NULL, NULL);
-
-    for (int i = 0; i < COUNT_OF_FUNC; ++i) {
-        if (strcmp (node->data.var, list_of_func[i].name) == 0) {
-            node->expr = FUNC;
-
-            node->data.func = list_of_func[i].code;
-
-            L = NULL;
-            R = GetBrac (s, index);
-
-            break;
-        }
-    }
-
-    return node;
+    return NewNode (FUNC, token_array->data[*index].type.func, NULL, NULL);
 }
 

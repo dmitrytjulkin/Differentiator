@@ -52,9 +52,17 @@ void DestroyTokenArray (token_array_t* token_array);
 
 void TokenizeInput (char* input_string, token_t* token_arr,  nametable_t* nametable);
 
-#define TOKENIZE_OP(operation, op_code, op_size)                        \
-    if (strcmp(input_string[input_index], operation, op_size) == 0){    \
-        token_arr[step++].code = op_code;                                    \
-        input_index += op_size;                                         \
+#define TOKENIZE_OP(operation, op_code)                                 \
+    if (input_string[input_index] == operation){                        \
+        token_array->data[step++].code = op_code;                       \
+        ++input_index;                                                  \
+        continue;                                                       \
+    }
+
+#define TOKENIZE_FUNC(func, func_size, general_code, token_code)        \
+    if (strncmp (input_string + input_index, func, func_size) == 0) {   \
+        token_array->data[step].code = token_code;                      \
+        token_array->data[step++].type.func = general_code;             \
+        input_index += func_size;                                       \
         continue;                                                       \
     }

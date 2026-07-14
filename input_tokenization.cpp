@@ -30,24 +30,24 @@ void TokenizeInput (char* input_string, token_array_t* token_array,  nametable_t
             continue;
         }
 
-        TOKENIZE_OP ("(", LEFT_BRACKET_TOKEN, 1);
-        TOKENIZE_OP (")", RIGHT_BRACKET_TOKEN, 1);
-        TOKENIZE_OP ("+", ADD_TOKEN, 1);
-        TOKENIZE_OP ("-", SUB_TOKEN, 1);
-        TOKENIZE_OP ("*", MUL_TOKEN, 1);
-        TOKENIZE_OP ("/", DIV_TOKEN, 1);
-        TOKENIZE_OP ("^", POW_TOKEN, 1);
+        TOKENIZE_OP ("(", LEFT_BRACKET_TOKEN);
+        TOKENIZE_OP (")", RIGHT_BRACKET_TOKEN);
+        TOKENIZE_OP ("+", ADD_TOKEN);
+        TOKENIZE_OP ("-", SUB_TOKEN);
+        TOKENIZE_OP ("*", MUL_TOKEN);
+        TOKENIZE_OP ("/", DIV_TOKEN);
+        TOKENIZE_OP ("^", POW_TOKEN);
 
-        TOKENIZE_OP ("sqrt",   SQRT_TOKEN,   4);
-        TOKENIZE_OP ("ln",     LN_TOKEN,     2);
-        TOKENIZE_OP ("sin",    SIN_TOKEN,    3);
-        TOKENIZE_OP ("cos",    COS_TOKEN,    3);
-        TOKENIZE_OP ("tg",     TG_TOKEN,     2);
-        TOKENIZE_OP ("ctg",    CTG_TOKEN,    3);
-        TOKENIZE_OP ("arcsin", ARCSIN_TOKEN, 6);
-        TOKENIZE_OP ("arccos", ARCCOS_TOKEN, 6);
-        TOKENIZE_OP ("arctg",  ARCTG_TOKEN,  5);
-        TOKENIZE_OP ("arcctg", ARCCTG_TOKEN, 6);
+        TOKENIZE_FUNC ("sqrt",   SQRT_TOKEN,   4);
+        TOKENIZE_FUNC ("ln",     LN_TOKEN,     2);
+        TOKENIZE_FUNC ("sin",    SIN_TOKEN,    3);
+        TOKENIZE_FUNC ("cos",    COS_TOKEN,    3);
+        TOKENIZE_FUNC ("tg",     TG_TOKEN,     2);
+        TOKENIZE_FUNC ("ctg",    CTG_TOKEN,    3);
+        TOKENIZE_FUNC ("arcsin", ARCSIN_TOKEN, 6);
+        TOKENIZE_FUNC ("arccos", ARCCOS_TOKEN, 6);
+        TOKENIZE_FUNC ("arctg",  ARCTG_TOKEN,  5);
+        TOKENIZE_FUNC ("arcctg", ARCCTG_TOKEN, 6);
 
         if (TokenizeNum (&input_string, token_array, &token_array_index, &input_index))
             continue;
