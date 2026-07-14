@@ -175,7 +175,7 @@ node_t* GetBrac (token_array_t* token_array, int* index)
     if (token_array->data[*index].code == VAR_TOKEN)
         return GetVar (token_array, index);
 
-    return GetFunc (token_array, index, node);
+    return GetFunc (token_array, index);
 }
 
 node_t* GetVar (token_array_t* token_array, int* index)
@@ -183,55 +183,23 @@ node_t* GetVar (token_array_t* token_array, int* index)
     assert (token_array);
     assert (index);
 
-    char* val = (char*) calloc (EXTRA_SIZE, sizeof (char));
-    assert (val != NULL);
-
-    size_t val_size = EXTRA_SIZE;
-    size_t val_index = 0;
-
-    if ('a' <= token_array[*index] && token_array[*index] <= 'z') {
-        val[val_index++] = token_array[*index];
-
-        ++*index;
-    }
-
-    while (('a' <= token_array[*index] && token_array[*index] <= 'z') ||
-           ('0' <= token_array[*index] && token_array[*index] <= '9') || token_array[*index] == '_') {
-        ResizeValIfNeed (&val, &val_size, val_index);
-
-        val[val_index++] = token_array[*index];
-
-        ++*index;
-    }
+    char* val = token_array->data[*index].data.name;
 
     data_t tmp = {.var = ""};
     strcpy (tmp.var, val);
 
     node_t* node = NewNode (VAR, tmp, NULL, NULL);
 
-    free (val);
-
     return node;
 }
 
-void ResizeValIfNeed (char** val, size_t* val_size, size_t val_index)
-{
-    assert (val);
-    assert (val_size);
-
-    if (val_index == *val_size - 1) {
-        val_size += EXTRA_SIZE;
-
-        *val = (char*) realloc (*val, *val_size);
-        assert (*val);
-    }
-}
-
-node_t* GetFunc (char* s, int* index, node_t* node)
+node_t* GetFunc (char* s, int* index)
 {
     assert (s);
     assert (index);
-    assert (node);
+
+
+    return NewNode (FUNC, , NULL, NULL);
 
     for (int i = 0; i < COUNT_OF_FUNC; ++i) {
         if (strcmp (node->data.var, list_of_func[i].name) == 0) {

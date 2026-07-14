@@ -5,9 +5,10 @@
 #include "headers/tokens.h"
 #include "headers/nametable.h"
 
-void TokenizeNum (const char** input_string, token_array_t* token_array, size_t* step);
+bool TokenizeNum (const char** input_string, token_array_t* token_array,
+                  size_t* token_array_index, size_t* input_index);
 bool TokenizeVar (const char** input_string, token_array_t* token_array,
-                  size_t* step, nametable_t* nametable);
+                  size_t* token_array_index, size_t* input_index, nametable_t* nametable);
 void PasteToNametable (nametable_t* nametable, char* var);
 
 void TokenizeInput (char* input_string, token_array_t* token_array,  nametable_t* nametable)
@@ -15,7 +16,7 @@ void TokenizeInput (char* input_string, token_array_t* token_array,  nametable_t
     assert (input_string);
     assert (token_array);
 
-    size_t step = 0;
+    size_t token_array_index = 0;
     size_t input_index = 0;
 
     while (input_string[input_index] != '\0') {
@@ -48,39 +49,56 @@ void TokenizeInput (char* input_string, token_array_t* token_array,  nametable_t
         TOKENIZE_OP ("arctg",  ARCTG_TOKEN,  5);
         TOKENIZE_OP ("arcctg", ARCCTG_TOKEN, 6);
 
-        TokenizeNum (&input_string, token_array, &step);
-        TokenizeVar (&input_string, token_array, &step, nametable);
+        if (TokenizeNum (&input_string, token_array, &token_array_index, &input_index))
+            continue;
+
+        if (TokenizeVar (&input_string, token_array, &token_array_index, &input_index, nametable))
+            continue;
     }
 }
 
-void TokenizeNum (const char** input_string, token_array_t* token_array, size_t* step)
+bool TokenizeNum (const char** input_string, token_array_t* token_array,
+                  size_t* token_array_index, size_t* input_index)
 {
     assert (input_string);
     assert (token_array);
-    assert (step);
+    assert (token_array_index);
+    assert (input_index);
 
-    if (**input_string < '0' || **input_string > '9')
-        return;
+    int val = 0;
 
-    token_array->data[*step].code = NUM_TOKEN;
+    if (*input_string[*input_index] < '0' || *input_string[*input_index] > '9')
+        return false;
+
+    while ('0' <= *input_string[*input_index] && *input_string[*input_index] <= '9') {
+        val += 10 * val + *input_string[*input_index] - '0';
+        ++*input_index;
+    }
+
+    token_array->data[*token_array_index].code = NUM_TOKEN;
+    token_array->data[*token_array_index].type.num = val;
+
+    ++*token_array_index;
+
+    return true;
 }
 
 
 bool TokenizeVar (const char** input_string, token_array_t* token_array,
-                  size_t* step, nametable_t* nametable)
+                  size_t* token_array_index, size_t* input_index, nametable_t* nametable)
 {
     assert (input_string);
     assert (token_array);
-    assert (step);
+    assert (token_array_index);
+    assert (input_index);
     assert (nametable);
 
     if ((**input_string < 'a' || **input_string > 'z') && **input_string != '_')
         return false;
 
-    token_array.data[*step].code = VAR_TOKEN;
-    step++;
+    token_array.data[*token_array_index].code = VAR_TOKEN;
 
-    char var[INIT_VAR_SIZE] = { 0 };
+    char var[INIT_VAR_SIZE] = {};
     int index = 0;
 
     do {
@@ -90,7 +108,8 @@ bool TokenizeVar (const char** input_string, token_array_t* token_array,
             || **input_string == '_'
             || ('0' <= **input_string && **input_string <= '9'));
 
-    strcpy (token_array.data[(*step)++].name, var);
+    strcpy (token_array->data[*token_array_index].type.var.name, var);
+    ++*token_array_index;
 
     PasteToNametable (nametable, var);
 

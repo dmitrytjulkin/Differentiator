@@ -1,6 +1,7 @@
 #pragma once
 
 #include "nametable.h"
+#include "func_and_op.h"
 
 enum token_codes {
     ADD_TOKEN,
@@ -28,9 +29,15 @@ enum token_codes {
     COUNT_OF_TOKENS
 };
 
+union token_data_t {
+    int num;
+    var_t var;
+    code_of_func func;
+};
+
 struct token_t {
     token_codes code;
-    var_t data;
+    token_data_t type;
 };
 
 struct token_array_t {
