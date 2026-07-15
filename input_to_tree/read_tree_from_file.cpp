@@ -31,6 +31,8 @@ tree_t* CreateTreeFromFile (FILE* input_ptr)
 
     TokenizeInput (input_string, &input_array, &nametable);
 
+    printf (GREEN "PASSED in %s in %s, line = %d\n\n" COLOR_RESET, __FILE__, __func__, __LINE__);
+
     tree_t* tree = InitTree ();
     tree->root = GetExpression (&input_array);
 

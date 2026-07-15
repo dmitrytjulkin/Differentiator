@@ -6,9 +6,9 @@
 #include "../headers/tokens.h"
 #include "../headers/nametable.h"
 
-bool TokenizeNum (const char** input_string, token_array_t* token_array,
+bool TokenizeNum (const char* input_string, token_array_t* token_array,
                   size_t* token_array_index, size_t* input_index);
-bool TokenizeVar (const char** input_string, token_array_t* token_array,
+bool TokenizeVar (const char* input_string, token_array_t* token_array,
                   size_t* token_array_index, size_t* input_index, nametable_t* nametable);
 void PasteToNametable (nametable_t* nametable, char* var);
 
@@ -20,7 +20,11 @@ void TokenizeInput (const char* input_string, token_array_t* token_array,  namet
     size_t token_array_index = 0;
     size_t input_index = 0;
 
+
     while (input_string[input_index] != '\0') {
+        printf (GREEN "PASSED\n" COLOR_RESET);
+        printf ("we see '%c' [%d]\n", input_string[input_index], input_string[input_index]);
+        printf ("\n");
         if (token_array->capacity - token_array->size == 1)
             ResizeTokenArray (token_array);
 
@@ -57,15 +61,15 @@ void TokenizeInput (const char* input_string, token_array_t* token_array,  namet
         TOKENIZE_FUNC ("arctg",  5, ARCTG,  ARCTG_TOKEN);
         TOKENIZE_FUNC ("arcctg", 6, ARCCTG, ARCCTG_TOKEN);
 
-        if (TokenizeNum (&input_string, token_array, &token_array_index, &input_index))
+        if (TokenizeNum (input_string, token_array, &token_array_index, &input_index))
             continue;
 
-        if (TokenizeVar (&input_string, token_array, &token_array_index, &input_index, nametable))
+        if (TokenizeVar (input_string, token_array, &token_array_index, &input_index, nametable))
             continue;
     }
 }
 
-bool TokenizeNum (const char** input_string, token_array_t* token_array,
+bool TokenizeNum (const char* input_string, token_array_t* token_array,
                   size_t* token_array_index, size_t* input_index)
 {
     assert (input_string);
@@ -75,11 +79,11 @@ bool TokenizeNum (const char** input_string, token_array_t* token_array,
 
     int val = 0;
 
-    if (*input_string[*input_index] < '0' || *input_string[*input_index] > '9')
+    if (input_string[*input_index] < '0' || input_string[*input_index] > '9')
         return false;
 
-    while ('0' <= *input_string[*input_index] && *input_string[*input_index] <= '9') {
-        val += 10 * val + *input_string[*input_index] - '0';
+    while ('0' <= input_string[*input_index] && input_string[*input_index] <= '9') {
+        val += 10 * val + input_string[*input_index] - '0';
         ++*input_index;
     }
 
@@ -92,7 +96,7 @@ bool TokenizeNum (const char** input_string, token_array_t* token_array,
 }
 
 
-bool TokenizeVar (const char** input_string, token_array_t* token_array,
+bool TokenizeVar (const char* input_string, token_array_t* token_array,
                   size_t* token_array_index, size_t* input_index, nametable_t* nametable)
 {
     assert (input_string);
@@ -101,8 +105,13 @@ bool TokenizeVar (const char** input_string, token_array_t* token_array,
     assert (input_index);
     assert (nametable);
 
-    if ((**input_string < 'a' || **input_string > 'z') && **input_string != '_')
+    printf ("DAFAQ???\n\n");
+
+
+    if ((input_string[*input_index] < 'a' || input_string[*input_index] > 'z') && input_string[*input_index] != '_')
         return false;
+
+    printf ("TOKENIZING VAR:\n");
 
     token_array->data[*token_array_index].code = VAR_TOKEN;
 
@@ -110,16 +119,18 @@ bool TokenizeVar (const char** input_string, token_array_t* token_array,
     int index = 0;
 
     do {
-        var[index++] = **input_string;
-        ++*input_string;
-    } while (('a' <= **input_string && **input_string <= 'z')
-            || **input_string == '_'
-            || ('0' <= **input_string && **input_string <= '9'));
+        var[index++] = input_string[*input_index];
+        ++*input_index;
+    } while (('a' <= input_string[*input_index] && input_string[*input_index] <= 'z')
+            || input_string[*input_index] == '_'
+            || ('0' <= input_string[*input_index] && input_string[*input_index] <= '9'));
 
     strcpy (token_array->data[*token_array_index].type.var.name, var);
     ++*token_array_index;
+    printf ("var = %s\n", var);
 
     PasteToNametable (nametable, var);
+    printf (GREEN "Passed pasting to nametable\n\n" COLOR_RESET);
 
     return true;
 }
