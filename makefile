@@ -14,14 +14,20 @@ FLAGS = -D _DEBUG -ggdb3 -std=c++17 -O0 -Wall -Wextra -Weffc++ -Wc++14-compat 		
 CC = g++
 
 MAIN = main.cpp
-TO_DUMP = work_with_dumps/build_graph_dump.cpp work_with_dumps/build_tex_dump.cpp \
-		work_with_dumps/clear_dump.cpp
-PARSE_TREE = work_with_tree/free_tree.cpp work_with_tree/get_tree_size.cpp \
-		work_with_tree/init_tree.cpp work_with_tree/make_or_delete_node.cpp \
-		work_with_tree/print_tree.cpp
-PARSE_INPUT = read_tree_from_file.cpp read_input.cpp parse_token_array.cpp \
-		parse_nametable.cpp input_tokenization.cpp
 OTHER = differentiator.cpp list_of_func_and_op.cpp optimize_tree.cpp
+
+DUMP_DIR = build_dumps
+TO_DUMP = $(DUMP_DIR)/build_graph_dump.cpp $(DUMP_DIR)/build_tex_dump.cpp \
+		$(DUMP_DIR)/clear_dump.cpp
+
+TREE_DIR = parse_tree
+PARSE_TREE = $(TREE_DIR)/free_tree.cpp $(TREE_DIR)/get_tree_size.cpp \
+		$(TREE_DIR)/init_tree.cpp $(TREE_DIR)/make_or_delete_node.cpp \
+		$(TREE_DIR)/print_tree.cpp
+
+INPUT_DIR = input_to_tree
+PARSE_INPUT = $(INPUT_DIR)/read_tree_from_file.cpp $(INPUT_DIR)/read_input.cpp $(INPUT_DIR)/parse_token_array.cpp \
+		$(INPUT_DIR)/parse_nametable.cpp $(INPUT_DIR)/input_tokenization.cpp
 
 all:
 	$(CC) $(MAIN) $(TO_DUMP) $(PARSE_TREE) $(PARSE_INPUT) $(OTHER) $(FLAGS) -o ./tree

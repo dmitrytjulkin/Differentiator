@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#include "headers/tokens.h"
+#include "../headers/tokens.h"
 
 const int INIT_SIZE = 1000;
 const int CAPACITY_ADDITION = 10;

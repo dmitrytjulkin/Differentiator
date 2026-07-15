@@ -5,7 +5,7 @@
 #include "headers/differentiator.h"
 #include "headers/dump.h"
 
-
+#define INPUT_FILENAME           "input.txt"
 #define TEXDUMP_FILENAME         "tex_dump/tree.tex"
 #define GRAPH_DUMP_FILENAME       "graph_dump/tree_graph_dump.dot"
 #define DER_GRAPH_DUMP_FILENAME   "graph_dump/der_tree_graph_dump.dot"
@@ -19,7 +19,7 @@
 
 int main ()
 {
-    FILE* input_ptr = fopen ("input.txt", "r");
+    FILE* input_ptr = fopen (INPUT_FILENAME, "r");
     assert (input_ptr);
 
     tree_t* tree = InitTree ();
@@ -50,6 +50,7 @@ int main ()
     printf (GREEN "through the code and directories, "
             "i alone am the programmer one\n" COLOR_RESET);
 
+    fclose (input_ptr);
     FreeTree (tree);
     FreeTree (der_tree);
 }

@@ -3,8 +3,8 @@
 #include <string.h>
 #include <sys/stat.h>
 
-#include "headers/differentiator.h"
-#include "headers/tokens.h"
+#include "../headers/differentiator.h"
+#include "../headers/tokens.h"
 
 void SyntaxError (const char* funcname, int line);
 

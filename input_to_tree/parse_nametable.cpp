@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "headers/nametable.h"
+#include "../headers/nametable.h"
 
 const int INIT_SIZE = 10;
 const int CAPACITY_ADDITION = 10;
