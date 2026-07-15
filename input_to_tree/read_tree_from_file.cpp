@@ -30,25 +30,25 @@ tree_t* CreateTreeFromFile (FILE* input_ptr)
     InitNametable (&nametable);
 
     TokenizeInput (input_string, &input_array, &nametable);
-
-    printf (GREEN "PASSED in %s in %s, line = %d\n\n" COLOR_RESET, __FILE__, __func__, __LINE__);
-
-    // printf ("the token array size = %zu\n", input_array.size);
-    printf ("the token_array:\n");
-    for (size_t i = 0; i < input_array.size; ++i)
-        printf ("[%d] ", input_array.data[i].code);
-    printf ("\n");
-    for (size_t i = 0; i < input_array.size; ++i) {
-        if (input_array.data[i].code == VAR_TOKEN)
-            printf ("[ %s] ", input_array.data[i].type.var.name);
-
-        else if (input_array.data[i].code == NUM_TOKEN)
-            printf ("[ %d] ", input_array.data[i].type.num);
-
-        else
-            printf ("    ");
-    }
-    printf ("\n");
+//
+//     printf (GREEN "PASSED in %s in %s, line = %d\n\n" COLOR_RESET, __FILE__, __func__, __LINE__);
+//
+//     printf ("the token array size = %zu\n", input_array.size);
+//     printf ("the token_array:\n");
+//     for (size_t i = 0; i < input_array.size; ++i)
+//         printf ("[%d] ", input_array.data[i].code);
+//     printf ("\n");
+//     for (size_t i = 0; i < input_array.size; ++i) {
+//         if (input_array.data[i].code == VAR_TOKEN)
+//             printf ("[ %s] ", input_array.data[i].type.var.name);
+//
+//         else if (input_array.data[i].code == NUM_TOKEN)
+//             printf ("[ %d] ", input_array.data[i].type.num);
+//
+//         else
+//             printf ("    ");
+//     }
+//     printf ("\n");
 
     tree_t* tree = InitTree ();
     tree->root = GetExpression (&input_array);
@@ -87,10 +87,17 @@ node_t* GetAddOrSub (token_array_t* token_array, size_t* index)
     assert (token_array);
     assert (index);
 
+    // printf ("PASSED 1\n");
+
     node_t* node = GetMulOrDiv (token_array, index);
+
+    printf ("PASSED 2\n");
+    printf ("current index = %zu, so current token = %d\n\n",
+            *index, token_array->data[*index].code);
 
     while (token_array->data[*index].code == ADD_TOKEN ||
            token_array->data[*index].code == SUB_TOKEN) {
+        // printf ("PASSED 3\n");
         token_codes op = token_array->data[*index].code;
 
         ++*index;
@@ -113,6 +120,9 @@ node_t* GetMulOrDiv (token_array_t* token_array, size_t* index)
     assert (index);
 
     node_t* node = GetPow (token_array, index);
+    // printf ("PASSED in %s\n", __func__);
+    // printf ("current index = %zu, so current token = %d\n\n",
+    //         *index, token_array->data[*index].code);
 
     while (token_array->data[*index].code == MUL_TOKEN ||
            token_array->data[*index].code == SUB_TOKEN) {
@@ -138,9 +148,13 @@ node_t* GetPow (token_array_t* token_array, size_t* index)
     assert (index);
 
     node_t* node = GetBrac (token_array, index);
+    // printf ("PASSED in %s\n", __func__);
 
     while (token_array->data[*index].code == POW_TOKEN) {
         ++*index;
+
+        // printf ("current index = %zu, so current token = %d\n\n",
+        //         *index, token_array->data[*index].code);
 
         node_t* node2 = GetBrac (token_array, index);
 
@@ -189,7 +203,7 @@ node_t* GetNum (token_array_t* token_array, size_t* index)
     if (token_array->data[*index].code != NUM_TOKEN)
         SyntaxError (__func__, __LINE__);
 
-    val = token_array->data[*index++].type.num;
+    val = token_array->data[*index].type.num;
     ++*index;
 
     data_t tmp = {.num = 0};
@@ -207,6 +221,7 @@ node_t* GetVar (token_array_t* token_array, size_t* index)
 
     data_t tmp = {.var = ""};
     strcpy (tmp.var, val);
+    ++*index;
 
     node_t* node = NewNode (VAR, tmp, NULL, NULL);
 
@@ -218,6 +233,13 @@ node_t* GetFunc (token_array_t* token_array, size_t* index)
     assert (token_array);
     assert (index);
 
-    return NewNode (FUNC, {.func = token_array->data[*index].type.func}, NULL, NULL);
-}
+    // printf ("PASSED\n");
+    // printf ("current index = %zu, so current token = %d\n\n",
+    //         *index, token_array->data[*index].code);
 
+    ++*index;
+
+    node_t* node = GetBrac (token_array, index);
+    
+    return NewNode (FUNC, {.func = token_array->data[*index].type.func}, NULL, node);
+}

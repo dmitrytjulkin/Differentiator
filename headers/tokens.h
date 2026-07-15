@@ -4,6 +4,8 @@
 #include "func_and_op.h"
 
 enum token_codes {
+    FINISH_TOKEN,
+
     ADD_TOKEN,
     SUB_TOKEN,
     MUL_TOKEN,
