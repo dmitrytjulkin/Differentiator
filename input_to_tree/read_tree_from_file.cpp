@@ -30,7 +30,7 @@ tree_t* CreateTreeFromFile (FILE* input_ptr)
     InitNametable (&nametable);
 
     TokenizeInput (input_string, &input_array, &nametable);
-//
+
 //     printf (GREEN "PASSED in %s in %s, line = %d\n\n" COLOR_RESET, __FILE__, __func__, __LINE__);
 //
 //     printf ("the token array size = %zu\n", input_array.size);
@@ -53,6 +53,8 @@ tree_t* CreateTreeFromFile (FILE* input_ptr)
     tree_t* tree = InitTree ();
     tree->root = GetExpression (&input_array);
 
+    PrintNode (tree->root);
+
     fclose (input_ptr);
     DestroyTokenArray (&input_array);
 
@@ -74,6 +76,7 @@ node_t* GetExpression (token_array_t* token_array)
 
     size_t index = 0;
 
+
     node_t* node = GetAddOrSub (token_array, &index);
 
     if (index > token_array->size)
@@ -87,17 +90,10 @@ node_t* GetAddOrSub (token_array_t* token_array, size_t* index)
     assert (token_array);
     assert (index);
 
-    // printf ("PASSED 1\n");
-
     node_t* node = GetMulOrDiv (token_array, index);
-
-    printf ("PASSED 2\n");
-    printf ("current index = %zu, so current token = %d\n\n",
-            *index, token_array->data[*index].code);
 
     while (token_array->data[*index].code == ADD_TOKEN ||
            token_array->data[*index].code == SUB_TOKEN) {
-        // printf ("PASSED 3\n");
         token_codes op = token_array->data[*index].code;
 
         ++*index;
@@ -120,9 +116,6 @@ node_t* GetMulOrDiv (token_array_t* token_array, size_t* index)
     assert (index);
 
     node_t* node = GetPow (token_array, index);
-    // printf ("PASSED in %s\n", __func__);
-    // printf ("current index = %zu, so current token = %d\n\n",
-    //         *index, token_array->data[*index].code);
 
     while (token_array->data[*index].code == MUL_TOKEN ||
            token_array->data[*index].code == SUB_TOKEN) {
@@ -148,13 +141,9 @@ node_t* GetPow (token_array_t* token_array, size_t* index)
     assert (index);
 
     node_t* node = GetBrac (token_array, index);
-    // printf ("PASSED in %s\n", __func__);
 
     while (token_array->data[*index].code == POW_TOKEN) {
         ++*index;
-
-        // printf ("current index = %zu, so current token = %d\n\n",
-        //         *index, token_array->data[*index].code);
 
         node_t* node2 = GetBrac (token_array, index);
 
@@ -190,7 +179,12 @@ node_t* GetBrac (token_array_t* token_array, size_t* index)
     if (token_array->data[*index].code == VAR_TOKEN)
         return GetVar (token_array, index);
 
-    return GetFunc (token_array, index);
+    if (SQRT_TOKEN <= token_array->data[*index].code &&
+        token_array->data[*index].code < NUM_TOKEN)
+        return GetFunc (token_array, index);
+
+    assert (0);
+    return NULL;
 }
 
 node_t* GetNum (token_array_t* token_array, size_t* index)
@@ -233,13 +227,10 @@ node_t* GetFunc (token_array_t* token_array, size_t* index)
     assert (token_array);
     assert (index);
 
-    // printf ("PASSED\n");
-    // printf ("current index = %zu, so current token = %d\n\n",
-    //         *index, token_array->data[*index].code);
+    data_t tmp = {.func = token_array->data[*index].type.func};
 
     ++*index;
-
     node_t* node = GetBrac (token_array, index);
-    
-    return NewNode (FUNC, {.func = token_array->data[*index].type.func}, NULL, node);
+
+    return NewNode (FUNC, tmp, NULL, node);
 }

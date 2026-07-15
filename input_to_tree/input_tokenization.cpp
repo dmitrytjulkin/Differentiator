@@ -41,13 +41,6 @@ void TokenizeInput (const char* input_string, token_array_t* token_array,  namet
         TOKENIZE_OP ("/", DIV_TOKEN);
         TOKENIZE_OP ("^", POW_TOKEN);
 
-        if (strncmp (input_string + input_index, "sqrt", 4) == 0) {
-            token_array->data[token_array->size].code = SQRT_TOKEN;
-            token_array->data[token_array->size++].type.func = SQRT;
-            input_index += 4;
-            continue;
-        }
-
         TOKENIZE_FUNC ("sqrt",   4, SQRT,   SQRT_TOKEN);
         TOKENIZE_FUNC ("ln",     2, LN,     LN_TOKEN);
         TOKENIZE_FUNC ("sin",    3, SIN,    SIN_TOKEN);
@@ -104,8 +97,6 @@ bool TokenizeVar (const char* input_string, token_array_t* token_array,
     if ((input_string[*input_index] < 'a' || input_string[*input_index] > 'z') && input_string[*input_index] != '_')
         return false;
 
-    // printf ("TOKENIZING VAR:\n");
-
     token_array->data[token_array->size].code = VAR_TOKEN;
 
     char var[INIT_VAR_SIZE] = {};
@@ -120,10 +111,8 @@ bool TokenizeVar (const char* input_string, token_array_t* token_array,
 
     strcpy (token_array->data[token_array->size].type.var.name, var);
     ++token_array->size;
-    // printf ("var = %s\n", var);
 
     PasteToNametable (nametable, var);
-    // printf (GREEN "Passed pasting to nametable\n\n" COLOR_RESET);
 
     return true;
 }
