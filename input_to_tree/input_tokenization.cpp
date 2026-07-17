@@ -73,7 +73,7 @@ bool TokenizeNum (const char* input_string, token_array_t* token_array,
         return false;
 
     while ('0' <= input_string[*input_index] && input_string[*input_index] <= '9') {
-        val += 10 * val + input_string[*input_index] - '0';
+        val = 10 * val + input_string[*input_index] - '0';
         ++*input_index;
     }
 
