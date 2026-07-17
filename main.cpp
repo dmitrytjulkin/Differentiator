@@ -33,7 +33,7 @@ int main ()
     AddTexLine (TEXDUMP_FILENAME, tree->root, "Оптимизация формулы:");
 
     tree_t* der_tree = InitTree ();
-    der_tree->root = DiffNode (tree->root);
+    der_tree->root = DiffNode (tree->root, "x");
 
     AddTexLine (TEXDUMP_FILENAME, der_tree->root, "Дифференцирование формулы:");
 

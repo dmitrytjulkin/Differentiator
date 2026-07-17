@@ -4,7 +4,7 @@
 
 node_t* Optimize (tree_t* tree);
 
-node_t* DiffNode (node_t* node);
+node_t* DiffNode (node_t* node, const char* arg);
 node_t* CopyNode (node_t* node);
 
 tree_t* CreateTreeFromFile (FILE* input_ptr);

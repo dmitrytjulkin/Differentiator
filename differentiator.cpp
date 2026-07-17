@@ -5,8 +5,8 @@
 #include "headers/differentiator.h"
 
 
-#define d DiffNode
-#define c CopyNode
+#define diff(node) DiffNode(node, arg)
+#define copy(node) CopyNode(node)
 
 #define NUM_(number) NewNode (NUM, {.num = number}, NULL, NULL)
 
@@ -22,25 +22,25 @@
 #define COS_(right)  NewNode (FUNC,  {.func = COS}, NULL, right)
 
 // static
-node_t* dOp     (node_t* node);
-node_t* dFunc   (node_t* node);
+node_t* dOp     (node_t* node, const char* arg);
+node_t* dFunc   (node_t* node, const char* arg);
 
-node_t* dDiv    (node_t* node);
-node_t* dPow    (node_t* node);
+node_t* dDiv    (node_t* node, const char* arg);
+node_t* dPow    (node_t* node, const char* arg);
 
-node_t* dSqrt   (node_t* node);
-node_t* dLn     (node_t* node);
-node_t* dSin    (node_t* node);
-node_t* dCos    (node_t* node);
-node_t* dTg     (node_t* node);
-node_t* dCtg    (node_t* node);
-node_t* dArcsin (node_t* node);
-node_t* dArccos (node_t* node);
-node_t* dArctg  (node_t* node);
-node_t* dArcctg (node_t* node);
+node_t* dSqrt   (node_t* node, const char* arg);
+node_t* dLn     (node_t* node, const char* arg);
+node_t* dSin    (node_t* node, const char* arg);
+node_t* dCos    (node_t* node, const char* arg);
+node_t* dTg     (node_t* node, const char* arg);
+node_t* dCtg    (node_t* node, const char* arg);
+node_t* dArcsin (node_t* node, const char* arg);
+node_t* dArccos (node_t* node, const char* arg);
+node_t* dArctg  (node_t* node, const char* arg);
+node_t* dArcctg (node_t* node, const char* arg);
 
 
-node_t* DiffNode (node_t* node)
+node_t* DiffNode (node_t* node, const char* arg)
 {
     if (node == NULL)
         return NULL;
@@ -49,14 +49,18 @@ node_t* DiffNode (node_t* node)
         case NUM:
             return NUM_ (0);
 
-        case VAR:
-            return NUM_ (1);
-
         case OP:
-            return dOp (node);
+            return dOp (node, arg);
 
         case FUNC:
-            return dFunc (node);
+            return dFunc (node, arg);
+
+        case VAR:
+            if (strcmp (arg, node->data.var) == 0)
+                return NUM_ (1);
+
+            else
+                return NUM_ (0);
 
         default:
             assert (0);
@@ -72,8 +76,8 @@ node_t* CopyNode (node_t* node)
 
     node_t* copy_node = InitNode ();
 
-    copy_node->left = c (L);
-    copy_node->right = c (R);
+    copy_node->left = copy (L);
+    copy_node->right = copy (R);
 
     copy_node->expr = node->expr;
 
@@ -92,25 +96,25 @@ node_t* CopyNode (node_t* node)
     return copy_node;
 }
 
-node_t* dOp (node_t* node)
+node_t* dOp (node_t* node, const char* arg)
 {
     assert (node);
 
     switch (node->data.op) {
         case ADD:
-            return ADD_ (d (L), d (R));
+            return ADD_ (diff (L), diff (R));
 
         case SUB:
-            return SUB_ (d (L), d (R));
+            return SUB_ (diff (L), diff (R));
 
         case MUL:
-            return ADD_ (MUL_ (d (L), c (R)), MUL_ (c (L), d (R)));
+            return ADD_ (MUL_ (diff (L), copy (R)), MUL_ (copy (L), diff (R)));
 
         case DIV:
-            return dDiv (node);
+            return dDiv (node, arg);
 
         case POW:
-            return dPow (node);
+            return dPow (node, arg);
 
         case COUNT_OF_OP: default:
             printf ("This type of op doesn't exist, "
@@ -121,40 +125,40 @@ node_t* dOp (node_t* node)
 
 }
 
-node_t* dFunc (node_t* node)
+node_t* dFunc (node_t* node, const char* arg)
 {
     assert (node);
 
     switch (node->data.func) {
         case SQRT:
-            return dSqrt (node);
+            return dSqrt (node, arg);
 
         case LN:
-            return dLn (node);
+            return dLn (node, arg);
 
         case SIN:
-            return dSin (node);
+            return dSin (node, arg);
 
         case COS:
-            return dCos (node);
+            return dCos (node, arg);
 
         case TG:
-            return dTg (node);
+            return dTg (node, arg);
 
         case CTG:
-            return dCtg (node);
+            return dCtg (node, arg);
 
         case ARCSIN:
-            return dArcsin (node);
+            return dArcsin (node, arg);
 
         case ARCCOS:
-            return dArccos (node);
+            return dArccos (node, arg);
 
         case ARCTG:
-            return dArctg (node);
+            return dArctg (node, arg);
 
         case ARCCTG:
-            return dArcctg (node);
+            return dArcctg (node, arg);
 
         case COUNT_OF_FUNC: default:
             printf ("This type of func doesn't exist, "
@@ -164,109 +168,110 @@ node_t* dFunc (node_t* node)
     }
 }
 
-node_t* dDiv (node_t* node)
+node_t* dDiv (node_t* node, const char* arg)
 {
     assert (node);
 
     if (node->data.op != DIV)
         return NULL;
 
-    node_t* numer = SUB_ (MUL_ (d (L), c (R)), MUL_ (c (L), d (R)));
-    node_t* denominator = POW_ (c (R), NUM_ (2));
+    node_t* numer = SUB_ (MUL_ (diff (L), copy (R)), MUL_ (copy (L), diff (R)));
+    node_t* denominator = POW_ (copy (R), NUM_ (2));
 
     return DIV_ (numer, denominator);
 }
 
-node_t* dPow (node_t* node)
+node_t* dPow (node_t* node, const char* arg)
 {
     assert (node);
 
     if (node->data.op != POW)
         return NULL;
 
-    node_t* first_summand = MUL_ (MUL_ (LN_ (c (L)), c (node)), d (R));
+    node_t* first_summand = MUL_ (MUL_ (LN_ (copy (L)), copy (node)), diff (R));
 
-    node_t* second_summand = MUL_ (MUL_ (c (R), POW_ (c (L), SUB_ (c (R), NUM_ (1)))), d (L));
+    node_t* second_summand = MUL_ (MUL_ (copy (R), POW_ (copy (L),
+                             SUB_ (copy (R), NUM_ (1)))), diff (L));
 
     return ADD_ (first_summand, second_summand);
 }
 
-node_t* dSqrt (node_t* node)
+node_t* dSqrt (node_t* node, const char* arg)
 {
     assert (node);
 
-    return MUL_ (DIV_ (NUM_ (0.5), c (node)), d (R));
+    return MUL_ (DIV_ (NUM_ (0.5), copy (node)), diff (R));
 }
 
-node_t* dLn (node_t* node)
+node_t* dLn (node_t* node, const char* arg)
 {
     assert (node);
 
-    return MUL_ (DIV_ (NUM_ (1), c (R)), d (R));
+    return MUL_ (DIV_ (NUM_ (1), copy (R)), diff (R));
 }
 
-node_t* dSin (node_t* node)
+node_t* dSin (node_t* node, const char* arg)
 {
     assert (node);
 
-    return MUL_ (COS_ (c (R)), d (R));
+    return MUL_ (COS_ (copy (R)), diff (R));
 }
 
-node_t* dCos (node_t* node)
+node_t* dCos (node_t* node, const char* arg)
 {
     assert (node);
 
-    return SUB_ (NUM_ (0), MUL_ (SIN_ (c (R)), d (R)));
+    return SUB_ (NUM_ (0), MUL_ (SIN_ (copy (R)), diff (R)));
 }
 
-node_t* dTg (node_t* node)
+node_t* dTg (node_t* node, const char* arg)
 {
     assert (node);
 
-    return MUL_ (DIV_ (NUM_ (1), POW_ (COS_ (c (R)), NUM_ (2))), d (R));
+    return MUL_ (DIV_ (NUM_ (1), POW_ (COS_ (copy (R)), NUM_ (2))), diff (R));
 }
 
-node_t* dCtg (node_t* node)
+node_t* dCtg (node_t* node, const char* arg)
 {
     assert (node);
 
-    node_t* external_der = DIV_ (NUM_ (1), POW_ (SIN_ (c (R)), NUM_ (2)));
+    node_t* external_der = DIV_ (NUM_ (1), POW_ (SIN_ (copy (R)), NUM_ (2)));
 
-    return SUB_ (NUM_ (0),  MUL_ (external_der, d (R)));
+    return SUB_ (NUM_ (0),  MUL_ (external_der, diff (R)));
 }
 
-node_t* dArcsin (node_t* node)
+node_t* dArcsin (node_t* node, const char* arg)
 {
     assert (node);
 
-    node_t* external_der = DIV_ (NUM_ (1), SQRT_ (SUB_ (NUM_ (1), POW_ (c (R), NUM_ (2)))));
+    node_t* external_der = DIV_ (NUM_ (1), SQRT_ (SUB_ (NUM_ (1), POW_ (copy (R), NUM_ (2)))));
 
-    return MUL_ (external_der, d (R));
+    return MUL_ (external_der, diff (R));
 }
 
-node_t* dArccos (node_t* node)
+node_t* dArccos (node_t* node, const char* arg)
 {
     assert (node);
 
-    node_t* external_der = DIV_ (NUM_ (1), SQRT_ (SUB_ (NUM_ (1), POW_ (c (R), NUM_ (2)))));
+    node_t* external_der = DIV_ (NUM_ (1), SQRT_ (SUB_ (NUM_ (1), POW_ (copy (R), NUM_ (2)))));
 
-    return SUB_ (NUM_ (0), MUL_ (external_der, d (R)));
+    return SUB_ (NUM_ (0), MUL_ (external_der, diff (R)));
 }
 
-node_t* dArctg (node_t* node)
+node_t* dArctg (node_t* node, const char* arg)
 {
     assert (node);
 
-    node_t* external_der = DIV_ (NUM_ (1), ADD_ (NUM_ (1), POW_ (c (R), NUM_ (2))));
+    node_t* external_der = DIV_ (NUM_ (1), ADD_ (NUM_ (1), POW_ (copy (R), NUM_ (2))));
 
-    return MUL_ (external_der, d (R));
+    return MUL_ (external_der, diff (R));
 }
 
-node_t* dArcctg (node_t* node)
+node_t* dArcctg (node_t* node, const char* arg)
 {
     assert (node);
 
-    node_t* external_der = DIV_ (NUM_ (1), ADD_ (NUM_ (1), POW_ (c (R), NUM_ (2))));
+    node_t* external_der = DIV_ (NUM_ (1), ADD_ (NUM_ (1), POW_ (copy (R), NUM_ (2))));
 
-    return SUB_ (NUM_ (0), MUL_ (external_der, d (R)));
+    return SUB_ (NUM_ (0), MUL_ (external_der, diff (R)));
 }
