@@ -5,6 +5,8 @@
 #include "headers/differentiator.h"
 #include "headers/dump.h"
 
+#define MAIN_ARG "y"
+
 #define INPUT_FILENAME           "input.txt"
 #define TEXDUMP_FILENAME         "tex_dump/tree.tex"
 #define GRAPH_DUMP_FILENAME       "graph_dump/tree_graph_dump.dot"
@@ -16,7 +18,8 @@
 
 // TODO correct and improve optimisation
 // TODO think about containing constants
-// TODO Differentiate other variables
+// TODO  make array of var that depend on x
+// TODO think about d F/d x, d^2 F/d x^2
 
 int main ()
 {
@@ -33,7 +36,7 @@ int main ()
     AddTexLine (TEXDUMP_FILENAME, tree->root, "Оптимизация формулы:");
 
     tree_t* der_tree = InitTree ();
-    der_tree->root = DiffNode (tree->root, "x");
+    der_tree->root = DiffNode (tree->root, MAIN_ARG);
 
     AddTexLine (TEXDUMP_FILENAME, der_tree->root, "Дифференцирование формулы:");
 
