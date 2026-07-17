@@ -48,9 +48,10 @@ struct token_array_t {
     size_t capacity;
 };
 
-void InitTokenArray   (token_array_t* token_array);
+void InitTokenArray    (token_array_t* token_array);
 void ResizeTokenArray  (token_array_t* token_array);
 void DestroyTokenArray (token_array_t* token_array);
+void PrintTokenArray   (token_array_t* input_array);
 
 void TokenizeInput (const char* input_string, token_array_t* token_arr,  nametable_t* nametable);
 

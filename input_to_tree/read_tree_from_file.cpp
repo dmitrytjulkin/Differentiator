@@ -31,29 +31,10 @@ tree_t* CreateTreeFromFile (FILE* input_ptr)
 
     TokenizeInput (input_string, &input_array, &nametable);
 
-//     printf (GREEN "PASSED in %s in %s, line = %d\n\n" COLOR_RESET, __FILE__, __func__, __LINE__);
-//
-//     printf ("the token array size = %zu\n", input_array.size);
-//     printf ("the token_array:\n");
-//     for (size_t i = 0; i < input_array.size; ++i)
-//         printf ("[%d] ", input_array.data[i].code);
-//     printf ("\n");
-//     for (size_t i = 0; i < input_array.size; ++i) {
-//         if (input_array.data[i].code == VAR_TOKEN)
-//             printf ("[ %s] ", input_array.data[i].type.var.name);
-//
-//         else if (input_array.data[i].code == NUM_TOKEN)
-//             printf ("[ %d] ", input_array.data[i].type.num);
-//
-//         else
-//             printf ("    ");
-//     }
-//     printf ("\n");
+    PrintTokenArray (&input_array);
 
     tree_t* tree = InitTree ();
     tree->root = GetExpression (&input_array);
-
-    PrintNode (tree->root);
 
     fclose (input_ptr);
     DestroyTokenArray (&input_array);
@@ -118,7 +99,7 @@ node_t* GetMulOrDiv (token_array_t* token_array, size_t* index)
     node_t* node = GetPow (token_array, index);
 
     while (token_array->data[*index].code == MUL_TOKEN ||
-           token_array->data[*index].code == SUB_TOKEN) {
+           token_array->data[*index].code == DIV_TOKEN) {
         token_codes op = token_array->data[*index].code;
 
         ++*index;
@@ -128,7 +109,7 @@ node_t* GetMulOrDiv (token_array_t* token_array, size_t* index)
         if (op == MUL_TOKEN)
             node = NewNode (OP, {.op = MUL}, node, node2);
 
-        if (op == SUB_TOKEN)
+        if (op == DIV_TOKEN)
             node = NewNode (OP, {.op = DIV}, node, node2);
     }
 

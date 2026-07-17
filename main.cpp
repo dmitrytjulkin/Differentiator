@@ -27,7 +27,7 @@ int main ()
 
     RunTexDump (TEXDUMP_FILENAME, tree);
 
-    Optimize (tree);
+    // Optimize (tree);
 
     AddTexLine (TEXDUMP_FILENAME, tree->root, "Оптимизация формулы:");
 
