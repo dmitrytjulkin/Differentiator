@@ -16,4 +16,5 @@ struct nametable_t {
 void InitNametable    (nametable_t* nametable);
 void ResizeNametable  (nametable_t* nametable);
 void DestroyNametable (nametable_t* nametable);
+void PrintNametable   (nametable_t* nametable);
 

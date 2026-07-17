@@ -5,18 +5,18 @@
 
 #include "../headers/nametable.h"
 
-const int INIT_SIZE = 10;
+const int INIT_CAPACITY = 1;
 const int CAPACITY_ADDITION = 10;
 
 void InitNametable (nametable_t* nametable)
 {
     assert (nametable);
 
-    nametable->data = (var_t*) calloc (INIT_SIZE, sizeof (var_t));
+    nametable->data = (var_t*) calloc (INIT_CAPACITY, sizeof (var_t));
     assert (nametable->data);
 
     nametable->size = 0;
-    nametable->capacity = 0;
+    nametable->capacity = INIT_CAPACITY;
 }
 
 void ResizeNametable (nametable_t* nametable)
@@ -39,4 +39,16 @@ void DestroyNametable (nametable_t* nametable)
     assert (nametable);
 
     free (nametable->data);
+}
+
+void PrintNametable (nametable_t* nametable)
+{
+    assert (nametable);
+
+    printf ("\nNametable:\n");
+    printf ("its size = %zu\n", nametable->size);
+    for (size_t i = 0; i < nametable->size; ++i)
+        printf ("[%s] ", nametable->data[i].name);
+
+    printf ("\n\n");
 }

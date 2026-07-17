@@ -31,7 +31,7 @@ tree_t* CreateTreeFromFile (FILE* input_ptr)
 
     TokenizeInput (input_string, &input_array, &nametable);
 
-    PrintTokenArray (&input_array);
+    PrintNametable (&nametable);
 
     tree_t* tree = InitTree ();
     tree->root = GetExpression (&input_array);
