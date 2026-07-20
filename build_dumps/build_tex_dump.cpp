@@ -9,16 +9,17 @@ const int SIZE_OF_NUM = 5;
 const int SIZE_OF_OP = 1;
 const int SIZE_OF_FUNC = 6;
 
-void TexNode (FILE* output_ptr, node_t* node, int* line_size);
+void TexNode    (FILE* output_ptr, node_t* node, int* line_size);
 
-void TexNum  (FILE* output_ptr, node_t* node);
-void TexVar  (FILE* output_ptr, node_t* node);
-void TexFunc (FILE* output_ptr, node_t* node, int* line_size);
-void TexOp   (FILE* output_ptr, node_t* node, int* line_size);
+void TexNum     (FILE* output_ptr, node_t* node);
+void TexVar     (FILE* output_ptr, node_t* node);
+void TexFunc    (FILE* output_ptr, node_t* node, int* line_size);
+void TexOp      (FILE* output_ptr, node_t* node, int* line_size);
+void TexDiffVar (FILE* output_ptr, node_t* node);
 
-bool TexIfPow (FILE* output_ptr, node_t* node, int* line_size);
-bool TexIfMul (FILE* output_ptr, node_t* node, int* line_size);
-bool TexIfDiv (FILE* output_ptr, node_t* node, int* line_size);
+bool TexIfPow   (FILE* output_ptr, node_t* node, int* line_size);
+bool TexIfMul   (FILE* output_ptr, node_t* node, int* line_size);
+bool TexIfDiv   (FILE* output_ptr, node_t* node, int* line_size);
 
 
 void RunTexDump (const char* name_of_file, tree_t* tree)
@@ -142,7 +143,7 @@ void TexNode (FILE* output_ptr, node_t* node, int* line_size)
             break;
 
         case DIFF_VAR:
-            ++*line_size;
+            *line_size += strlen (node->data.var) + 1;
             TexDiffVar (output_ptr, node);
 
             break;
@@ -173,6 +174,7 @@ void TexDiffVar (FILE* output_ptr, node_t* node)
     assert (output_ptr);
     assert (node);
 
+    fprintf (output_ptr, "\\partial %s", node->data.var);
 }
 
 void TexFunc (FILE* output_ptr, node_t* node, int* line_size)

@@ -3,10 +3,11 @@
 
 #include "../headers/dump.h"
 
-void PrintNum  (node_t* node, FILE* output_ptr);
-void PrintFunc (node_t* node, FILE* output_ptr);
-void PrintOp   (node_t* node, FILE* output_ptr);
-void PrintVar  (node_t* node, FILE* output_ptr);
+void PrintNum     (node_t* node, FILE* output_ptr);
+void PrintFunc    (node_t* node, FILE* output_ptr);
+void PrintOp      (node_t* node, FILE* output_ptr);
+void PrintVar     (node_t* node, FILE* output_ptr);
+void PrintDiffVar (node_t* node, FILE* output_ptr);
 
 void RunGraphDump (tree_t* tree, const char* name_of_file,
                    const char* cmd_to_launch_graph_dump)
@@ -38,17 +39,30 @@ void PrintTreeInGraphDump (node_t* root, FILE* output_ptr)
             "\t node [shape = plaintext];\n"
             "\n");
 
-    if (root->expr == NUM)
-        PrintNum (root, output_ptr);
+    switch (root->expr) {
+        case NUM:
+            PrintNum (root, output_ptr);
 
-    if (root->expr == FUNC)
-        PrintFunc (root, output_ptr);
+            break;
 
-    if (root->expr == OP)
-        PrintOp (root, output_ptr);
+        case FUNC:
+            PrintFunc (root, output_ptr);
 
-    if (root->expr == VAR)
-        PrintVar (root, output_ptr);
+            break;
+
+        case OP:
+            PrintOp (root, output_ptr);
+
+            break;
+
+        case VAR: case DIFF_VAR:
+            PrintVar (root, output_ptr);
+
+            break;
+
+        default:
+            assert (0);
+    }
 
     PrintNodeInGraphDump (output_ptr, root, root->left, "f0");
     PrintNodeInGraphDump (output_ptr, root, root->right, "f1");
@@ -65,20 +79,33 @@ void PrintNodeInGraphDump (FILE* output_ptr, node_t* node, node_t* child,
     if (child == NULL)
         return;
 
-    if (child->expr == NUM)
-        PrintNum (child, output_ptr);
+    switch (child->expr) {
+        case NUM:
+            PrintNum (child, output_ptr);
 
-    if (child->expr == FUNC)
-        PrintFunc (child, output_ptr);
+            break;
 
-    if (child->expr == OP)
-        PrintOp (child, output_ptr);
+        case FUNC:
+            PrintFunc (child, output_ptr);
 
-    if (child->expr == VAR)
-        PrintVar (child, output_ptr);
+            break;
 
-    fprintf (output_ptr,
-            "\t node%p:%s -> node%p;\n", node, link_for_arrow, child);
+        case OP:
+            PrintOp (child, output_ptr);
+
+            break;
+
+        case VAR: case DIFF_VAR:
+            PrintVar (child, output_ptr);
+
+            break;
+
+        default:
+            assert (0);
+    }
+
+    fprintf (output_ptr, "\t node%p:%s -> node%p;\n",
+            node, link_for_arrow, child);
 
     PrintNodeInGraphDump (output_ptr, child, child->left, "<f0>");
     PrintNodeInGraphDump (output_ptr, child, child->right, "<f1>");
@@ -153,6 +180,25 @@ void PrintVar (node_t* node, FILE* output_ptr)
             "\t<TR> <TD COLSPAN = \"2\"> his parent: %p </TD> </TR>            \n"
             "\t<TR> <TD COLSPAN = \"2\"> %p </TD> </TR>                        \n"
             "\t<TR> <TD COLSPAN = \"2\"> %s </TD> </TR>                        \n"
+            "\t<TR> <TD PORT = \"f0\"> %p </TD>                                \n"
+            "\t<TD PORT = \"f1\"> %p </TD> </TR>                               \n"
+            "\t</TABLE>                                                        \n"
+            "\t>];                                                             \n",
+            node, "VAR_type", node->parent, node, node->data.var, L, R);
+}
+
+void PrintDiffVar (node_t* node, FILE* output_ptr)
+{
+    assert (node);
+    assert (output_ptr);
+
+    fprintf (output_ptr,
+            "\nnode%p [label = <                                               \n"
+            "\t<TABLE BORDER = \"0\" CELLBORDER = \"1\" CELLSPACING = \"0\">   \n"
+            "\t<TR> <TD COLSPAN = \"2\" BGCOLOR = \"lightpink\"> %s </TD> </TR>\n"
+            "\t<TR> <TD COLSPAN = \"2\"> his parent: %p </TD> </TR>            \n"
+            "\t<TR> <TD COLSPAN = \"2\"> %p </TD> </TR>                        \n"
+            "\t<TR> <TD COLSPAN = \"2\"> d %s </TD> </TR>                      \n"
             "\t<TR> <TD PORT = \"f0\"> %p </TD>                                \n"
             "\t<TD PORT = \"f1\"> %p </TD> </TR>                               \n"
             "\t</TABLE>                                                        \n"

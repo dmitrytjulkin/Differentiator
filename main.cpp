@@ -21,6 +21,7 @@
 // TODO think about containing constants
 // TODO  make array of var that depend on x
 // TODO think about d F/d x, d^2 F/d x^2
+// TODO think about \n (line breaks)
 
 int main ()
 {
