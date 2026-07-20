@@ -4,7 +4,8 @@ enum type_of_expr {
     NUM,
     VAR,
     OP,
-    FUNC
+    FUNC,
+    DIFF_VAR
 };
 
 enum code_of_func {

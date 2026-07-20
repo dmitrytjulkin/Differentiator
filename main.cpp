@@ -6,7 +6,7 @@
 #include "headers/dump.h"
 #include "headers/nametable.h"
 
-#define MAIN_ARG "y"
+#define MAIN_ARG "x"
 
 #define INPUT_FILENAME           "input.txt"
 #define TEXDUMP_FILENAME         "tex_dump/tree.tex"

@@ -24,6 +24,7 @@
 // static
 node_t* dOp     (node_t* node, const char* arg, nametable_t* dependencies);
 node_t* dFunc   (node_t* node, const char* arg, nametable_t* dependencies);
+node_t* DifDependency (node_t* node, const char* arg);
 
 node_t* dDiv    (node_t* node, const char* arg, nametable_t* dependencies);
 node_t* dPow    (node_t* node, const char* arg, nametable_t* dependencies);
@@ -59,8 +60,11 @@ node_t* DiffNode (node_t* node, const char* arg, nametable_t* dependencies)
             if (strcmp (arg, node->data.var) == 0)
                 return NUM_ (1);
 
-            else
-                return NUM_ (0);
+            for (size_t i = 0; i < dependencies->size; ++i)
+                if (strcmp (dependencies->data[i].name, node->data.var) == 0)
+                    return DifDependency (node, arg);
+
+            return NUM_ (0);
 
         default:
             assert (0);
@@ -166,6 +170,21 @@ node_t* dFunc (node_t* node, const char* arg, nametable_t* dependencies)
 
             assert (0);
     }
+}
+
+// TODO think about ddx/dx
+node_t* DifDependency (node_t* node, const char* arg)
+{
+    assert (node);
+    assert (arg);
+
+    node_t* dependency_node = node;
+    dependency_node->expr = DIFF_VAR;
+
+    data_t tmp = {.var = arg};
+    node_t* arg_node = NewNode (VAR, tmp, NULL, NULL);
+
+    return DIV_ (dependency_node, arg_node);
 }
 
 node_t* dDiv (node_t* node, const char* arg, nametable_t* dependencies)
