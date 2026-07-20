@@ -10,7 +10,6 @@ bool TokenizeNum (const char* input_string, token_array_t* token_array,
                   size_t* input_index);
 bool TokenizeVar (const char* input_string, token_array_t* token_array,
                   size_t* input_index, nametable_t* nametable);
-void PasteToNametable (nametable_t* nametable, char* var);
 
 void TokenizeInput (const char* input_string, token_array_t* token_array,  nametable_t* nametable)
 {
@@ -115,25 +114,4 @@ bool TokenizeVar (const char* input_string, token_array_t* token_array,
     PasteToNametable (nametable, var);
 
     return true;
-}
-
-void PasteToNametable (nametable_t* nametable, char* var)
-{
-    assert (nametable);
-    assert (var);
-
-    size_t index = 0;
-
-    while (index < nametable->size) {
-        if (strcmp (nametable->data[index].name, var) == 0)
-            return;
-
-        ++index;
-    }
-
-    strcpy (nametable->data[nametable->size].name, var);
-    ++nametable->size;
-
-    if (nametable->capacity - nametable->size <= 2)
-        ResizeNametable (nametable);
 }

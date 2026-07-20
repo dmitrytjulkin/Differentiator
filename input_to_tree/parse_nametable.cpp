@@ -41,6 +41,27 @@ void DestroyNametable (nametable_t* nametable)
     free (nametable->data);
 }
 
+void PasteToNametable (nametable_t* nametable, const char* var)
+{
+    assert (nametable);
+    assert (var);
+
+    size_t index = 0;
+
+    while (index < nametable->size) {
+        if (strcmp (nametable->data[index].name, var) == 0)
+            return;
+
+        ++index;
+    }
+
+    strcpy (nametable->data[nametable->size].name, var);
+    ++nametable->size;
+
+    if (nametable->capacity - nametable->size <= 2)
+        ResizeNametable (nametable);
+}
+
 void PrintNametable (nametable_t* nametable)
 {
     assert (nametable);

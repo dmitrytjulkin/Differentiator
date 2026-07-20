@@ -36,10 +36,14 @@ int main ()
 
     AddTexLine (TEXDUMP_FILENAME, tree->root, "Оптимизация формулы:");
 
-    tree_t* der_tree = InitTree ();
     nametable_t dependencies = {};
     InitNametable (&dependencies);
+    PasteToNametable (&dependencies, "y");
+
+    tree_t* der_tree = InitTree ();
     der_tree->root = DiffNode (tree->root, MAIN_ARG, &dependencies);
+
+    DestroyNametable (&dependencies);
 
     AddTexLine (TEXDUMP_FILENAME, der_tree->root, "Дифференцирование формулы:");
 
