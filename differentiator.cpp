@@ -66,6 +66,7 @@ node_t* DiffNode (node_t* node, const char* arg, nametable_t* dependencies)
 
             return NUM_ (0);
 
+        case DIFF_VAR:
         default:
             assert (0);
     }
@@ -172,7 +173,6 @@ node_t* dFunc (node_t* node, const char* arg, nametable_t* dependencies)
     }
 }
 
-// TODO think about ddx/dx
 node_t* DifDependency (node_t* node, const char* arg)
 {
     assert (node);
@@ -181,7 +181,8 @@ node_t* DifDependency (node_t* node, const char* arg)
     node_t* dependency_node = node;
     dependency_node->expr = DIFF_VAR;
 
-    data_t tmp = {.var = arg};
+    data_t tmp = {};
+    strcpy (tmp.var, arg);
     node_t* arg_node = NewNode (VAR, tmp, NULL, NULL);
 
     return DIV_ (dependency_node, arg_node);

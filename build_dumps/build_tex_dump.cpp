@@ -111,49 +111,76 @@ void TexNode (FILE* output_ptr, node_t* node, int* line_size)
         *line_size = 0;
     }
 
-    if (node->expr == FUNC && *line_size >= SIZE_OF_LINE - SIZE_OF_FUNC) {
-        fprintf (output_ptr, " \\\\ \n");
+    switch (node->expr) {
+        case FUNC:
+            if (*line_size >= SIZE_OF_LINE - SIZE_OF_FUNC) {
+                fprintf (output_ptr, " \\\\ \n");
+                *line_size = 0;
+            }
 
-        *line_size = 0;
-    }
+            *line_size += SIZE_OF_FUNC;
+            TexFunc (output_ptr, node, line_size);
 
-    if (node->expr == NUM) {
-        *line_size += SIZE_OF_NUM;
+            break;
 
-        TexNum (output_ptr, node);
-    }
+        case NUM:
+            *line_size += SIZE_OF_NUM;
+            TexNum (output_ptr, node);
 
-    if (node->expr == OP) {
-        *line_size += SIZE_OF_OP;
+            break;
 
-        TexOp (output_ptr, node, line_size);
-    }
+        case OP:
+            *line_size += SIZE_OF_OP;
+            TexOp (output_ptr, node, line_size);
 
-    if (node->expr == FUNC) {
-        *line_size += SIZE_OF_FUNC;
+            break;
 
-        TexFunc (output_ptr, node, line_size);
-    }
+        case VAR:
+            *line_size += strlen (node->data.var);
+            TexVar (output_ptr, node);
 
-    if (node->expr == VAR) {
-        *line_size += strlen (node->data.var);
+            break;
 
-        TexVar (output_ptr, node);
+        case DIFF_VAR:
+            ++*line_size;
+            TexDiffVar (output_ptr, node);
+
+            break;
+
+        default:
+            assert (0);
     }
 }
 
 void TexNum (FILE* output_ptr, node_t* node)
 {
+    assert (output_ptr);
+    assert (node);
+
     fprintf (output_ptr, "%lg", node->data.num);
 }
 
 void TexVar (FILE* output_ptr, node_t* node)
 {
+    assert (output_ptr);
+    assert (node);
+
     fprintf (output_ptr, "%s", node->data.var);
+}
+
+void TexDiffVar (FILE* output_ptr, node_t* node)
+{
+    assert (output_ptr);
+    assert (node);
+
 }
 
 void TexFunc (FILE* output_ptr, node_t* node, int* line_size)
 {
+    assert (output_ptr);
+    assert (node);
+    assert (line_size);
+
     if (node->expr == FUNC) {
         if (node->data.func == SQRT) {
             fprintf (output_ptr, "\\%s{", list_of_func[node->data.func].name);
@@ -177,6 +204,10 @@ void TexFunc (FILE* output_ptr, node_t* node, int* line_size)
 
 void TexOp (FILE* output_ptr, node_t* node, int* line_size)
 {
+    assert (output_ptr);
+    assert (node);
+    assert (line_size);
+
     if (node->expr == OP) {
         if (TexIfPow (output_ptr, node, line_size)) return;
 
