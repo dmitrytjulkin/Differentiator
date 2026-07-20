@@ -4,6 +4,7 @@
 #include "headers/tree.h"
 #include "headers/differentiator.h"
 #include "headers/dump.h"
+#include "headers/nametable.h"
 
 #define MAIN_ARG "y"
 
@@ -36,7 +37,9 @@ int main ()
     AddTexLine (TEXDUMP_FILENAME, tree->root, "Оптимизация формулы:");
 
     tree_t* der_tree = InitTree ();
-    der_tree->root = DiffNode (tree->root, MAIN_ARG);
+    nametable_t dependencies = {};
+    InitNametable (&dependencies);
+    der_tree->root = DiffNode (tree->root, MAIN_ARG, &dependencies);
 
     AddTexLine (TEXDUMP_FILENAME, der_tree->root, "Дифференцирование формулы:");
 
