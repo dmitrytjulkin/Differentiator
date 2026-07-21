@@ -31,6 +31,7 @@ enum code_of_op {
     MUL,
     DIV,
     POW,
+    EQUALITY,
 
     COUNT_OF_OP
 };

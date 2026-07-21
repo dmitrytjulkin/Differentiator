@@ -9,6 +9,7 @@
 void SyntaxError (const char* funcname, int line);
 
 node_t* GetExpression (token_array_t* token_array);
+node_t* GetEquality (token_array_t* token_array, size_t* index);
 node_t* GetAddOrSub (token_array_t* token_array, size_t* index);
 node_t* GetMulOrDiv (token_array_t* token_array, size_t* index);
 node_t* GetBrac     (token_array_t* token_array, size_t* index);
@@ -55,13 +56,30 @@ node_t* GetExpression (token_array_t* token_array)
 
     size_t index = 0;
 
-
-    node_t* node = GetAddOrSub (token_array, &index);
+    node_t* node = GetEquality (token_array, &index);
 
     if (index > token_array->size)
         SyntaxError (__func__, __LINE__);
 
     return node;
+}
+
+node_t* GetEquality (token_array_t* token_array, size_t* index)
+{
+    assert (token_array);
+    assert (index);
+
+    node_t* left_part = GetAddOrSub (token_array, index);
+
+    if (token_array->data[*index].code == EQUALITY_TOKEN) {
+        ++*index;
+
+        node_t* right part = GetAddOrSub (token_array, index);
+
+        return NewNode (OP, {.op = EQUALITY}, left_part, right_part);
+    }
+
+    return left_part;
 }
 
 node_t* GetAddOrSub (token_array_t* token_array, size_t* index)

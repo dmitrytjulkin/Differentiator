@@ -26,6 +26,7 @@ void TokenizeInput (const char* input_string, token_array_t* token_array,  namet
         if (token_array->capacity - token_array->size == 1)
             ResizeTokenArray (token_array);
 
+        TOKENIZE_OP ("=", EQUALITY_TOKEN)
         TOKENIZE_OP ("(", LEFT_BRACKET_TOKEN);
         TOKENIZE_OP (")", RIGHT_BRACKET_TOKEN);
         TOKENIZE_OP ("+", ADD_TOKEN);

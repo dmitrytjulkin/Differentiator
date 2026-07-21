@@ -21,4 +21,5 @@ op_t list_of_op[] = {
     {'*', MUL},
     {'/', DIV},
     {'^', POW},
+    {'=', EQUALITY}
 };

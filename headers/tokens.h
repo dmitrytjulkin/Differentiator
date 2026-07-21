@@ -13,6 +13,7 @@ enum token_codes {
     POW_TOKEN,
     LEFT_BRACKET_TOKEN,
     RIGHT_BRACKET_TOKEN,
+    EQUALITY_TOKEN,
 
     SQRT_TOKEN,
     LN_TOKEN,
