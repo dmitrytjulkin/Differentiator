@@ -6,6 +6,7 @@
 #include "../headers/tokens.h"
 #include "../headers/nametable.h"
 
+bool TokenizeExcesses (const char* input_string, size_t* input_index);
 bool TokenizeNum (const char* input_string, token_array_t* token_array,
                   size_t* input_index);
 bool TokenizeVar (const char* input_string, token_array_t* token_array,
@@ -19,18 +20,11 @@ void TokenizeInput (const char* input_string, token_array_t* token_array,  namet
     size_t input_index = 0;
 
     while (input_string[input_index] != '\0') {
-        // printf (GREEN "PASSED\n" COLOR_RESET);
-        // printf ("we see '%c' [%d]\n", input_string[input_index], input_string[input_index]);
-        // printf ("\n");
+        if (TokenizeExcesses (input_string, &input_index))
+            continue;
+
         if (token_array->capacity - token_array->size == 1)
             ResizeTokenArray (token_array);
-
-        if (input_string[input_index] == ' ' ||
-            input_string[input_index] == '\t' ||
-            input_string[input_index] == '\n') {
-            input_index++;
-            continue;
-        }
 
         TOKENIZE_OP ("(", LEFT_BRACKET_TOKEN);
         TOKENIZE_OP (")", RIGHT_BRACKET_TOKEN);
@@ -57,6 +51,32 @@ void TokenizeInput (const char* input_string, token_array_t* token_array,  namet
         if (TokenizeVar (input_string, token_array, &input_index, nametable))
             continue;
     }
+}
+
+bool TokenizeExcesses (const char* input_string, size_t* input_index)
+{
+    assert (input_string);
+    assert (input_index);
+
+    if (input_string[*input_index] == '/' &&
+        input_string[*input_index + 1] == '/') {
+        *input_index += 2;
+
+        while (input_string[*input_index] != '\n')
+            ++*input_index;
+
+        return true;
+    }
+
+    if (input_string[*input_index] == ' ' ||
+        input_string[*input_index] == '\t' ||
+        input_string[*input_index] == '\n') {
+        ++*input_index;
+
+        return true;
+    }
+
+    return false;
 }
 
 bool TokenizeNum (const char* input_string, token_array_t* token_array,

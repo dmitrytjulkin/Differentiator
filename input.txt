@@ -1,1 +1,4 @@
-x + z + 2*x
+// The formula
+x + z + 2*x + y
+
+//
