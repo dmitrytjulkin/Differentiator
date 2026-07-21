@@ -20,7 +20,7 @@ data_t DeleteNodeAndRetData (node_t* parent, child_node_t dir_of_child)
 {
     assert (parent);
 
-    data_t ret_data = {.var = ""};
+    data_t ret_data = {.var.name = ""};
 
     if (dir_of_child == LEFT) {
         ret_data = parent->left->data;

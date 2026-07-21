@@ -1,5 +1,7 @@
 #pragma once
 
+#include "nametable.h"
+
 enum type_of_expr {
     NUM,
     VAR,
@@ -45,7 +47,7 @@ struct op_t {
 
 union data_t {
     double num;
-    char var[10];
+    var_t var;
     code_of_op op;
     code_of_func func;
 };

@@ -194,7 +194,7 @@ void PrintVar (node_t* node, FILE* output_ptr)
             "\t<TD PORT = \"f1\"> %p </TD> </TR>                               \n"
             "\t</TABLE>                                                        \n"
             "\t>];                                                             \n",
-            node, "VAR_type", node->parent, node, node->data.var, L, R);
+            node, "VAR_type", node->parent, node, node->data.var.name, L, R);
 }
 
 void PrintDiffVar (node_t* node, FILE* output_ptr)
@@ -213,5 +213,5 @@ void PrintDiffVar (node_t* node, FILE* output_ptr)
             "\t<TD PORT = \"f1\"> %p </TD> </TR>                               \n"
             "\t</TABLE>                                                        \n"
             "\t>];                                                             \n",
-            node, "VAR_type", node->parent, node, node->data.var, L, R);
+            node, "VAR_type", node->parent, node, node->data.var.name, L, R);
 }

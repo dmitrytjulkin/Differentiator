@@ -23,7 +23,7 @@ TO_DUMP = $(DUMP_DIR)/build_graph_dump.cpp $(DUMP_DIR)/build_tex_dump.cpp \
 TREE_DIR = parse_tree
 PARSE_TREE = $(TREE_DIR)/free_tree.cpp $(TREE_DIR)/get_tree_size.cpp \
 		$(TREE_DIR)/init_tree.cpp $(TREE_DIR)/make_or_delete_node.cpp \
-		$(TREE_DIR)/print_tree.cpp $(TREE_DIR)/find_node.cpp
+		$(TREE_DIR)/print_tree.cpp
 
 INPUT_DIR = input_to_tree
 PARSE_INPUT = $(INPUT_DIR)/read_tree_from_file.cpp $(INPUT_DIR)/read_input.cpp $(INPUT_DIR)/parse_token_array.cpp \

@@ -192,8 +192,8 @@ node_t* GetVar (token_array_t* token_array, size_t* index)
 
     char* val = token_array->data[*index].type.var.name;
 
-    data_t tmp = {.var = ""};
-    strcpy (tmp.var, val);
+    data_t tmp = {.var.name = ""};
+    strcpy (tmp.var.name, val);
     ++*index;
 
     node_t* node = NewNode (VAR, tmp, NULL, NULL);

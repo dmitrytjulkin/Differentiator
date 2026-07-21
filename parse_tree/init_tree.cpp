@@ -22,7 +22,7 @@ node_t* InitNode ()
     assert (node);
 
     node->parent = NULL;
-    strcpy (node->data.var, "");
+    strcpy (node->data.var.name, "");
     node->expr = VAR;
     L = NULL;
     R = NULL;

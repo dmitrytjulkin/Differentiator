@@ -137,13 +137,13 @@ void TexNode (FILE* output_ptr, node_t* node, int* line_size)
             break;
 
         case VAR:
-            *line_size += strlen (node->data.var);
+            *line_size += strlen (node->data.var.name);
             TexVar (output_ptr, node);
 
             break;
 
         case DIFF_VAR:
-            *line_size += strlen (node->data.var) + 1;
+            *line_size += strlen (node->data.var.name) + 1;
             TexDiffVar (output_ptr, node);
 
             break;
@@ -166,7 +166,7 @@ void TexVar (FILE* output_ptr, node_t* node)
     assert (output_ptr);
     assert (node);
 
-    fprintf (output_ptr, "%s", node->data.var);
+    fprintf (output_ptr, "%s", node->data.var.name);
 }
 
 void TexDiffVar (FILE* output_ptr, node_t* node)
@@ -174,7 +174,7 @@ void TexDiffVar (FILE* output_ptr, node_t* node)
     assert (output_ptr);
     assert (node);
 
-    fprintf (output_ptr, "\\partial %s", node->data.var);
+    fprintf (output_ptr, "\\partial %s", node->data.var.name);
 }
 
 void TexFunc (FILE* output_ptr, node_t* node, int* line_size)

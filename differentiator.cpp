@@ -22,9 +22,10 @@
 #define COS_(right)  NewNode (FUNC,  {.func = COS}, NULL, right)
 
 // static
-node_t* dOp     (node_t* node, const char* arg, nametable_t* dependencies);
-node_t* dFunc   (node_t* node, const char* arg, nametable_t* dependencies);
-node_t* DifDependency (node_t* node, const char* arg);
+node_t* dOp            (node_t* node, const char* arg, nametable_t* dependencies);
+node_t* dFunc          (node_t* node, const char* arg, nametable_t* dependencies);
+node_t* DifDependency  (node_t* node, const char* arg);
+node_t* DiffDerivative (node_t* node, const char* arg);
 
 node_t* dDiv    (node_t* node, const char* arg, nametable_t* dependencies);
 node_t* dPow    (node_t* node, const char* arg, nametable_t* dependencies);
@@ -60,11 +61,11 @@ node_t* DiffNode (node_t* node, const char* arg, nametable_t* dependencies)
             return dFunc (node, arg, dependencies);
 
         case VAR:
-            if (strcmp (arg, node->data.var) == 0)
+            if (strcmp (arg, node->data.var.name) == 0)
                 return NUM_ (1);
 
             for (size_t i = 0; i < dependencies->size; ++i)
-                if (strcmp (dependencies->data[i].name, node->data.var) == 0)
+                if (strcmp (dependencies->data[i].name, node->data.var.name) == 0)
                     return DifDependency (node, arg);
 
             return NUM_ (0);
@@ -106,7 +107,7 @@ node_t* CopyNode (node_t* node)
         break;
 
     case VAR: case DIFF_VAR:
-        strcpy (copy_node->data.var, node->data.var);
+        strcpy (copy_node->data.var.name, node->data.var.name);
 
         break;
 
@@ -134,9 +135,8 @@ node_t* dOp (node_t* node, const char* arg, nametable_t* dependencies)
             return ADD_ (MUL_ (diff (L), copy (R)), MUL_ (copy (L), diff (R)));
 
         case DIV:
-            node_t* der_node = DiffDerivative (node, arg, derivative);
-            if (node1)
-                return node1;
+            if (node->left->expr == DIFF_VAR)
+                return DiffDerivative (node, arg);
 
             return dDiv (node, arg, dependencies);
 
@@ -152,18 +152,19 @@ node_t* dOp (node_t* node, const char* arg, nametable_t* dependencies)
 
 }
 
-// seems pretty slow
 node_t* DiffDerivative (node_t* node, const char* arg)
 {
     assert (node);
     assert (arg);
 
-    node_t* leftmost_leaf = FindLeftmostLeaf (node);
+    node_t* numerator = copy (node->left);
+    numerator->data.var.differential_order++;
 
-    if (leftmost_leaf->expr != DIFF_VAR)
-        return NULL;
+    data_t tmp = {};
+    tmp.var.differential_order = 1;
+    node_t* denominator = MUL_ (copy(node->right), NewNode (DIFF_VAR, tmp, NULL, NULL));
 
-    
+    return DIV_ (numerator, denominator);
 }
 
 node_t* dFunc (node_t* node, const char* arg, nametable_t* dependencies)
@@ -220,7 +221,7 @@ node_t* DifDependency (node_t* node, const char* arg)
     dependency_node->expr = DIFF_VAR;
 
     data_t tmp = {};
-    strcpy (tmp.var, arg);
+    strcpy (tmp.var.name, arg);
     node_t* arg_node = NewNode (DIFF_VAR, tmp, NULL, NULL);
 
     return DIV_ (dependency_node, arg_node);

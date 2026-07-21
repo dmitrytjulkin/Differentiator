@@ -15,7 +15,7 @@ void PrintNode (node_t* node)
         printf ("his data: %lg\n", node->data.num);
 
     else if (node->expr == VAR)
-        printf ("his data: %s\n", node->data.var);
+        printf ("his data: %s\n", node->data.var.name);
 
     else if (node->expr == FUNC)
         printf ("his data: %d\n", node->data.func);

@@ -5,6 +5,7 @@ const int INIT_VAR_SIZE = 10;
 struct var_t {
     char name[INIT_VAR_SIZE];
     int val;
+    int differential_order;
 };
 
 struct nametable_t {
