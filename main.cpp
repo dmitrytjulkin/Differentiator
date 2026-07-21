@@ -39,7 +39,7 @@ int main ()
 
     nametable_t dependencies = {};
     InitNametable (&dependencies);
-    PasteToNametable (&dependencies, "y");
+    PasteToNametable (&dependencies, "z");
 
     tree_t* der_tree = InitTree ();
     der_tree->root = DiffNode (tree->root, MAIN_ARG, &dependencies);

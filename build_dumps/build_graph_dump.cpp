@@ -55,8 +55,13 @@ void PrintTreeInGraphDump (node_t* root, FILE* output_ptr)
 
             break;
 
-        case VAR: case DIFF_VAR:
+        case VAR:
             PrintVar (root, output_ptr);
+
+            break;
+
+        case DIFF_VAR:
+            PrintDiffVar (root, output_ptr);
 
             break;
 
@@ -95,8 +100,13 @@ void PrintNodeInGraphDump (FILE* output_ptr, node_t* node, node_t* child,
 
             break;
 
-        case VAR: case DIFF_VAR:
+        case VAR:
             PrintVar (child, output_ptr);
+
+            break;
+
+        case DIFF_VAR:
+            PrintDiffVar (child, output_ptr);
 
             break;
 

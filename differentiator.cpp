@@ -86,17 +86,30 @@ node_t* CopyNode (node_t* node)
 
     copy_node->expr = node->expr;
 
-    if (node->expr == NUM)
+    switch (node->expr) {
+    case NUM:
         copy_node->data.num = node->data.num;
 
-    else if (node->expr == VAR)
-        strcpy (copy_node->data.var, node->data.var);
+        break;
 
-    else if (node->expr == OP)
+    case OP:
         copy_node->data.op = node->data.op;
 
-    else
+        break;
+
+    case FUNC:
         copy_node->data.func = node->data.func;
+
+        break;
+
+    case VAR: case DIFF_VAR:
+        strcpy (copy_node->data.var, node->data.var);
+
+        break;
+
+    default:
+        assert (0);
+    }
 
     return copy_node;
 }
@@ -178,12 +191,12 @@ node_t* DifDependency (node_t* node, const char* arg)
     assert (node);
     assert (arg);
 
-    node_t* dependency_node = node;
+    node_t* dependency_node = copy (node);
     dependency_node->expr = DIFF_VAR;
 
     data_t tmp = {};
     strcpy (tmp.var, arg);
-    node_t* arg_node = NewNode (VAR, tmp, NULL, NULL);
+    node_t* arg_node = NewNode (DIFF_VAR, tmp, NULL, NULL);
 
     return DIV_ (dependency_node, arg_node);
 }
