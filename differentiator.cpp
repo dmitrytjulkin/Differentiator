@@ -43,6 +43,9 @@ node_t* dArcctg (node_t* node, const char* arg, nametable_t* dependencies);
 
 node_t* DiffNode (node_t* node, const char* arg, nametable_t* dependencies)
 {
+    assert (arg);
+    assert (dependencies);
+
     if (node == NULL)
         return NULL;
 
@@ -117,6 +120,8 @@ node_t* CopyNode (node_t* node)
 node_t* dOp (node_t* node, const char* arg, nametable_t* dependencies)
 {
     assert (node);
+    assert (arg);
+    assert (dependencies);
 
     switch (node->data.op) {
         case ADD:
@@ -129,6 +134,10 @@ node_t* dOp (node_t* node, const char* arg, nametable_t* dependencies)
             return ADD_ (MUL_ (diff (L), copy (R)), MUL_ (copy (L), diff (R)));
 
         case DIV:
+            node_t* der_node = DiffDerivative (node, arg, derivative);
+            if (node1)
+                return node1;
+
             return dDiv (node, arg, dependencies);
 
         case POW:
@@ -143,9 +152,25 @@ node_t* dOp (node_t* node, const char* arg, nametable_t* dependencies)
 
 }
 
+// seems pretty slow
+node_t* DiffDerivative (node_t* node, const char* arg)
+{
+    assert (node);
+    assert (arg);
+
+    node_t* leftmost_leaf = FindLeftmostLeaf (node);
+
+    if (leftmost_leaf->expr != DIFF_VAR)
+        return NULL;
+
+    
+}
+
 node_t* dFunc (node_t* node, const char* arg, nametable_t* dependencies)
 {
     assert (node);
+    assert (arg);
+    assert (dependencies);
 
     switch (node->data.func) {
         case SQRT:
@@ -204,6 +229,8 @@ node_t* DifDependency (node_t* node, const char* arg)
 node_t* dDiv (node_t* node, const char* arg, nametable_t* dependencies)
 {
     assert (node);
+    assert (arg);
+    assert (dependencies);
 
     if (node->data.op != DIV)
         return NULL;
@@ -217,6 +244,8 @@ node_t* dDiv (node_t* node, const char* arg, nametable_t* dependencies)
 node_t* dPow (node_t* node, const char* arg, nametable_t* dependencies)
 {
     assert (node);
+    assert (arg);
+    assert (dependencies);
 
     if (node->data.op != POW)
         return NULL;
@@ -232,6 +261,8 @@ node_t* dPow (node_t* node, const char* arg, nametable_t* dependencies)
 node_t* dSqrt (node_t* node, const char* arg, nametable_t* dependencies)
 {
     assert (node);
+    assert (arg);
+    assert (dependencies);
 
     return MUL_ (DIV_ (NUM_ (0.5), copy (node)), diff (R));
 }
@@ -239,6 +270,8 @@ node_t* dSqrt (node_t* node, const char* arg, nametable_t* dependencies)
 node_t* dLn (node_t* node, const char* arg, nametable_t* dependencies)
 {
     assert (node);
+    assert (arg);
+    assert (dependencies);
 
     return MUL_ (DIV_ (NUM_ (1), copy (R)), diff (R));
 }
@@ -246,6 +279,8 @@ node_t* dLn (node_t* node, const char* arg, nametable_t* dependencies)
 node_t* dSin (node_t* node, const char* arg, nametable_t* dependencies)
 {
     assert (node);
+    assert (arg);
+    assert (dependencies);
 
     return MUL_ (COS_ (copy (R)), diff (R));
 }
@@ -253,6 +288,8 @@ node_t* dSin (node_t* node, const char* arg, nametable_t* dependencies)
 node_t* dCos (node_t* node, const char* arg, nametable_t* dependencies)
 {
     assert (node);
+    assert (arg);
+    assert (dependencies);
 
     return SUB_ (NUM_ (0), MUL_ (SIN_ (copy (R)), diff (R)));
 }
@@ -260,6 +297,8 @@ node_t* dCos (node_t* node, const char* arg, nametable_t* dependencies)
 node_t* dTg (node_t* node, const char* arg, nametable_t* dependencies)
 {
     assert (node);
+    assert (arg);
+    assert (dependencies);
 
     return MUL_ (DIV_ (NUM_ (1), POW_ (COS_ (copy (R)), NUM_ (2))), diff (R));
 }
@@ -267,6 +306,8 @@ node_t* dTg (node_t* node, const char* arg, nametable_t* dependencies)
 node_t* dCtg (node_t* node, const char* arg, nametable_t* dependencies)
 {
     assert (node);
+    assert (arg);
+    assert (dependencies);
 
     node_t* external_der = DIV_ (NUM_ (1), POW_ (SIN_ (copy (R)), NUM_ (2)));
 
@@ -276,6 +317,8 @@ node_t* dCtg (node_t* node, const char* arg, nametable_t* dependencies)
 node_t* dArcsin (node_t* node, const char* arg, nametable_t* dependencies)
 {
     assert (node);
+    assert (arg);
+    assert (dependencies);
 
     node_t* external_der = DIV_ (NUM_ (1), SQRT_ (SUB_ (NUM_ (1), POW_ (copy (R), NUM_ (2)))));
 
@@ -285,6 +328,8 @@ node_t* dArcsin (node_t* node, const char* arg, nametable_t* dependencies)
 node_t* dArccos (node_t* node, const char* arg, nametable_t* dependencies)
 {
     assert (node);
+    assert (arg);
+    assert (dependencies);
 
     node_t* external_der = DIV_ (NUM_ (1), SQRT_ (SUB_ (NUM_ (1), POW_ (copy (R), NUM_ (2)))));
 
@@ -294,6 +339,8 @@ node_t* dArccos (node_t* node, const char* arg, nametable_t* dependencies)
 node_t* dArctg (node_t* node, const char* arg, nametable_t* dependencies)
 {
     assert (node);
+    assert (arg);
+    assert (dependencies);
 
     node_t* external_der = DIV_ (NUM_ (1), ADD_ (NUM_ (1), POW_ (copy (R), NUM_ (2))));
 
@@ -303,6 +350,8 @@ node_t* dArctg (node_t* node, const char* arg, nametable_t* dependencies)
 node_t* dArcctg (node_t* node, const char* arg, nametable_t* dependencies)
 {
     assert (node);
+    assert (arg);
+    assert (dependencies);
 
     node_t* external_der = DIV_ (NUM_ (1), ADD_ (NUM_ (1), POW_ (copy (R), NUM_ (2))));
 
