@@ -74,7 +74,7 @@ node_t* GetEquality (token_array_t* token_array, size_t* index)
     if (token_array->data[*index].code == EQUALITY_TOKEN) {
         ++*index;
 
-        node_t* right part = GetAddOrSub (token_array, index);
+        node_t* right_part = GetAddOrSub (token_array, index);
 
         return NewNode (OP, {.op = EQUALITY}, left_part, right_part);
     }

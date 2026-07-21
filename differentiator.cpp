@@ -143,6 +143,9 @@ node_t* dOp (node_t* node, const char* arg, nametable_t* dependencies)
         case POW:
             return dPow (node, arg, dependencies);
 
+        case EQUALITY:
+            return NewNode (OP, {.op = EQUALITY}, diff (L), diff (R));
+
         case COUNT_OF_OP: default:
             printf ("This type of op doesn't exist, "
                     "its code: %d\n", node->data.op);
