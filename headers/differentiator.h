@@ -2,13 +2,15 @@
 
 #include "tree.h"
 #include "nametable.h"
+#include "tokens.h"
 
 node_t* Optimize (tree_t* tree);
 
 node_t* DiffNode (node_t* node, const char* arg, nametable_t* dependencies);
 node_t* CopyNode (node_t* node);
 
-tree_t* CreateTreeFromFile (FILE* input_ptr);
+tree_t* CreateTreeFromFile (FILE* input_ptr, nametable_t* dependencies,
+                            token_array_t* arg_queue);
 
 char* ReadInput (FILE* input);
 

@@ -5,6 +5,7 @@
 #include "headers/differentiator.h"
 #include "headers/dump.h"
 #include "headers/nametable.h"
+#include "headers/tokens.h"
 
 #define MAIN_ARG "x"
 
@@ -28,41 +29,41 @@ int main ()
     FILE* input_ptr = fopen (INPUT_FILENAME, "r");
     assert (input_ptr);
 
-    tree_t* tree = InitTree ();
-    tree = CreateTreeFromFile (input_ptr);
+    nametable_t dependencies = {};
+    InitNametable (&dependencies);
 
+    token_array_t* arg_queue = {};
+    InitTokenArray (&arg_queue);
+
+    tree_t* tree = InitTree ();
+    tree = CreateTreeFromFile (input_ptr, &dependencies, &arg_queue);
     RunTexDump (TEXDUMP_FILENAME, tree);
 
     Optimize (tree);
-
+    RunGraphDump (tree, GRAPH_DUMP_FILENAME, CMD_TO_RUN_TREE_DUMP);
     AddTexLine (TEXDUMP_FILENAME, tree->root, "Оптимизация формулы:");
 
-    nametable_t dependencies = {};
-    InitNametable (&dependencies);
-    PasteToNametable (&dependencies, "z");
+    printf ("Size of tree: %zu\n", CountTreeSize (tree));
 
-    tree_t* der_tree = InitTree ();
-    der_tree->root = DiffNode (tree->root, MAIN_ARG, &dependencies);
+    for (size_t i = 0; i < arg_queue->size; ++i) {
+        tree->root = DiffNode (tree->root, arg_queue->data[i].type.var.name,
+                               &dependencies);
+        AddTexLine (TEXDUMP_FILENAME, tree->root, "Дифференцирование формулы:");
 
-    DestroyNametable (&dependencies);
+        Optimize (tree);
+        RunGraphDump (tree, DER_GRAPH_DUMP_FILENAME, CMD_TO_RUN_DER_TREE_DUMP);
+        AddTexLine (TEXDUMP_FILENAME, tree->root, "И снова оптимизация формулы:");
 
-    AddTexLine (TEXDUMP_FILENAME, der_tree->root, "Дифференцирование формулы:");
-
-    Optimize (der_tree);
-
-    AddTexLine (TEXDUMP_FILENAME, der_tree->root, "И снова оптимизация формулы:");
+        printf ("Size of der_tree: %zu\n", CountTreeSize (der_tree));
+    }
 
     FinishTex (TEXDUMP_FILENAME);
 
-    RunGraphDump (tree, GRAPH_DUMP_FILENAME, CMD_TO_RUN_TREE_DUMP);
-    RunGraphDump (der_tree, DER_GRAPH_DUMP_FILENAME, CMD_TO_RUN_DER_TREE_DUMP);
-
-    printf ("Size of tree: %zu\n", CountTreeSize (tree));
-    printf ("Size of der_tree: %zu\n", CountTreeSize (der_tree));
-    printf (GREEN "through the code and directories, "
-            "i alone am the programmer one\n" COLOR_RESET);
-
+    DestroyNametable (&dependencies);
+    DestroyTokenArray (&arg_queue);
     fclose (input_ptr);
     FreeTree (tree);
-    FreeTree (der_tree);
+
+    printf (GREEN "through the code and directories, "
+            "i alone am the programmer one\n" COLOR_RESET);
 }

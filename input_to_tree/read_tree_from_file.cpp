@@ -6,6 +6,8 @@
 #include "../headers/differentiator.h"
 #include "../headers/tokens.h"
 
+void ParseAfterExpression (char* input_string, nametable_t* dependencies,
+                           token_array_t* arg_queue);
 void SyntaxError (const char* funcname, int line);
 
 node_t* GetExpression (token_array_t* token_array);
@@ -61,17 +63,22 @@ void ParseAfterExpression (char* input_string, nametable_t* dependencies,
 
     while (input_string[index]!= '\n') {
         sscanf (input_string + index, "%s %n", var, symbols_count);
-
         index += symbols_count;
+
         PasteToNametable (dependencies, var);
     }
 
     ++index;
+
     while (input_string[index] != '\n') {
         sscanf (input_string + index, "%s %n", var, symbols_count);
-
         index += symbols_count;
-        PasteToTokenArray ();
+
+        strcpy (arg_queue->data[arg_queue->size].type.var.name, var);
+        ++arg_queue->size;
+
+        if (token_array->capacity - token_array->size == 1)
+            ResizeTokenArray (token_array);
     }
 }
 
