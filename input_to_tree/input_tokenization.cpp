@@ -52,12 +52,12 @@ void TokenizeInput (const char* input_string, token_array_t* token_array,  namet
         if (TokenizeVar (input_string, token_array, &input_index, nametable))
             continue;
 
-        if (input_string[input_index] == '\n') {
+        if (input_string[input_index] == ';') {
             token_array->data[token_array->size].code = FINISH_TOKEN;
             ++token_array->size;
-
             input_index++;
-            break;
+
+            continue;
         }
     }
 }
@@ -78,7 +78,8 @@ bool TokenizeExcesses (const char* input_string, size_t* input_index)
     }
 
     if (input_string[*input_index] == ' ' ||
-        input_string[*input_index] == '\t') {
+        input_string[*input_index] == '\t' ||
+        input_string[*input_index] == '\n') {
         ++*input_index;
 
         return true;

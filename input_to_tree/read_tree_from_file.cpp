@@ -6,7 +6,7 @@
 #include "../headers/differentiator.h"
 #include "../headers/tokens.h"
 
-void ParseAfterExpression (char* input_string, nametable_t* dependencies,
+void ParseAfterExpression (token_array_t* input_array, nametable_t* dependencies,
                            token_array_t* arg_queue);
 void SyntaxError (const char* funcname, int line);
 
@@ -35,10 +35,12 @@ tree_t* CreateTreeFromFile (FILE* input_ptr, nametable_t* dependencies,
 
     TokenizeInput (input_string, &input_array, &nametable);
 
+    // PrintTokenArray (&input_array);
+
     tree_t* tree = InitTree ();
     tree->root = GetExpression (&input_array);
 
-    ParseAfterExpression (input_string, dependencies, arg_queue);
+    ParseAfterExpression (&input_array, dependencies, arg_queue);
 
     fclose (input_ptr);
     DestroyTokenArray (&input_array);
@@ -46,36 +48,30 @@ tree_t* CreateTreeFromFile (FILE* input_ptr, nametable_t* dependencies,
     return tree;
 }
 
-void ParseAfterExpression (char* input_string, nametable_t* dependencies,
-                           token_array_t* arg_queue)
+void ParseAfterExpression (token_array_t* input_array,
+                           nametable_t* dependencies, token_array_t* arg_queue)
 {
-    assert (input_string);
+    assert (input_array);
     assert (dependencies);
     assert (arg_queue);
 
     size_t index = 0;
-    char var[INIT_VAR_SIZE] = "";
-    int symbols_count = 0;
 
-    while (input_string[index] != '\n')
+    while (input_array->data[index].code != FINISH_TOKEN)
         ++index;
     ++index;
 
-    while (input_string[index]!= '\n') {
-        sscanf (input_string + index, "%s %n", var, &symbols_count);
-        index += (size_t) symbols_count;
-
-        PasteToNametable (dependencies, var);
-    }
+    while (input_array->data[index].code != FINISH_TOKEN)
+        PasteToNametable (dependencies, input_array->data[index++].type.var.name);
 
     ++index;
 
-    while (input_string[index] != '\n') {
-        sscanf (input_string + index, "%s %n", var, &symbols_count);
-        index += (size_t) symbols_count;
+    while (input_array->data[index].code != FINISH_TOKEN) {
+        strcpy (arg_queue->data[arg_queue->size].type.var.name,
+                input_array->data[index].type.var.name);
 
-        strcpy (arg_queue->data[arg_queue->size].type.var.name, var);
         ++arg_queue->size;
+        ++index;
 
         if (arg_queue->capacity - arg_queue->size == 1)
             ResizeTokenArray (arg_queue);
