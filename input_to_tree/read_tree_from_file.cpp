@@ -55,15 +55,15 @@ void ParseAfterExpression (char* input_string, nametable_t* dependencies,
 
     size_t index = 0;
     char var[INIT_VAR_SIZE] = "";
-    size_t symbols_count = 0;
+    int symbols_count = 0;
 
     while (input_string[index] != '\n')
         ++index;
     ++index;
 
     while (input_string[index]!= '\n') {
-        sscanf (input_string + index, "%s %n", var, symbols_count);
-        index += symbols_count;
+        sscanf (input_string + index, "%s %n", var, &symbols_count);
+        index += (size_t) symbols_count;
 
         PasteToNametable (dependencies, var);
     }
@@ -71,14 +71,14 @@ void ParseAfterExpression (char* input_string, nametable_t* dependencies,
     ++index;
 
     while (input_string[index] != '\n') {
-        sscanf (input_string + index, "%s %n", var, symbols_count);
-        index += symbols_count;
+        sscanf (input_string + index, "%s %n", var, &symbols_count);
+        index += (size_t) symbols_count;
 
         strcpy (arg_queue->data[arg_queue->size].type.var.name, var);
         ++arg_queue->size;
 
-        if (token_array->capacity - token_array->size == 1)
-            ResizeTokenArray (token_array);
+        if (arg_queue->capacity - arg_queue->size == 1)
+            ResizeTokenArray (arg_queue);
     }
 }
 
@@ -220,6 +220,9 @@ node_t* GetBrac (token_array_t* token_array, size_t* index)
     if (SQRT_TOKEN <= token_array->data[*index].code &&
         token_array->data[*index].code < NUM_TOKEN)
         return GetFunc (token_array, index);
+
+    if (token_array->data[*index].code == FINISH_TOKEN)
+        return NULL;
 
     assert (0);
     return NULL;

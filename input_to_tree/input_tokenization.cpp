@@ -53,7 +53,7 @@ void TokenizeInput (const char* input_string, token_array_t* token_array,  namet
             continue;
 
         if (input_string[input_index] == '\n') {
-            token_array[token_array->size] = FINISH_TOKEN;
+            token_array->data[token_array->size].code = FINISH_TOKEN;
             ++token_array->size;
 
             input_index++;

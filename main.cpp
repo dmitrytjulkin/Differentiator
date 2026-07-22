@@ -32,7 +32,7 @@ int main ()
     nametable_t dependencies = {};
     InitNametable (&dependencies);
 
-    token_array_t* arg_queue = {};
+    token_array_t arg_queue = {};
     InitTokenArray (&arg_queue);
 
     tree_t* tree = InitTree ();
@@ -45,8 +45,8 @@ int main ()
 
     printf ("Size of tree: %zu\n", CountTreeSize (tree));
 
-    for (size_t i = 0; i < arg_queue->size; ++i) {
-        tree->root = DiffNode (tree->root, arg_queue->data[i].type.var.name,
+    for (size_t i = 0; i < arg_queue.size; ++i) {
+        tree->root = DiffNode (tree->root, arg_queue.data[i].type.var.name,
                                &dependencies);
         AddTexLine (TEXDUMP_FILENAME, tree->root, "Дифференцирование формулы:");
 
@@ -54,7 +54,7 @@ int main ()
         RunGraphDump (tree, DER_GRAPH_DUMP_FILENAME, CMD_TO_RUN_DER_TREE_DUMP);
         AddTexLine (TEXDUMP_FILENAME, tree->root, "И снова оптимизация формулы:");
 
-        printf ("Size of der_tree: %zu\n", CountTreeSize (der_tree));
+        printf ("Size of der_tree: %zu\n", CountTreeSize (tree));
     }
 
     FinishTex (TEXDUMP_FILENAME);
