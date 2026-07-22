@@ -18,7 +18,8 @@ node_t* GetVar      (token_array_t* token_array, size_t* index);
 node_t* GetFunc     (token_array_t* token_array, size_t* index);
 node_t* GetPow      (token_array_t* token_array, size_t* index);
 
-tree_t* CreateTreeFromFile (FILE* input_ptr)
+tree_t* CreateTreeFromFile (FILE* input_ptr, nametable_t* dependencies,
+                            token_array_t* arg_queue)
 {
     assert (input_ptr);
 
@@ -35,10 +36,43 @@ tree_t* CreateTreeFromFile (FILE* input_ptr)
     tree_t* tree = InitTree ();
     tree->root = GetExpression (&input_array);
 
+    ParseAfterExpression (input_string, dependencies, arg_queue);
+
     fclose (input_ptr);
     DestroyTokenArray (&input_array);
 
     return tree;
+}
+
+void ParseAfterExpression (char* input_string, nametable_t* dependencies,
+                           token_array_t* arg_queue)
+{
+    assert (input_string);
+    assert (dependencies);
+    assert (arg_queue);
+
+    size_t index = 0;
+    char var[INIT_VAR_SIZE] = "";
+    size_t symbols_count = 0;
+
+    while (input_string[index] != '\n')
+        ++index;
+    ++index;
+
+    while (input_string[index]!= '\n') {
+        sscanf (input_string + index, "%s %n", var, symbols_count);
+
+        index += symbols_count;
+        PasteToNametable (dependencies, var);
+    }
+
+    ++index;
+    while (input_string[index] != '\n') {
+        sscanf (input_string + index, "%s %n", var, symbols_count);
+
+        index += symbols_count;
+        PasteToTokenArray ();
+    }
 }
 
 void SyntaxError (const char* funcname, int line)
