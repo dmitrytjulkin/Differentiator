@@ -11,7 +11,7 @@ const int INIT_SIZE = 100;
 
 #define INPUT_FILENAME         "input.txt"
 
-#define TEXDUMP_FILENAME       "tex_dump/tree.tex"
+#define TEX_DUMP_FILENAME       "tex_dump/tree.tex"
 
 #define GRAPH_DUMP_DIR         "graph_dump/"
 #define TREE_GRAPH_DUMP        "tree_graph_dump"
@@ -21,6 +21,10 @@ const int INIT_SIZE = 100;
 #define RUN_GRAPH_DUMP         "dot -Tsvg "
 #define RUN_TREE_GRAPH_DUMP    RUN_GRAPH_DUMP TREE_GRAPH_DUMP_INPUT \
                                " -o " TREE_GRAPH_DUMP_OUTPUT
+
+void AnalyzeTree (tree_t* tree);
+void AnalyzeDerTree (tree_t* tree, nametable_t* dependencies,
+                     token_array_t* arg_queue);
 
 // TODO correct and improve optimisation
 // TODO think about containing constants
@@ -41,35 +45,11 @@ int main ()
 
     tree_t* tree = InitTree ();
     tree = CreateTreeFromFile (input_ptr, &dependencies, &arg_queue);
-    RunTexDump (TEXDUMP_FILENAME, tree);
 
-    Optimize (tree);
-    AddTexLine (TEXDUMP_FILENAME, tree->root, "Оптимизация формулы:");
-
-    RunGraphDump (tree, TREE_GRAPH_DUMP_INPUT, RUN_TREE_GRAPH_DUMP);
-    printf ("Size of tree: %zu\n", CountTreeSize (tree));
-
-    char der_tree_graph_dump_input[INIT_SIZE] = "";
-    char der_tree_graph_dump_output[INIT_SIZE] = "";
-    char run_der_tree_graph_dump[INIT_SIZE] = "";
-
-    for (size_t i = 0; i < arg_queue.size; ++i) {
-        tree->root = DiffNode (tree->root, arg_queue.data[i].type.var.name,
-                               &dependencies);
-        AddTexLine (TEXDUMP_FILENAME, tree->root, "Дифференцирование формулы:");
-
-        Optimize (tree);
-        AddTexLine (TEXDUMP_FILENAME, tree->root, "И снова оптимизация формулы:");
-
-        sprintf (der_tree_graph_dump_input, GRAPH_DUMP_DIR "%dder_" TREE_GRAPH_DUMP ".dot", i);
-        sprintf (der_tree_graph_dump_output, GRAPH_DUMP_DIR "%dder_" TREE_GRAPH_DUMP ".svg", i);
-        sprintf (run_der_tree_graph_dump, RUN_GRAPH_DUMP "%s -o " GRAPH_DUMP_DIR "%s",
-                 der_tree_graph_dump_input, der_tree_graph_dump_output);
-        RunGraphDump (tree, der_tree_graph_dump_input, run_der_tree_graph_dump);
-        printf ("Size of der_tree: %zu\n", CountTreeSize (tree));
-    }
-
-    FinishTex (TEXDUMP_FILENAME);
+    RunTexDump (TEX_DUMP_FILENAME, tree);
+    AnalyzeTree (tree);
+    AnalyzeDerTree (tree, &dependencies, &arg_queue);
+    FinishTex (TEX_DUMP_FILENAME);
 
     DestroyNametable (&dependencies);
     DestroyTokenArray (&arg_queue);
@@ -80,3 +60,41 @@ int main ()
             "i alone am the programmer one\n" COLOR_RESET);
 }
 
+void AnalyzeTree (tree_t* tree)
+{
+    assert (tree);
+
+    Optimize (tree);
+    AddTexLine (TEX_DUMP_FILENAME, tree->root, "Оптимизация формулы:");
+
+    RunGraphDump (tree, TREE_GRAPH_DUMP_INPUT, RUN_TREE_GRAPH_DUMP);
+    printf ("Size of tree: %zu\n", CountTreeSize (tree));
+}
+
+void AnalyzeDerTree (tree_t* tree, nametable_t* dependencies,
+                    token_array_t* arg_queue)
+{
+    assert (tree);
+    assert (arg_queue);
+    assert (dependencies);
+
+    char input_file[INIT_SIZE] = "";
+    char output_file[INIT_SIZE] = "";
+    char run_graph_dump[INIT_SIZE] = "";
+
+    for (size_t i = 0; i < arg_queue->size; ++i) {
+        tree->root = DiffNode (tree->root, arg_queue->data[i].type.var.name, dependencies);
+        AddTexLine (TEX_DUMP_FILENAME, tree->root, "Дифференцирование формулы:");
+
+        Optimize (tree);
+        AddTexLine (TEX_DUMP_FILENAME, tree->root, "И снова оптимизация формулы:");
+
+        snprintf (input_file, INIT_SIZE, GRAPH_DUMP_DIR "%zuder_" TREE_GRAPH_DUMP ".dot", i + 1);
+        snprintf (output_file, INIT_SIZE, GRAPH_DUMP_DIR "%zuder_" TREE_GRAPH_DUMP ".svg", i + 1);
+        snprintf (run_graph_dump, INIT_SIZE, RUN_GRAPH_DUMP "%s -o %s",
+                 input_file, output_file);
+
+        RunGraphDump (tree, input_file, run_graph_dump);
+        printf ("Size of der_tree: %zu\n", CountTreeSize (tree));
+    }
+}
