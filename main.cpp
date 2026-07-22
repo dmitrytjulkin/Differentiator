@@ -7,16 +7,20 @@
 #include "headers/nametable.h"
 #include "headers/tokens.h"
 
-#define MAIN_ARG "x"
+const int INIT_SIZE = 100;
 
-#define INPUT_FILENAME           "input.txt"
-#define TEXDUMP_FILENAME         "tex_dump/tree.tex"
-#define GRAPH_DUMP_FILENAME       "graph_dump/tree_graph_dump.dot"
-#define DER_GRAPH_DUMP_FILENAME   "graph_dump/der_tree_graph_dump.dot"
-#define CMD_TO_RUN_TREE_DUMP     "dot -Tsvg " GRAPH_DUMP_FILENAME \
-                                 " -o graph_dump/tree_graph_dump.svg"
-#define CMD_TO_RUN_DER_TREE_DUMP "dot -Tsvg " DER_GRAPH_DUMP_FILENAME \
-                                 " -o graph_dump/der_tree_graph_dump.svg"
+#define INPUT_FILENAME         "input.txt"
+
+#define TEXDUMP_FILENAME       "tex_dump/tree.tex"
+
+#define GRAPH_DUMP_DIR         "graph_dump/"
+#define TREE_GRAPH_DUMP        "tree_graph_dump"
+#define TREE_GRAPH_DUMP_INPUT  GRAPH_DUMP_DIR TREE_GRAPH_DUMP ".dot"
+#define TREE_GRAPH_DUMP_OUTPUT GRAPH_DUMP_DIR TREE_GRAPH_DUMP ".svg"
+
+#define RUN_GRAPH_DUMP         "dot -Tsvg "
+#define RUN_TREE_GRAPH_DUMP    RUN_GRAPH_DUMP TREE_GRAPH_DUMP_INPUT \
+                               " -o " TREE_GRAPH_DUMP_OUTPUT
 
 // TODO correct and improve optimisation
 // TODO think about containing constants
@@ -40,10 +44,14 @@ int main ()
     RunTexDump (TEXDUMP_FILENAME, tree);
 
     Optimize (tree);
-    RunGraphDump (tree, GRAPH_DUMP_FILENAME, CMD_TO_RUN_TREE_DUMP);
     AddTexLine (TEXDUMP_FILENAME, tree->root, "Оптимизация формулы:");
 
+    RunGraphDump (tree, TREE_GRAPH_DUMP_INPUT, RUN_TREE_GRAPH_DUMP);
     printf ("Size of tree: %zu\n", CountTreeSize (tree));
+
+    char der_tree_graph_dump_input[INIT_SIZE] = "";
+    char der_tree_graph_dump_output[INIT_SIZE] = "";
+    char run_der_tree_graph_dump[INIT_SIZE] = "";
 
     for (size_t i = 0; i < arg_queue.size; ++i) {
         tree->root = DiffNode (tree->root, arg_queue.data[i].type.var.name,
@@ -51,9 +59,13 @@ int main ()
         AddTexLine (TEXDUMP_FILENAME, tree->root, "Дифференцирование формулы:");
 
         Optimize (tree);
-        RunGraphDump (tree, DER_GRAPH_DUMP_FILENAME, CMD_TO_RUN_DER_TREE_DUMP);
         AddTexLine (TEXDUMP_FILENAME, tree->root, "И снова оптимизация формулы:");
 
+        sprintf (der_tree_graph_dump_input, GRAPH_DUMP_DIR "%dder_" TREE_GRAPH_DUMP ".dot", i);
+        sprintf (der_tree_graph_dump_output, GRAPH_DUMP_DIR "%dder_" TREE_GRAPH_DUMP ".svg", i);
+        sprintf (run_der_tree_graph_dump, RUN_GRAPH_DUMP "%s -o " GRAPH_DUMP_DIR "%s",
+                 der_tree_graph_dump_input, der_tree_graph_dump_output);
+        RunGraphDump (tree, der_tree_graph_dump_input, run_der_tree_graph_dump);
         printf ("Size of der_tree: %zu\n", CountTreeSize (tree));
     }
 
@@ -67,3 +79,4 @@ int main ()
     printf (GREEN "through the code and directories, "
             "i alone am the programmer one\n" COLOR_RESET);
 }
+
