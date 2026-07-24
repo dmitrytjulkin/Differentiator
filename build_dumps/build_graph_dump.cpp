@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <assert.h>
+#include <string.h>
 
 #include "../headers/dump.h"
+
+const int INIT_SIZE = 10;
 
 void PrintNum     (node_t* node, FILE* output_ptr);
 void PrintFunc    (node_t* node, FILE* output_ptr);
@@ -202,16 +205,23 @@ void PrintDiffVar (node_t* node, FILE* output_ptr)
     assert (node);
     assert (output_ptr);
 
+    // printf (GREEN "" COLOR_RESET, );
+
+    char diff_count[INIT_SIZE] = "d";
+    if (node->data.var.differential_order != 1)
+        snprintf (diff_count + 1, INIT_SIZE - 1, "%d",
+                  node->data.var.differential_order);
+
     fprintf (output_ptr,
             "\nnode%p [label = <                                               \n"
             "\t<TABLE BORDER = \"0\" CELLBORDER = \"1\" CELLSPACING = \"0\">   \n"
             "\t<TR> <TD COLSPAN = \"2\" BGCOLOR = \"lightpink\"> %s </TD> </TR>\n"
             "\t<TR> <TD COLSPAN = \"2\"> his parent: %p </TD> </TR>            \n"
             "\t<TR> <TD COLSPAN = \"2\"> %p </TD> </TR>                        \n"
-            "\t<TR> <TD COLSPAN = \"2\"> d %s </TD> </TR>                      \n"
+            "\t<TR> <TD COLSPAN = \"2\"> %s %s </TD> </TR>                      \n"
             "\t<TR> <TD PORT = \"f0\"> %p </TD>                                \n"
             "\t<TD PORT = \"f1\"> %p </TD> </TR>                               \n"
             "\t</TABLE>                                                        \n"
             "\t>];                                                             \n",
-            node, "VAR_type", node->parent, node, node->data.var.name, L, R);
+            node, "VAR_type", node->parent, node, diff_count, node->data.var.name, L, R);
 }

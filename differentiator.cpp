@@ -41,7 +41,6 @@ node_t* dArccos (node_t* node, const char* arg, nametable_t* dependencies);
 node_t* dArctg  (node_t* node, const char* arg, nametable_t* dependencies);
 node_t* dArcctg (node_t* node, const char* arg, nametable_t* dependencies);
 
-
 node_t* DiffNode (node_t* node, const char* arg, nametable_t* dependencies)
 {
     assert (arg);
@@ -108,6 +107,7 @@ node_t* CopyNode (node_t* node)
 
     case VAR: case DIFF_VAR:
         strcpy (copy_node->data.var.name, node->data.var.name);
+        copy_node->data.var.differential_order = node->data.var.differential_order;
 
         break;
 
@@ -165,7 +165,10 @@ node_t* DiffDerivative (node_t* node, const char* arg)
 
     data_t tmp = {};
     tmp.var.differential_order = 1;
+    strcpy (tmp.var.name, arg);
     node_t* denominator = MUL_ (copy(node->right), NewNode (DIFF_VAR, tmp, NULL, NULL));
+
+    printf ("the der_order of dx = %d\n\n", node->right->data.var.differential_order);
 
     return DIV_ (numerator, denominator);
 }
@@ -222,9 +225,11 @@ node_t* DifDependency (node_t* node, const char* arg)
 
     node_t* dependency_node = copy (node);
     dependency_node->expr = DIFF_VAR;
+    dependency_node->data.var.differential_order = 1;
 
     data_t tmp = {};
     strcpy (tmp.var.name, arg);
+    tmp.var.differential_order = 1;
     node_t* arg_node = NewNode (DIFF_VAR, tmp, NULL, NULL);
 
     return DIV_ (dependency_node, arg_node);

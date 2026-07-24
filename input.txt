@@ -1,5 +1,5 @@
 // The formula
-f = x + z + 2*x + y;
+f = z;
 
 // Dependencies
 f z;
