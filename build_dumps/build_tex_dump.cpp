@@ -174,7 +174,12 @@ void TexDiffVar (FILE* output_ptr, node_t* node)
     assert (output_ptr);
     assert (node);
 
-    fprintf (output_ptr, "\\partial %s", node->data.var.name);
+    if (node->data.var.differential_order == 1)
+        fprintf (output_ptr, "\\partial %s", node->data.var.name);
+
+    else
+        fprintf (output_ptr, "\\partial^%d %s",
+                node->data.var.differential_order, node->data.var.name);
 }
 
 void TexFunc (FILE* output_ptr, node_t* node, int* line_size)

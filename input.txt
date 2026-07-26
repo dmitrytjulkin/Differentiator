@@ -1,8 +1,8 @@
 // The formula
-f = z;
+f = x + z + 2*x + y;
 
 // Dependencies
 f z;
 
 // How many times to differentiate
-x x;
+x y;
