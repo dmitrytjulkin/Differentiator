@@ -21,7 +21,6 @@ bool TexIfPow   (FILE* output_ptr, node_t* node, int* line_size);
 bool TexIfMul   (FILE* output_ptr, node_t* node, int* line_size);
 bool TexIfDiv   (FILE* output_ptr, node_t* node, int* line_size);
 
-
 void RunTexDump (const char* name_of_file, tree_t* tree)
 {
     assert (tree);
@@ -63,14 +62,14 @@ void AddTexLine (const char* name_of_file, node_t* root, const char* phrase)
 {
     assert (name_of_file);
     assert (phrase);
+    assert (root);
 
     FILE* tex_output_ptr = fopen (name_of_file, "a");
     assert (tex_output_ptr);
 
     fprintf (tex_output_ptr,
             "\\textbf{%s}\n"
-            "\\begin{equation}\n"
-            "\\begin{split}",
+            "\\begin{align*}\n",
             phrase);
 
     int line_size = 0;
@@ -78,8 +77,7 @@ void AddTexLine (const char* name_of_file, node_t* root, const char* phrase)
     TexNode (tex_output_ptr, root, &line_size);
 
     fprintf (tex_output_ptr,
-            "\n\\end{split}\n"
-            "\\end{equation}\n\n");
+            "\\end{align*}\n\n");
 
     fclose (tex_output_ptr);
 }
@@ -105,17 +103,17 @@ void TexNode (FILE* output_ptr, node_t* node, int* line_size)
 {
     assert (output_ptr);
     assert (node);
+    assert (line_size);
 
-    if (*line_size >= SIZE_OF_LINE) {
-        fprintf (output_ptr, " \\\\ \n");
-
+    if (*line_size >= SIZE_OF_LINE / 2) {
+        // fprintf (output_ptr, " \\\\ \n");
         *line_size = 0;
     }
 
     switch (node->expr) {
         case FUNC:
             if (*line_size >= SIZE_OF_LINE - SIZE_OF_FUNC) {
-                fprintf (output_ptr, " \\\\ \n");
+                // fprintf (output_ptr, " \\\\ \n");
                 *line_size = 0;
             }
 
@@ -295,10 +293,10 @@ bool TexIfPow (FILE* output_ptr, node_t* node, int* line_size)
     int need_brac_left = true;
     int need_brac_right = true;
 
-    if (R->expr != OP)
+    if (R->expr != OP && R->expr != FUNC)
         need_brac_right = false;
 
-    if (L->expr != OP)
+    if (L->expr != OP && L->expr != FUNC)
         need_brac_left = false;
 
     if (need_brac_left)

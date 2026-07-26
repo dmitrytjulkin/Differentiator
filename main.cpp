@@ -28,9 +28,6 @@ void AnalyzeDerTree (tree_t* tree, nametable_t* dependencies,
 
 // TODO correct and improve optimisation
 // TODO think about containing constants
-// TODO make array of var that depend on x (dependencies)
-// TODO think about d F/d x, d^2 F/d x^2
-// TODO think about the way to finish reading formula
 
 int main ()
 {

@@ -1,5 +1,5 @@
 // The formula
-f = x + z + 2*x + y;
+f = sin(cos(ln(x))) * z + y * x ^ (sqrt(2 * y));
 
 // Dependencies
 f z;
