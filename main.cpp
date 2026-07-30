@@ -9,7 +9,7 @@
 
 const int INIT_SIZE = 100;
 
-#define INPUT_FILENAME         "input.txt"
+#define DEFAULT_INPUT_FILENAME         "input.txt"
 
 #define TEX_DUMP_FILENAME       "tex_dump/tree.tex"
 
@@ -29,9 +29,15 @@ void AnalyzeDerTree (tree_t* tree, nametable_t* dependencies,
 // TODO correct and improve optimisation
 // TODO think about containing constants
 
-int main ()
+int main (int argc, char* argv[])
 {
-    FILE* input_ptr = fopen (INPUT_FILENAME, "r");
+    FILE* input_ptr = NULL;
+    if (argc == 1)
+        input_ptr = fopen (DEFAULT_INPUT_FILENAME, "r");
+
+    else
+        input_ptr = fopen (argv[1], "r");
+
     assert (input_ptr);
 
     nametable_t dependencies = {};
