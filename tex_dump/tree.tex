@@ -12,29 +12,29 @@
 
 \begin{equation}
 \begin{split}
-f = \sin(\cos(\ln(x))) \cdot z + y \cdot x ^ {\sqrt{2 \cdot y}}
+f = x + y
 \end{split}
 \end{equation}
 
 \textbf{Оптимизация формулы:}
 \begin{align*}
-f = \sin(\cos(\ln(x))) \cdot z + y \cdot x ^ {\sqrt{2 \cdot y}}\end{align*}
+f = x + y\end{align*}
 
 \textbf{Дифференцирование формулы:}
 \begin{align*}
- \frac {\partial f} {\partial x}  = \cos(\cos(\ln(x)))\cdot (0 - \sin(\ln(x)) \cdot  \frac {1} {x}  \cdot 1) \cdot z + \sin(\cos(\ln(x))) \cdot  \frac {\partial z} {\partial x}  + 0 \cdot x ^ {\sqrt{2 \cdot y}} + y\cdot (\ln(x) \cdot x ^ {\sqrt{2 \cdot y}} \cdot  \frac {0.5} {\sqrt{2 \cdot y}} \cdot (0 \cdot y + 2 \cdot 0) + \sqrt{2 \cdot y} \cdot x ^ {\sqrt{2 \cdot y} - 1} \cdot 1)\end{align*}
+ \frac {\partial f} {\partial x}  = 1 + 0\end{align*}
 
 \textbf{И снова оптимизация формулы:}
 \begin{align*}
- \frac {\partial f} {\partial x}  = \cos(\cos(\ln(x)))\cdot (0 - \sin(\ln(x)) \cdot  \frac {1} {x} ) \cdot z + \sin(\cos(\ln(x))) \cdot  \frac {\partial z} {\partial x}  + y \cdot \sqrt{2 \cdot y} \cdot x ^ {\sqrt{2 \cdot y} - 1}\end{align*}
+ \frac {\partial f} {\partial x}  = 1\end{align*}
 
 \textbf{Дифференцирование формулы:}
 \begin{align*}
- \frac {\partial^2 f} {\partial x \cdot \partial y}  = ((0 - \sin(\cos(\ln(x)))\cdot (0 - \sin(\ln(x)) \cdot  \frac {1} {x}  \cdot 0)) \cdot (0 - \sin(\ln(x)) \cdot  \frac {1} {x} ) + \cos(\cos(\ln(x)))\cdot (0 - \cos(\ln(x)) \cdot  \frac {1} {x}  \cdot 0 \cdot  \frac {1} {x}  + \sin(\ln(x)) \cdot  \frac {0 \cdot x - 1 \cdot 0} {x ^ 2} )) \cdot z + \cos(\cos(\ln(x)))\cdot (0 - \sin(\ln(x)) \cdot  \frac {1} {x} ) \cdot  \frac {\partial z} {\partial y}  + \cos(\cos(\ln(x)))\cdot (0 - \sin(\ln(x)) \cdot  \frac {1} {x}  \cdot 0) \cdot  \frac {\partial z} {\partial x}  + \sin(\cos(\ln(x))) \cdot  \frac {\partial^2 z} {\partial x \cdot \partial y}  + 1 \cdot \sqrt{2 \cdot y} \cdot x ^ {\sqrt{2 \cdot y} - 1} + y\cdot ( \frac {0.5} {\sqrt{2 \cdot y}} \cdot (0 \cdot y + 2 \cdot 1) \cdot x ^ {\sqrt{2 \cdot y} - 1} + \sqrt{2 \cdot y}\cdot (\ln(x) \cdot x ^ {\sqrt{2 \cdot y} - 1}\cdot ( \frac {0.5} {\sqrt{2 \cdot y}} \cdot (0 \cdot y + 2 \cdot 1) - 0) + (\sqrt{2 \cdot y} - 1) \cdot x ^ {\sqrt{2 \cdot y} - 1 - 1} \cdot 0))\end{align*}
+ \frac {\partial^2 f} {\partial x \cdot \partial y}  = 0\end{align*}
 
 \textbf{И снова оптимизация формулы:}
 \begin{align*}
- \frac {\partial^2 f} {\partial x \cdot \partial y}  = \cos(\cos(\ln(x)))\cdot (0 - \sin(\ln(x)) \cdot  \frac {1} {x} ) \cdot  \frac {\partial z} {\partial y}  + \sin(\cos(\ln(x))) \cdot  \frac {\partial^2 z} {\partial x \cdot \partial y}  + \sqrt{2 \cdot y} \cdot x ^ {\sqrt{2 \cdot y} - 1} + y\cdot ( \frac {0.5} {\sqrt{2 \cdot y}}  \cdot 2 \cdot x ^ {\sqrt{2 \cdot y} - 1} + \sqrt{2 \cdot y} \cdot \ln(x) \cdot x ^ {\sqrt{2 \cdot y} - 1} \cdot  \frac {0.5} {\sqrt{2 \cdot y}}  \cdot 2)\end{align*}
+ \frac {\partial^2 f} {\partial x \cdot \partial y}  = 0\end{align*}
 
 \textbf{Дальнейшие преобразования, оставим читателю в качестве самостоятельного упражнения}.
 

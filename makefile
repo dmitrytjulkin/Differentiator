@@ -29,17 +29,19 @@ INPUT_DIR = input_to_tree
 PARSE_INPUT = $(INPUT_DIR)/read_tree_from_file.cpp $(INPUT_DIR)/read_input.cpp $(INPUT_DIR)/parse_token_array.cpp \
 		$(INPUT_DIR)/parse_nametable.cpp $(INPUT_DIR)/input_tokenization.cpp
 
+BINARY = differentiate
+
 all:
-	$(CC) $(MAIN) $(TO_DUMP) $(PARSE_TREE) $(PARSE_INPUT) $(OTHER) $(FLAGS) -o ./tree
+	$(CC) $(MAIN) $(TO_DUMP) $(PARSE_TREE) $(PARSE_INPUT) $(OTHER) $(FLAGS) -o ./$(BINARY)
 
 run: all
-	./tree
+	./$(BINARY)
 
 noise:
 
 clean:
-	rm -rf tree.dSYM \
-	rm -f tree
+	rm -rf $(BINARY).dSYM \
+	rm -f BINARY
 
 
 .PHONY: all run clean

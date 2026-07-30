@@ -1,0 +1,15 @@
+/graph_dump
+
+/test.cpp
+/differentiate
+/differentiate.dSYM
+
+/tex_dump/tree.aux
+/tex_dump/free.fdb_latexmk
+/tex_dump/tree.fls
+/tex_dump/tree.log
+/tex_dump/tree.synctex.gz
+/tex_dump/tree.fdb_latexmk
+/tex_dump/%AUXDIR%
+
+.DS_Store
