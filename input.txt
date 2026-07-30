@@ -1,5 +1,5 @@
 // The formula
-f = x + y;
+f = sin (z) + x * y;
 
 // Dependencies
 f z;
