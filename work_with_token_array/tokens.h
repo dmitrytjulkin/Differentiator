@@ -28,6 +28,7 @@ enum token_codes {
 
     NUM_TOKEN,
     VAR_TOKEN,
+    DIFF_VAR_TOKEN,
 
     COUNT_OF_TOKENS
 };
