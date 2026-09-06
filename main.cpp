@@ -60,6 +60,8 @@ int main (int argc, char* argv[])
     tree_t* tree = InitTree ();
     tree = CreateTreeFromFile (input_ptr, &dependencies, &arg_queue);
 
+    // printf ("argqueue[0] = %d\n", arg_queue.data[0].code);
+
     RunTexDump (TEX_DUMP_FILENAME, tree);
     AnalyzeTree (tree);
     AnalyzeDerTree (tree, &dependencies, &arg_queue);
@@ -94,11 +96,15 @@ void AnalyzeDerTree (tree_t* tree, nametable_t* dependencies,
     assert (arg_queue);
     assert (dependencies);
 
+    // printf ("argqueue[0] = %d\n", arg_queue[0].data->code);
+
     char input_file[INIT_SIZE] = "";
     char output_file[INIT_SIZE] = "";
     char run_graph_dump[INIT_SIZE] = "";
 
     for (size_t i = 0; i < arg_queue->size; ++i) {
+        // printf (GREEN "PASSED\n" COLOR_RESET);
+
         tree->root = DiffNode (tree->root, arg_queue->data[i].type.var.name, dependencies);
         AddTexLine (TEX_DUMP_FILENAME, tree->root, "Дифференцирование формулы:");
 

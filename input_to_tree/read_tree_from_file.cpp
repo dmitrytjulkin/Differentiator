@@ -63,8 +63,10 @@ void ParseAfterExpression (token_array_t* input_array,
         ++index;
     ++index;
 
-    while (input_array->data[index].code != FINISH_TOKEN)
+    while (input_array->data[index].code != FINISH_TOKEN) {
+        printf ("what's this pokemon? ,%d\n", input_array->data[index].code);
         PasteToNametable (dependencies, input_array->data[index++].type.var.name);
+    }
 
     ++index;
 
@@ -72,6 +74,7 @@ void ParseAfterExpression (token_array_t* input_array,
         strcpy (arg_queue->data[arg_queue->size].type.var.name,
                 input_array->data[index].type.var.name);
 
+        printf ("are you here?\n");
         ++arg_queue->size;
         ++index;
 

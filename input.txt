@@ -1,8 +1,8 @@
 // The formula
-(d f) / (d x) = y
+(d f) / (d x) = y;
 
 // Dependencies
 f;
 
 // How many times to differentiate
-x;
+x x;
