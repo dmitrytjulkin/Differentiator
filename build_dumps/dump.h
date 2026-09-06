@@ -14,3 +14,5 @@ void RunTexDump (const char* name_of_file, tree_t* tree);
 void AddTexLine (const char* name_of_file, node_t* node, const char* phrase);
 void FinishTex  (const char* name_of_file);
 
+void FromTreeToFormula (FILE* output_ptr, tree_t* tree);
+
