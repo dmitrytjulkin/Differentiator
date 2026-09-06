@@ -14,7 +14,12 @@ FLAGS = -D _DEBUG -ggdb3 -std=c++17 -O0 -Wall -Wextra -Weffc++ -Wc++14-compat 		
 CC = g++
 
 MAIN = main.cpp
-OTHER = differentiator.cpp list_of_func_and_op.cpp optimize_tree.cpp
+
+FUNC_OP_DIR = func_and_op
+FUNC_OP_FILE = $(FUNC_OP_DIR)/list_of_func_and_op.cpp
+
+DIFF_DIR = differentiator
+DIFFERENTIATE = $(DIFF_DIR)/differentiator.cpp $(DIFF_DIR)/optimize_tree.cpp
 
 DUMP_DIR = build_dumps
 TO_DUMP = $(DUMP_DIR)/build_graph_dump.cpp $(DUMP_DIR)/build_tex_dump.cpp \
@@ -26,13 +31,20 @@ PARSE_TREE = $(TREE_DIR)/free_tree.cpp $(TREE_DIR)/get_tree_size.cpp \
 		$(TREE_DIR)/print_tree.cpp
 
 INPUT_DIR = input_to_tree
-PARSE_INPUT = $(INPUT_DIR)/read_tree_from_file.cpp $(INPUT_DIR)/read_input.cpp $(INPUT_DIR)/parse_token_array.cpp \
-		$(INPUT_DIR)/parse_nametable.cpp $(INPUT_DIR)/input_tokenization.cpp
+PARSE_INPUT = $(INPUT_DIR)/read_tree_from_file.cpp $(INPUT_DIR)/read_input.cpp  \
+		 $(INPUT_DIR)/input_tokenization.cpp
+
+TOKEN_ARR_DIR = work_with_token_array
+PARSE_TOKEN_ARRAY = $(TOKEN_ARR_DIR)/parse_token_array.cpp
+
+NAMETABLE_DIR = work_with_nametable
+PARSE_NAMETABLE = $(NAMETABLE_DIR)/parse_nametable.cpp
 
 BINARY = differentiate
 
 all:
-	$(CC) $(MAIN) $(TO_DUMP) $(PARSE_TREE) $(PARSE_INPUT) $(OTHER) $(FLAGS) -o ./$(BINARY)
+	$(CC) $(MAIN) $(TO_DUMP) $(PARSE_TREE) $(PARSE_INPUT) $(PARSE_TOKEN_ARRAY) $(DIFFERENTIATE) \
+	$(PARSE_NAMETABLE) $(FUNC_OP_FILE) $(FLAGS) -o ./$(BINARY)
 
 run: all
 	./$(BINARY)

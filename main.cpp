@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "headers/tree.h"
-#include "headers/differentiator.h"
-#include "headers/dump.h"
-#include "headers/nametable.h"
-#include "headers/tokens.h"
+#include "parse_tree/tree.h"
+#include "differentiator/differentiator.h"
+#include "build_dumps/dump.h"
+#include "work_with_nametable/nametable.h"
+#include "work_with_token_array/tokens.h"
 
 const int INIT_SIZE = 100;
 

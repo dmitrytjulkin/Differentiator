@@ -1,8 +1,8 @@
 #pragma once
 
-#include "tree.h"
-#include "nametable.h"
-#include "tokens.h"
+#include "../parse_tree/tree.h"
+#include "../work_with_nametable/nametable.h"
+#include "../work_with_token_array/tokens.h"
 
 node_t* Optimize (tree_t* tree);
 

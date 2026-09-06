@@ -1,7 +1,7 @@
 #pragma once
 
-#include "nametable.h"
-#include "func_and_op.h"
+#include "../work_with_nametable/nametable.h"
+#include "../func_and_op/func_and_op.h"
 
 enum token_codes {
     FINISH_TOKEN,

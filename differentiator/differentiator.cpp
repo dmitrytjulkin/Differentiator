@@ -2,8 +2,8 @@
 #include <assert.h>
 #include <string.h>
 
-#include "headers/differentiator.h"
-#include "headers/nametable.h"
+#include "differentiator.h"
+#include "../work_with_nametable/nametable.h"
 
 #define diff(node) DiffNode(node, arg, dependencies)
 #define copy(node) CopyNode(node)

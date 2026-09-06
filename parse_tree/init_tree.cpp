@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../headers/tree.h"
+#include "tree.h"
 
 tree_t* InitTree ()
 {

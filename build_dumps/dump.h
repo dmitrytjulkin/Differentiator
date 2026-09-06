@@ -1,7 +1,7 @@
 #pragma once
 
-#include "tree.h"
-#include "differentiator.h"
+#include "../parse_tree/tree.h"
+#include "../differentiator/differentiator.h"
 
 void RunGraphDump (tree_t* tree, const char* name_of_file,
                    const char* cmd_to_launch_graph_dump);

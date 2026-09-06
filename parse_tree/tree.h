@@ -3,7 +3,7 @@
 #define GREEN "\x1b[32m"
 #define COLOR_RESET "\x1b[0m"
 
-#include "func_and_op.h"
+#include "../func_and_op/func_and_op.h"
 
 #define R node->right
 #define L node->left

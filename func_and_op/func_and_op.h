@@ -1,6 +1,6 @@
 #pragma once
 
-#include "nametable.h"
+#include "../work_with_nametable/nametable.h"
 
 enum type_of_expr {
     NUM,

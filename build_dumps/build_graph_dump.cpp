@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <string.h>
 
-#include "../headers/dump.h"
+#include "dump.h"
 
 const int INIT_SIZE = 10;
 

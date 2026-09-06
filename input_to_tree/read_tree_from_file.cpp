@@ -3,8 +3,8 @@
 #include <string.h>
 #include <sys/stat.h>
 
-#include "../headers/differentiator.h"
-#include "../headers/tokens.h"
+#include "../differentiator/differentiator.h"
+#include "../work_with_token_array/tokens.h"
 
 void ParseAfterExpression (token_array_t* input_array, nametable_t* dependencies,
                            token_array_t* arg_queue);

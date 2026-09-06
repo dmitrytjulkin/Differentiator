@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "headers/differentiator.h"
+#include "../differentiator/differentiator.h"
 
 func_t list_of_func[] = {
     {"sqrt",   SQRT},

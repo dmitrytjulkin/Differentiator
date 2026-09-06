@@ -2,7 +2,7 @@
 #include <math.h>
 #include <assert.h>
 
-#include "headers/differentiator.h"
+#include "differentiator.h"
 
 node_t* ChooseOptimizingAlgorithm (node_t* node, bool* is_tree_changed);
 

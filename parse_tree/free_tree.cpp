@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "../headers/tree.h"
+#include "tree.h"
 
 void FreeTree (tree_t* tree)
 {

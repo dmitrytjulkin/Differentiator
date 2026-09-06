@@ -2,9 +2,9 @@
 #include <assert.h>
 #include <string.h>
 
-#include "../headers/differentiator.h"
-#include "../headers/tokens.h"
-#include "../headers/nametable.h"
+#include "../differentiator/differentiator.h"
+#include "../work_with_token_array/tokens.h"
+#include "../work_with_nametable/nametable.h"
 
 bool TokenizeExcesses (const char* input_string, size_t* input_index);
 bool TokenizeNum (const char* input_string, token_array_t* token_array,
