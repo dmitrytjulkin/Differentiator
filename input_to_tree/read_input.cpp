@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <sys/stat.h>
 
-#include "../differentiator/differentiator.h"
+#include "read_input.h"
 
 const int EXTRA_SIZE = 10;
 

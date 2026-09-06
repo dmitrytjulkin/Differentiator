@@ -12,8 +12,6 @@ node_t* CopyNode (node_t* node);
 tree_t* CreateTreeFromFile (FILE* input_ptr, nametable_t* dependencies,
                             token_array_t* arg_queue);
 
-char* ReadInput (FILE* input);
-
 #define OPTIMIZE_IF_NUM_OP_NUM(operation)                                \
     if (node->left->expr == NUM && node->right->expr == NUM) {           \
         node->expr = NUM;                                                \

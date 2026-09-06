@@ -3,8 +3,9 @@
 #include <string.h>
 #include <sys/stat.h>
 
-#include "../differentiator/differentiator.h"
+#include "../parse_tree/tree.h"
 #include "../work_with_token_array/tokens.h"
+#include "read_input.h"
 
 void ParseAfterExpression (token_array_t* input_array, nametable_t* dependencies,
                            token_array_t* arg_queue);

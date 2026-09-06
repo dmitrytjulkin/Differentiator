@@ -2,7 +2,6 @@
 #include <assert.h>
 #include <string.h>
 
-#include "../differentiator/differentiator.h"
 #include "../work_with_token_array/tokens.h"
 #include "../work_with_nametable/nametable.h"
 
