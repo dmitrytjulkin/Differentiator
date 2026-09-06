@@ -1,1 +1,1 @@
-(d^2 f) / (d x) * (d y) = 0 - sin ( z ) * (d z) / (d y) * (d z) / (d x) + cos ( z ) * (d^2 z) / (d x) * (d y) + 1 
+(d f) / (d x) = y 

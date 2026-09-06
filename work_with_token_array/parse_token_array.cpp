@@ -55,6 +55,9 @@ void PrintTokenArray (token_array_t* input_array)
         else if (input_array->data[i].code == NUM_TOKEN)
             printf ("[ %d] ", input_array->data[i].type.num);
 
+        else if (input_array->data[i].code == DIFF_VAR_TOKEN)
+            printf ("[ %s]", input_array->data[i].type.var.name);
+
         else
             printf ("[ ] ");
     }

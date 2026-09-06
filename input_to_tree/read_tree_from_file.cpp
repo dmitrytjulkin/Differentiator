@@ -18,6 +18,7 @@ node_t* GetMulOrDiv (token_array_t* token_array, size_t* index);
 node_t* GetBrac     (token_array_t* token_array, size_t* index);
 node_t* GetNum      (token_array_t* token_array, size_t* index);
 node_t* GetVar      (token_array_t* token_array, size_t* index);
+node_t* GetDiffVar  (token_array_t* token_array, size_t* index);
 node_t* GetFunc     (token_array_t* token_array, size_t* index);
 node_t* GetPow      (token_array_t* token_array, size_t* index);
 
@@ -214,6 +215,9 @@ node_t* GetBrac (token_array_t* token_array, size_t* index)
     if (token_array->data[*index].code == VAR_TOKEN)
         return GetVar (token_array, index);
 
+    if (token_array->data[*index].code == DIFF_VAR_TOKEN)
+        return GetDiffVar (token_array, index);
+
     if (SQRT_TOKEN <= token_array->data[*index].code &&
         token_array->data[*index].code < NUM_TOKEN)
         return GetFunc (token_array, index);
@@ -256,6 +260,24 @@ node_t* GetVar (token_array_t* token_array, size_t* index)
     ++*index;
 
     node_t* node = NewNode (VAR, tmp, NULL, NULL);
+
+    return node;
+}
+
+node_t* GetDiffVar (token_array_t* token_array, size_t* index)
+{
+    assert (token_array);
+    assert (index);
+
+    char* val = token_array->data[*index].type.var.name;
+
+    data_t tmp = {.var.name = ""};
+    strcpy (tmp.var.name, val);
+    tmp.var.differential_order = token_array->data[*index].type.var.differential_order;
+
+    ++*index;
+
+    node_t* node = NewNode (DIFF_VAR, tmp, NULL, NULL);
 
     return node;
 }

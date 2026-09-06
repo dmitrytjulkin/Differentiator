@@ -12,6 +12,8 @@ bool TokenizeVar      (const char* input_string, token_array_t* token_array,
                       size_t* input_index, nametable_t* nametable);
 void TokenizeDiffVar  (const char* input_string, token_array_t* token_array,
                       size_t* input_index, nametable_t* nametable);
+int GatherNum         (const char* input_string, size_t* input_index);
+
 
 void TokenizeInput (const char* input_string, token_array_t* token_array,  nametable_t* nametable)
 {
@@ -129,8 +131,7 @@ bool TokenizeVar (const char* input_string, token_array_t* token_array,
 
     if (input_string[*input_index] == 'd' && (input_string[*input_index + 1] == '^' ||
                                               input_string[*input_index + 1] == ' ')) {
-        TokenizeDiffVar (const char* input_string, token_array_t* token_array,
-                        size_t* input_index, nametable_t* nametable);
+        TokenizeDiffVar (input_string, token_array, input_index, nametable);
 
         return true;
     }
@@ -167,13 +168,14 @@ void TokenizeDiffVar (const char* input_string, token_array_t* token_array,
     token_array->data[token_array->size].code = DIFF_VAR_TOKEN;
 
     ++*input_index;
-    if (input_string[(*input_index)++] == '^')
-        token_array->data[token_array->size].type.var.differential_order = input_string[*input_index];
+    if (input_string[*input_index] == '^') {
+        ++*input_index;
 
+        token_array->data[token_array->size].type.var.differential_order = GatherNum (input_string, input_index);
+    }
     else
         token_array->data[token_array->size].type.var.differential_order = 1;
 
-    ++*input_index;
     while (input_string[*input_index] == ' ') ++*input_index;
 
     char var[INIT_VAR_SIZE] = {};
@@ -187,7 +189,21 @@ void TokenizeDiffVar (const char* input_string, token_array_t* token_array,
             || ('0' <= input_string[*input_index] && input_string[*input_index] <= '9'));
 
     strcpy (token_array->data[token_array->size].type.var.name, var);
+
     ++token_array->size;
 
     PasteToNametable (nametable, var);
+}
+
+int GatherNum (const char* input_string, size_t* input_index)
+{
+    assert (input_string);
+    assert (input_index);
+
+    int num = 0;
+
+    while ('0' <= input_string[*input_index] && input_string[*input_index] <= '9')
+        num = num * 10 + input_string[(*input_index)++] - '0';
+
+    return num;
 }

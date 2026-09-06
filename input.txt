@@ -1,8 +1,8 @@
 // The formula
-f = sin (z) + x * y;
+(d f) / (d x) = y
 
 // Dependencies
-f z;
+f;
 
 // How many times to differentiate
-x y;
+x;
