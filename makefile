@@ -23,7 +23,7 @@ DIFFERENTIATE = $(DIFF_DIR)/differentiator.cpp $(DIFF_DIR)/optimize_tree.cpp
 
 DUMP_DIR = build_dumps
 TO_DUMP = $(DUMP_DIR)/build_graph_dump.cpp $(DUMP_DIR)/build_tex_dump.cpp \
-		$(DUMP_DIR)/clear_dump.cpp
+		$(DUMP_DIR)/clear_dump.cpp $(DUMP_DIR)/print_final_formula.cpp
 
 TREE_DIR = parse_tree
 PARSE_TREE = $(TREE_DIR)/free_tree.cpp $(TREE_DIR)/get_tree_size.cpp \

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <assert.h>
+#include <string.h>
 
 #include "parse_tree/tree.h"
 #include "differentiator/differentiator.h"
@@ -10,6 +11,7 @@
 const int INIT_SIZE = 100;
 
 #define DEFAULT_INPUT_FILENAME         "input.txt"
+#define DEFAULT_OUTPUT_FILENAME        "output.txt"
 
 #define TEX_DUMP_FILENAME       "tex_dump/tree.tex"
 
@@ -28,15 +30,24 @@ void AnalyzeDerTree (tree_t* tree, nametable_t* dependencies,
 
 // TODO correct and improve optimisation
 // TODO think about containing constants
+// TODO make "input_to_tree" capable of parsing "(d^n y)"
 
 int main (int argc, char* argv[])
 {
     FILE* input_ptr = NULL;
+    char output_filename[INIT_SIZE] = "";
+
     if (argc == 1)
         input_ptr = fopen (DEFAULT_INPUT_FILENAME, "r");
 
     else
         input_ptr = fopen (argv[1], "r");
+
+    if (argc <= 2)
+        strcpy (output_filename, DEFAULT_OUTPUT_FILENAME);
+
+    else
+        strcpy (output_filename, argv[2]);
 
     assert (input_ptr);
 
@@ -53,6 +64,8 @@ int main (int argc, char* argv[])
     AnalyzeTree (tree);
     AnalyzeDerTree (tree, &dependencies, &arg_queue);
     FinishTex (TEX_DUMP_FILENAME);
+
+    FromTreeToFormula (output_filename, tree);
 
     DestroyNametable (&dependencies);
     DestroyTokenArray (&arg_queue);

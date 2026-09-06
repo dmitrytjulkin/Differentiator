@@ -7,10 +7,13 @@
 void FromNodeToFormula     (FILE* output_ptr, node_t* node);
 void ChooseNodeTypeToPrint (FILE* output_ptr, node_t* node);
 
-void FromTreeToFormula (FILE* output_ptr, tree_t* tree)
+void FromTreeToFormula (const char* name_of_file, tree_t* tree)
 {
-    assert (output_ptr);
+    assert (name_of_file);
     assert (tree);
+
+    FILE* output_ptr = fopen (name_of_file, "w");
+    assert (output_ptr);
 
     if (tree->root->left != NULL)
         FromNodeToFormula (output_ptr, tree->root->left);
@@ -21,6 +24,8 @@ void FromTreeToFormula (FILE* output_ptr, tree_t* tree)
         FromNodeToFormula (output_ptr, tree->root->right);
 
     fprintf (output_ptr, "\n");
+
+    fclose (output_ptr);
 }
 
 void FromNodeToFormula (FILE* output_ptr, node_t* node)
@@ -35,6 +40,9 @@ void FromNodeToFormula (FILE* output_ptr, node_t* node)
 
     if (node->right != NULL)
         FromNodeToFormula (output_ptr, node->right);
+
+    if (node->expr == FUNC)
+        fprintf (output_ptr, ") ");
 }
 
 void ChooseNodeTypeToPrint (FILE* output_ptr, node_t* node)
@@ -44,31 +52,31 @@ void ChooseNodeTypeToPrint (FILE* output_ptr, node_t* node)
 
     switch (node->expr) {
         case NUM:
-            fprintf (output_ptr, " %d ", node->data.num);
+            fprintf (output_ptr, "%lg ", node->data.num);
 
             break;
 
         case VAR:
-            fprintf (output_ptr, " %s ", node->data.var.name);
+            fprintf (output_ptr, "%s ", node->data.var.name);
 
             break;
 
         case FUNC:
-            fprintf (output_ptr, " %s ", list_of_func[node->data.func].name);
+            fprintf (output_ptr, "%s ( ", list_of_func[node->data.func].name);
 
             break;
 
         case OP:
-            fprintf (output_ptr, " %c ", list_of_op[node->data.op].name);
+            fprintf (output_ptr, "%c ", list_of_op[node->data.op].name);
 
             break;
 
         case DIFF_VAR:
-            if (tree->root->data.var.differential_order == 1)
-                fprintf (output_ptr, " (d %s) ", node->data.var.name);
+            if (node->data.var.differential_order == 1)
+                fprintf (output_ptr, "(d %s) ", node->data.var.name);
 
             else
-                fprintf (output_ptr, " (d^%d %s) ", node->data.var.differential_order,
+                fprintf (output_ptr, "(d^%d %s) ", node->data.var.differential_order,
                                                     node->data.var.name);
 
             break;
