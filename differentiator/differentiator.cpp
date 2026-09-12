@@ -168,8 +168,6 @@ node_t* DiffDerivative (node_t* node, const char* arg)
     strcpy (tmp.var.name, arg);
     node_t* denominator = MUL_ (copy(node->right), NewNode (DIFF_VAR, tmp, NULL, NULL));
 
-    printf ("the der_order of dx = %d\n\n", node->right->data.var.differential_order);
-
     return DIV_ (numerator, denominator);
 }
 

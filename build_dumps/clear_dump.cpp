@@ -12,10 +12,7 @@ void ClearDump (const char* name_of_dir, const char* path_to_file)
 
     struct stat st;
 
-    if (stat(name_of_dir, &st) == 0 && S_ISDIR(st.st_mode))
-        printf ("fr fr wrooooo\n\n");
-
-    else
+    if (stat(name_of_dir, &st) != 0 || !S_ISDIR(st.st_mode))
         mkdir (name_of_dir, 0755);
 
     FILE* output_ptr = fopen (path_to_file, "w");

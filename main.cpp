@@ -74,8 +74,8 @@ int main (int argc, char* argv[])
     fclose (input_ptr);
     FreeTree (tree);
 
-    printf (GREEN "through the code and directories, "
-            "i alone am the programmer one\n" COLOR_RESET);
+    // printf (GREEN "through the code and directories, "
+    //         "i alone am the programmer one\n" COLOR_RESET);
 }
 
 void AnalyzeTree (tree_t* tree)
@@ -86,7 +86,7 @@ void AnalyzeTree (tree_t* tree)
     AddTexLine (TEX_DUMP_PATH, tree->root, "Оптимизация формулы:");
 
     RunGraphDump (tree, GRAPH_DUMP_DIR, TREE_GRAPH_DUMP_INPUT, RUN_TREE_GRAPH_DUMP);
-    printf ("Size of tree: %zu\n", CountTreeSize (tree));
+    // printf ("Size of tree: %zu\n", CountTreeSize (tree));
 }
 
 void AnalyzeDerTree (tree_t* tree, nametable_t* dependencies,
@@ -103,19 +103,17 @@ void AnalyzeDerTree (tree_t* tree, nametable_t* dependencies,
     char run_graph_dump[INIT_SIZE] = "";
 
     for (size_t i = 0; i < arg_queue->size; ++i) {
-        // printf (GREEN "PASSED\n" COLOR_RESET);
-
         tree->root = DiffNode (tree->root, arg_queue->data[i].type.var.name, dependencies);
         AddTexLine (TEX_DUMP_PATH, tree->root, "Дифференцирование формулы:");
 
         Optimize (tree);
         AddTexLine (TEX_DUMP_PATH, tree->root, "И снова оптимизация формулы:");
 
-        snprintf (input_file, INIT_SIZE, GRAPH_DUMP_DIR "%zuder_" TREE_GRAPH_DUMP ".dot", i + 1);
-        snprintf (output_file, INIT_SIZE, GRAPH_DUMP_DIR "%zuder_" TREE_GRAPH_DUMP ".svg", i + 1);
+        snprintf (input_file, INIT_SIZE, GRAPH_DUMP_DIR "/%zuder_" TREE_GRAPH_DUMP ".dot", i + 1);
+        snprintf (output_file, INIT_SIZE, GRAPH_DUMP_DIR "/%zuder_" TREE_GRAPH_DUMP ".svg", i + 1);
         snprintf (run_graph_dump, INIT_SIZE, RUN_GRAPH_DUMP "%s -o %s", input_file, output_file);
 
         RunGraphDump (tree, GRAPH_DUMP_DIR, input_file, run_graph_dump);
-        printf ("Size of der_tree: %zu\n", CountTreeSize (tree));
+        // printf ("Size of der_tree: %zu\n", CountTreeSize (tree));
     }
 }

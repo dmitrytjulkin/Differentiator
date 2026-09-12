@@ -1,8 +1,8 @@
 // The formula
-f = x + x*x;
+f = x ^ x + (d y) / (d x);
 
 // Dependencies
-f;
+f y;
 
 // How many times to differentiate
 x x;
