@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#include <errno.h>
 
 #include "dump.h"
 
@@ -21,15 +22,15 @@ bool TexIfPow   (FILE* output_ptr, node_t* node, int* line_size);
 bool TexIfMul   (FILE* output_ptr, node_t* node, int* line_size);
 bool TexIfDiv   (FILE* output_ptr, node_t* node, int* line_size);
 
-void RunTexDump (const char* name_of_file, tree_t* tree)
+void RunTexDump (const char* name_of_dir, const char* path_to_file, tree_t* tree)
 {
     assert (tree);
-    assert (name_of_file);
+    assert (path_to_file);
+    assert (name_of_dir);
 
-    FILE* tex_output_ptr = fopen (name_of_file, "a");
-    assert (tex_output_ptr);
+    ClearDump (name_of_dir, path_to_file);
 
-    ClearDump (name_of_file);
+    FILE* tex_output_ptr = fopen (path_to_file, "a");
 
     fprintf (tex_output_ptr, "\\documentclass[12pt, a4paper]{article}\n"
             "\\usepackage[utf8]{inputenc}\n"
@@ -58,13 +59,13 @@ void RunTexDump (const char* name_of_file, tree_t* tree)
     fclose (tex_output_ptr);
 }
 
-void AddTexLine (const char* name_of_file, node_t* root, const char* phrase)
+void AddTexLine (const char* path_to_file, node_t* root, const char* phrase)
 {
-    assert (name_of_file);
+    assert (path_to_file);
     assert (phrase);
     assert (root);
 
-    FILE* tex_output_ptr = fopen (name_of_file, "a");
+    FILE* tex_output_ptr = fopen (path_to_file, "a");
     assert (tex_output_ptr);
 
     fprintf (tex_output_ptr,
@@ -82,11 +83,11 @@ void AddTexLine (const char* name_of_file, node_t* root, const char* phrase)
     fclose (tex_output_ptr);
 }
 
-void FinishTex (const char* name_of_file)
+void FinishTex (const char* path_to_file)
 {
-    assert (name_of_file);
+    assert (path_to_file);
 
-    FILE* tex_output_ptr = fopen (name_of_file, "a");
+    FILE* tex_output_ptr = fopen (path_to_file, "a");
     assert (tex_output_ptr);
 
     fprintf (tex_output_ptr,

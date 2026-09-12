@@ -13,12 +13,13 @@ const int INIT_SIZE = 100;
 #define DEFAULT_INPUT_FILENAME         "input.txt"
 #define DEFAULT_OUTPUT_FILENAME        "output.txt"
 
-#define TEX_DUMP_FILENAME       "tex_dump/tree.tex"
+#define TEX_DUMP_DIR           "tex_dump"
+#define TEX_DUMP_PATH          "tex_dump/tree.tex"
 
-#define GRAPH_DUMP_DIR         "graph_dump/"
+#define GRAPH_DUMP_DIR         "graph_dump"
 #define TREE_GRAPH_DUMP        "tree_graph_dump"
-#define TREE_GRAPH_DUMP_INPUT  GRAPH_DUMP_DIR TREE_GRAPH_DUMP ".dot"
-#define TREE_GRAPH_DUMP_OUTPUT GRAPH_DUMP_DIR TREE_GRAPH_DUMP ".svg"
+#define TREE_GRAPH_DUMP_INPUT  GRAPH_DUMP_DIR "/" TREE_GRAPH_DUMP ".dot"
+#define TREE_GRAPH_DUMP_OUTPUT GRAPH_DUMP_DIR "/" TREE_GRAPH_DUMP ".svg"
 
 #define RUN_GRAPH_DUMP         "dot -Tsvg "
 #define RUN_TREE_GRAPH_DUMP    RUN_GRAPH_DUMP TREE_GRAPH_DUMP_INPUT \
@@ -30,7 +31,6 @@ void AnalyzeDerTree (tree_t* tree, nametable_t* dependencies,
 
 // TODO correct and improve optimisation
 // TODO think about containing constants
-// TODO make "input_to_tree" capable of parsing "(d^n y)"
 
 int main (int argc, char* argv[])
 {
@@ -62,10 +62,10 @@ int main (int argc, char* argv[])
 
     // printf ("argqueue[0] = %d\n", arg_queue.data[0].code);
 
-    RunTexDump (TEX_DUMP_FILENAME, tree);
+    RunTexDump (TEX_DUMP_DIR, TEX_DUMP_PATH, tree);
     AnalyzeTree (tree);
     AnalyzeDerTree (tree, &dependencies, &arg_queue);
-    FinishTex (TEX_DUMP_FILENAME);
+    FinishTex (TEX_DUMP_PATH);
 
     FromTreeToFormula (output_filename, tree);
 
@@ -83,9 +83,9 @@ void AnalyzeTree (tree_t* tree)
     assert (tree);
 
     Optimize (tree);
-    AddTexLine (TEX_DUMP_FILENAME, tree->root, "Оптимизация формулы:");
+    AddTexLine (TEX_DUMP_PATH, tree->root, "Оптимизация формулы:");
 
-    RunGraphDump (tree, TREE_GRAPH_DUMP_INPUT, RUN_TREE_GRAPH_DUMP);
+    RunGraphDump (tree, GRAPH_DUMP_DIR, TREE_GRAPH_DUMP_INPUT, RUN_TREE_GRAPH_DUMP);
     printf ("Size of tree: %zu\n", CountTreeSize (tree));
 }
 
@@ -106,17 +106,16 @@ void AnalyzeDerTree (tree_t* tree, nametable_t* dependencies,
         // printf (GREEN "PASSED\n" COLOR_RESET);
 
         tree->root = DiffNode (tree->root, arg_queue->data[i].type.var.name, dependencies);
-        AddTexLine (TEX_DUMP_FILENAME, tree->root, "Дифференцирование формулы:");
+        AddTexLine (TEX_DUMP_PATH, tree->root, "Дифференцирование формулы:");
 
         Optimize (tree);
-        AddTexLine (TEX_DUMP_FILENAME, tree->root, "И снова оптимизация формулы:");
+        AddTexLine (TEX_DUMP_PATH, tree->root, "И снова оптимизация формулы:");
 
         snprintf (input_file, INIT_SIZE, GRAPH_DUMP_DIR "%zuder_" TREE_GRAPH_DUMP ".dot", i + 1);
         snprintf (output_file, INIT_SIZE, GRAPH_DUMP_DIR "%zuder_" TREE_GRAPH_DUMP ".svg", i + 1);
-        snprintf (run_graph_dump, INIT_SIZE, RUN_GRAPH_DUMP "%s -o %s",
-                 input_file, output_file);
+        snprintf (run_graph_dump, INIT_SIZE, RUN_GRAPH_DUMP "%s -o %s", input_file, output_file);
 
-        RunGraphDump (tree, input_file, run_graph_dump);
+        RunGraphDump (tree, GRAPH_DUMP_DIR, input_file, run_graph_dump);
         printf ("Size of der_tree: %zu\n", CountTreeSize (tree));
     }
 }

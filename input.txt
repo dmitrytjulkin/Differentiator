@@ -1,5 +1,5 @@
 // The formula
-(d f) / (d x) = y;
+f = x + x*x;
 
 // Dependencies
 f;
