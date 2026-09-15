@@ -146,7 +146,7 @@ bool TokenizeVar (const char* input_string, token_array_t* token_array,
         var[index++] = input_string[*input_index];
         ++*input_index;
     } while (('a' <= input_string[*input_index] && input_string[*input_index] <= 'z')
-            || input_string[*input_index] == '_'
+            || input_string[*input_index] == '_' || input_string[*input_index] == '\''
             || ('0' <= input_string[*input_index] && input_string[*input_index] <= '9'));
 
     strcpy (token_array->data[token_array->size].type.var.name, var);
@@ -185,7 +185,7 @@ void TokenizeDiffVar (const char* input_string, token_array_t* token_array,
         var[index++] = input_string[*input_index];
         ++*input_index;
     } while (('a' <= input_string[*input_index] && input_string[*input_index] <= 'z')
-            || input_string[*input_index] == '_'
+            || input_string[*input_index] == '_' || input_string[*input_index] == '\''
             || ('0' <= input_string[*input_index] && input_string[*input_index] <= '9'));
 
     strcpy (token_array->data[token_array->size].type.var.name, var);

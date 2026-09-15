@@ -12,29 +12,29 @@
 
 \begin{equation}
 \begin{split}
-f = x ^ x +  \frac {\partial y} {\partial x} 
+f = x ^ {x'}
 \end{split}
 \end{equation}
 
 \textbf{Оптимизация формулы:}
 \begin{align*}
-f = x ^ x +  \frac {\partial y} {\partial x} \end{align*}
+f = x ^ {x'}\end{align*}
 
 \textbf{Дифференцирование формулы:}
 \begin{align*}
- \frac {\partial f} {\partial x}  = \ln(x) \cdot x ^ x \cdot 1 + x \cdot x ^ {x - 1} \cdot 1 +  \frac {\partial^2 y} {\partial x \cdot \partial x} \end{align*}
+ \frac {\partial f} {\partial x}  = \ln(x) \cdot x ^ {x'} \cdot 0 + x' \cdot x ^ {x' - 1} \cdot 1\end{align*}
 
 \textbf{И снова оптимизация формулы:}
 \begin{align*}
- \frac {\partial f} {\partial x}  = \ln(x) \cdot x ^ x + x \cdot x ^ {x - 1} +  \frac {\partial^2 y} {\partial x \cdot \partial x} \end{align*}
+ \frac {\partial f} {\partial x}  = x' \cdot x ^ {x' - 1}\end{align*}
 
 \textbf{Дифференцирование формулы:}
 \begin{align*}
- \frac {\partial^2 f} {\partial x \cdot \partial x}  =  \frac {1} {x}  \cdot 1 \cdot x ^ x + \ln(x)\cdot (\ln(x) \cdot x ^ x \cdot 1 + x \cdot x ^ {x - 1} \cdot 1) + 1 \cdot x ^ {x - 1} + x\cdot (\ln(x) \cdot x ^ {x - 1}\cdot (1 - 0) + (x - 1) \cdot x ^ {x - 1 - 1} \cdot 1) +  \frac {\partial^3 y} {\partial x \cdot \partial x \cdot \partial x} \end{align*}
+ \frac {\partial^2 f} {\partial x \cdot \partial x'}  = 1 \cdot x ^ {x' - 1} + x'\cdot (\ln(x) \cdot x ^ {x' - 1}\cdot (1 - 0) + (x' - 1) \cdot x ^ {x' - 1 - 1} \cdot 0)\end{align*}
 
 \textbf{И снова оптимизация формулы:}
 \begin{align*}
- \frac {\partial^2 f} {\partial x \cdot \partial x}  =  \frac {1} {x}  \cdot x ^ x + \ln(x)\cdot (\ln(x) \cdot x ^ x + x \cdot x ^ {x - 1}) + x ^ {x - 1} + x\cdot (\ln(x) \cdot x ^ {x - 1} + (x - 1) \cdot x ^ {x - 1 - 1}) +  \frac {\partial^3 y} {\partial x \cdot \partial x \cdot \partial x} \end{align*}
+ \frac {\partial^2 f} {\partial x \cdot \partial x'}  = x ^ {x' - 1} + x' \cdot \ln(x) \cdot x ^ {x' - 1}\end{align*}
 
 \textbf{Дальнейшие преобразования, оставим читателю в качестве самостоятельного упражнения}.
 

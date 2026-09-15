@@ -294,8 +294,8 @@ bool TexIfPow (FILE* output_ptr, node_t* node, int* line_size)
     int need_brac_left = true;
     int need_brac_right = true;
 
-    if (R->expr != OP && R->expr != FUNC)
-        need_brac_right = false;
+    // if (R->expr != OP && R->expr != FUNC)
+    //     need_brac_right = false;
 
     if (L->expr != OP && L->expr != FUNC)
         need_brac_left = false;

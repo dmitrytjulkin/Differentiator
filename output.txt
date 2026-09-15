@@ -1,1 +1,1 @@
-(d^2 f) / (d x) * (d x) = 1 / x * x ^ x + ln ( x ) * ln ( x ) * x ^ x + x * x ^ x - 1 + x ^ x - 1 + x * ln ( x ) * x ^ x - 1 + x - 1 * x ^ x - 1 - 1 + (d^3 y) / (d x) * (d x) * (d x) 
+(d^2 f) / (d x) * (d x') = x ^ x' - 1 + x' * ln ( x ) * x ^ x' - 1 
